@@ -1,4 +1,4 @@
-import TodoList from "/components/todo/TodoList";
+import TodoList from "../components/todo/TodoList";
 
 function Page() {
   return (
