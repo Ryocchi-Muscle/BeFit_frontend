@@ -1,11 +1,12 @@
 'use client';
 import React, { useState } from "react";
+import { signIn } from "next-auth/react";
 
 export default function SignUp() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.SyntheticEvent) => {
     e.preventDefault();
 
     const response = await fetch("/api/signup", {
@@ -76,6 +77,12 @@ export default function SignUp() {
             </button>
           </div>
         </form>
+        <button
+          onClick={() => signIn("google")} // Google認証のためのクリックイベント
+          className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+        >
+          Googleでサインイン
+        </button>
       </div>
     </div>
   );
