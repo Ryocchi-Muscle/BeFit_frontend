@@ -6,7 +6,7 @@ export default function Page() {
   return (
     <div className="min-h-screen flex flex-col">
       <AuthProvider>
-        <Header />
+        <Header session={null} />
         {/* ヒーローセクション */}
 
         <section className="text-white bg-blue-500 p-12 text-center">
