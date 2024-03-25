@@ -1,7 +1,3 @@
-// import NextAuth from "next-auth";
-// import { nextAuthOptions } from "@/app/utils/next-auth-options";
-// const handler = NextAuth(nextAuthOptions);
-// export { handler as GET, handler as POST };
 import NextAuth from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 

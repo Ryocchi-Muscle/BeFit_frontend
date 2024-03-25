@@ -1,6 +1,5 @@
 import GoogleProvider from "next-auth/providers/google";
 import type { NextAuthOptions } from "next-auth";
-import CredentialsProvider from "next-auth/providers/credentials";
 
 export const nextAuthOptions: NextAuthOptions = {
   debug: true,
@@ -9,26 +8,6 @@ export const nextAuthOptions: NextAuthOptions = {
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID!,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
-    }),
-    CredentialsProvider({
-      name: "Guest",
-      credentials: {},
-      authorize: async () => {
-        // ゲストログインAPIエンドポイントにリクエストを送信
-        const res = await fetch("http://localhost:3000/guest_login", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({}),
-        });
-        const user = await res.json();
-
-        // レスポンスからユーザー情報を返却
-        if (user) {
-          return user;
-        } else {
-          return null;
-        }
-      },
     }),
   ],
   callbacks: {
