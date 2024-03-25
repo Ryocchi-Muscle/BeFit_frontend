@@ -11,11 +11,11 @@ const Login = () => {
   if (status !== "authenticated") {
     return (
       <div>
-        <p>あなたはログインしていません</p>
         <button onClick={() => signIn("google", undefined, { prompt: "login" })}>
           Googleでログイン
         </button>
       </div>
+      
     );
   }
   return null;

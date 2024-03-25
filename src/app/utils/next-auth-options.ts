@@ -14,7 +14,6 @@ export const nextAuthOptions: NextAuthOptions = {
     jwt: async ({ token, user, account, profile }) => {
       // 注意: トークンをログ出力してはダメです。
       console.log("in jwt", { user, token, account, profile });
-
       if (user) {
         token.user = user;
         const u = user as any;
