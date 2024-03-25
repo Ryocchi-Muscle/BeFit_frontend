@@ -12,25 +12,28 @@ const Footer: React.FC<Props> = ({ children }) => {
         <nav className="container mx-auto flex justify-between items-center">
           <ul className="flex flex-grow justify-evenly">
             <li>
-              <a href="/layout/record" className="hover:underline text-black">
+              <a href="/category/record" className="hover:underline text-black">
                 記録
               </a>
             </li>
             <li>
-              <a href="/layout//mission" className="hover:underline text-black">
+              <a
+                href="/category/mission"
+                className="hover:underline text-black"
+              >
                 日々のミッション
               </a>
             </li>
             <li>
               <a
-                href="/layout//training"
+                href="/category/training"
                 className="hover:underline text-black"
               >
                 トレーニング
               </a>
             </li>
             <li>
-              <a href="/layout/search" className="hover:underline text-black">
+              <a href="/category/search" className="hover:underline text-black">
                 動画検索
               </a>
             </li>
