@@ -1,29 +1,14 @@
-// src/app/components/TopLayout.tsx
-
 import React from "react";
 
-const TopLayout: React.FC = ({ children }) => {
+type Props = {
+  children?: React.ReactNode;
+};
+
+const Footer: React.FC<Props> = ({ children }) => {
   return (
-    <div className="flex flex-col h-screen">
-      <header className="bg-blue-500 text-white p-4 shadow-md">
-        <nav className="container mx-auto flex justify-between">
-          <div>ロゴ</div>
-          <ul className="flex space-x-4">
-            <li>
-              <button>ゲストログイン</button>
-            </li>
-            <li>
-              <button>ログイン</button>
-            </li>
-            <li>
-              <button>新規登録</button>
-            </li>
-          </ul>
-        </nav>
-      </header>
-      <main className="flex-grow">{children}</main>
-     
-      <footer className="bg-white text-black p-4 shadow-md mt-auto border-t border-black">
+    <div className="flex flex-col fixed bottom-0 w-screen">
+      <main>{children}</main>
+      <footer className="bg-white text-black p-4 shadow-md  border-t border-black ">
         <nav className="container mx-auto flex justify-between items-center">
           <ul className="flex flex-grow justify-evenly">
             <li>
@@ -56,4 +41,4 @@ const TopLayout: React.FC = ({ children }) => {
   );
 };
 
-export default TopLayout;
+export default Footer;

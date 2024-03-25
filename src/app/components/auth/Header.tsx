@@ -1,8 +1,8 @@
 import React from "react";
-import { useAuth } from "../context/authContext";
+import { useAuth } from "../context/AuthContext";
 
 const Header = () => {
-   const { currentUser, login } = useAuth();
+  const { currentUser, login } = useAuth();
 
   return (
     <header>

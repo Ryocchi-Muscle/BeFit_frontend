@@ -1,14 +1,14 @@
+"use client";
+
 import React from "react";
-import Header from "./components/Haeder";
-import { AuthProvider } from "./components/context/authContext";
+import { AuthProvider } from "./components/context/AuthContext";
 
 export default function Page() {
   return (
     <div className="min-h-screen flex flex-col">
       <AuthProvider>
-        <Header session={null} />
+        {/* <Header session={null} /> */}
         {/* ヒーローセクション */}
-
         <section className="text-white bg-blue-500 p-12 text-center">
           <h1 className="text-4xl font-bold mb-4">Welcome to FitAPP</h1>
           <p className="mb-8">Your fitness journey starts here.</p>

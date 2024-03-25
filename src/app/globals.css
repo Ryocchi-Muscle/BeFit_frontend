@@ -47,12 +47,16 @@ footer nav ul {
   gap: 20px; /* アイテム間のスペース */
 }
 
+
+
 footer nav ul li a {
   color: #fff; /* リンクのテキストカラー */
   text-decoration: none;
 }
 
-html, body, div#__next {
+html,
+body,
+div#__next {
   margin: 0;
   padding: 0;
   width: 100%;

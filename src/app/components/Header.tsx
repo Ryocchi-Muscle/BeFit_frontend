@@ -5,7 +5,7 @@ import React from "react";
 import { type Session } from "next-auth";
 import Link from "next/link"; // Next.jsのLinkコンポーネントをインポート
 import { signOut } from "next-auth/react";
-import Button from "../Button.client";
+import { signIn } from "next-auth/react";
 
 // const Header = () => {
 //   // ボタンクリック時に呼び出される関数
@@ -31,6 +31,10 @@ import Button from "../Button.client";
 // };
 
 const Header = ({ session }: { session: Session | null }) => {
+  const guestLogin = () => {
+    console.log("ゲストとしてログイン");
+  };
+
   return (
     <header className="flex items-center justify-between bg-blue-950 p-4 shadow-md">
       <div className="flex items-center">
@@ -52,7 +56,7 @@ const Header = ({ session }: { session: Session | null }) => {
             </li>
             <li>
               <button
-                onClick={() => signOut()}
+                onClick={() => signOut({ callbackUrl: "/" })}
                 className="rounded-lg bg-blue-500 px-4 py-[7px] text-white hover:bg-gray-600"
               >
                 ログアウト
@@ -60,13 +64,26 @@ const Header = ({ session }: { session: Session | null }) => {
             </li>
           </>
         ) : (
-          <li>
-            <Link href="/login">
-              <button className="rounded-lg bg-blue-500 px-4 py-[7px] text-white hover:bg-gray-600">
-                ログイン
+          <>
+            <li>
+              {/* ゲストログインボタン */}
+              <button
+                onClick={(guestLogin) =>
+                  signIn("credentials", { callbackUrl: "/layout/record" })
+                }
+                className="rounded-lg bg-green-500 px-4 py-[7px] text-white hover:bg-gray-600"
+              >
+                ゲストログイン
               </button>
-            </Link>
-          </li>
+            </li>
+            <li>
+              <Link href="/login">
+                <button className="rounded-lg bg-blue-500 px-4 py-[7px] text-white hover:bg-gray-600">
+                  ログイン
+                </button>
+              </Link>
+            </li>
+          </>
         )}
       </ul>
     </header>
