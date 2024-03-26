@@ -7,6 +7,7 @@ import Link from "next/link"; // Next.jsのLinkコンポーネントをインポ
 import { signOut } from "next-auth/react";
 import { signIn } from "next-auth/react";
 import { useSession } from "next-auth/react";
+import DeleteUser from "../Delete";
 
 const Header = ({ session }: { session: Session | null }) => {
   return (
@@ -36,12 +37,12 @@ const Header = ({ session }: { session: Session | null }) => {
                 ログアウト
               </button>
             </li>
+            <li><DeleteUser/></li>
           </>
         ) : (
           <>
-            <li></li>
             <li>
-              <Link href="/login">
+              <Link href="account/login">
                 <button className="rounded-lg bg-blue-500 px-4 py-[7px] text-white hover:bg-gray-600">
                   ログイン
                 </button>
