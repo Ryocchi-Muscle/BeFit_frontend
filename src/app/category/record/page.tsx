@@ -1,6 +1,5 @@
 import TodoComponent from "@/app/components/todo/TodoList";
-import Footer from "@/app/components/Footer";
-
+import Footer from "@/app/components/layout/Footer";
 
 function RecordPage() {
   return (

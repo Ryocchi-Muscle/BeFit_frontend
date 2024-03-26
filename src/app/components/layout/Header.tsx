@@ -6,7 +6,6 @@ import { type Session } from "next-auth";
 import Link from "next/link"; // Next.jsのLinkコンポーネントをインポート
 import { signOut } from "next-auth/react";
 import { signIn } from "next-auth/react";
-import Login from "./Login";
 import { useSession } from "next-auth/react";
 
 const Header = ({ session }: { session: Session | null }) => {

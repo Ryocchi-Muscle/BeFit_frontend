@@ -11,7 +11,7 @@ const LoginPage = () => {
   useEffect(() => {
     // ログイン済みの場合はTOPページにリダイレクト
     if (status === "authenticated") {
-      redirect("/layout/record");
+      redirect("/category/record");
     }
   }, [session, status]);
 
@@ -21,7 +21,7 @@ const LoginPage = () => {
 
     // ログインに成功したらTOPページにリダイレクト
     if (result) {
-      redirect("/layout/record");
+      redirect("/category/record");
     }
   };
 

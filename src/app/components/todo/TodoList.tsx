@@ -79,7 +79,7 @@ const TodoComponent = () => {
           type="submit"
           className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
         >
-          Add Task
+          セット追加
         </button>
       </form>
       <ul className="list-disc pl-5">
@@ -101,20 +101,20 @@ const TodoComponent = () => {
               }}
               className="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-1 px-2 rounded ml-2"
             >
-              Edit
+              セット編集
             </button>
             <button
               onClick={() => deleteTodo(todo.id)}
               className="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded ml-2"
             >
-              Delete
+              セット削除
             </button>
             {editId === todo.id && (
               <button
                 onClick={() => editTodo(todo.id)}
                 className="bg-green-500 hover:bg-green-700 text-white font-bold py-1 px-2 rounded ml-2"
               >
-                Save
+                セット保存
               </button>
             )}
           </li>

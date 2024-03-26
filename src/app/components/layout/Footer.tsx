@@ -18,7 +18,7 @@ const Footer: React.FC<Props> = ({ children }) => {
             </li>
             <li>
               <a
-                href="/category/mission"
+                href="/category/task"
                 className="hover:underline text-black"
               >
                 日々のミッション
