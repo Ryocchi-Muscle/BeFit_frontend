@@ -4,7 +4,9 @@ import axios from "axios";
 
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
+
 export const nextAuthOptions: NextAuthOptions = {
+
   debug: true,
   session: { strategy: "jwt" },
   providers: [
