@@ -1,4 +1,3 @@
-// app/mission.page.tsx
 import React from "react";
 import Footer from "@/app/components/layout/Footer";
 import TodoComponent from "@/app/components/todo/TodoList";
@@ -11,6 +10,9 @@ export default function MissionPage() {
   return (
     <div>
       <DateCounter />
+      <TodoComponent></TodoComponent>
+      <ExerciseForm></ExerciseForm>
+      <SetControlButtons></SetControlButtons>
       <h1>日々のミッション</h1>
       <TrainingMenu />
       <Footer />
