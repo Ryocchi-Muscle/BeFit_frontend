@@ -1,8 +1,6 @@
 // pages/app/category/mission/[day].tsx
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
-import ExerciseInput from "@/app/components/task/SetControls";
-import SetControls from "@/app/components/task/SetControls";
 import Footer from "@/app/components/layout/Footer";
 
 export default function TrainingDayPage() {
@@ -22,10 +20,6 @@ export default function TrainingDayPage() {
     <div>
       <h1>fitapp</h1>
       <h2>Day {day}</h2>
-      {exercises.map((exercise, index) => (
-        <ExerciseInput key={index} exercise={exercise} />
-      ))}
-      <SetControls addExercise={addExercise} />
       <Footer />
     </div>
   );
