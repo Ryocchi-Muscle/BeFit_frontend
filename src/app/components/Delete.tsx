@@ -16,7 +16,7 @@ const DeleteUser = () => {
 
     try {
       const response = await axios.delete(
-        `${apiUrl}/users/${session.user?.email}`
+        `${apiUrl}/users/${session.user.email}`
       );
 
       if (response.status === 204) {
