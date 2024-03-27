@@ -41,7 +41,7 @@ export const nextAuthOptions: NextAuthOptions = {
     async signIn({ user, account }) {
       const provider = account?.provider;
       const uid = user?.id;
-      const name = user.name;
+      const name = user?.name;
       try {
         const response = await axios.post(
           `${apiUrl}/auth/${provider}/callback`,

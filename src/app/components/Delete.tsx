@@ -7,6 +7,7 @@ const DeleteUser = () => {
 
   const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
+
   const handleDeleteUser = async () => {
     if (!session || !session.user) {
       console.error("セッションが存在しません");
@@ -15,7 +16,7 @@ const DeleteUser = () => {
 
     try {
       const response = await axios.delete(
-        `${apiUrl}/users/${session.user.email}`
+        `${apiUrl}/users/${session.user?.email}`
       );
 
       if (response.status === 204) {
@@ -31,12 +32,7 @@ const DeleteUser = () => {
   if (session) {
     return (
       <div>
-        <button
-          className="rounded-lg bg-blue-500 px-4 py-[7px] text-white hover:bg-gray-600"
-          onClick={() => handleDeleteUser()}
-        >
-          アカウントを削除する
-        </button>
+        <button className="rounded-lg bg-blue-500 px-4 py-[7px] text-white hover:bg-gray-600"onClick={() => handleDeleteUser()}>アカウントを削除する</button>
       </div>
     );
   }
