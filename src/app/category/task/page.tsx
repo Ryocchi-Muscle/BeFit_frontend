@@ -12,7 +12,6 @@ export default function MissionPage() {
     <div>
       <DateCounter />
       <TodoComponent></TodoComponent>
-      <MenuComponent  number={10}/>
       <SetControlButtons></SetControlButtons>
       <h1>日々のミッション</h1>
       <TrainingMenu />

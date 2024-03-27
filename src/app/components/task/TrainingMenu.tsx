@@ -1,5 +1,6 @@
 'use client'
 import React, { useState } from "react";
+import MenuComponent from "./MenuComponent";
 
 
 const TrainingMenu = () => {
@@ -40,7 +41,7 @@ const TrainingMenu = () => {
 
   return (
     <div className="border border-blue-500 p-4 m-4 rounded">
-      <div className="font-bold mb-2">ベンチプレス</div>
+      <MenuComponent number={10} />
       {sets.map((set, index) => (
         <div key={index} className="flex items-center mb-2">
           <span className="mr-2">{index + 1} set</span>
