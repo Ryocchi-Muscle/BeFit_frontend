@@ -52,6 +52,7 @@ const TrainingMenu = () => {
             onChange={(e) => handleWeightChange(index, e.target.value)}
             placeholder="kg"
           />
+          kg
           <input
             type="number"
             className="border border-gray-300 p-1 rounded"
@@ -59,6 +60,7 @@ const TrainingMenu = () => {
             onChange={(e) => handleRepsChange(index, e.target.value)}
             placeholder="回数"
           />
+          回
           <input
             type="checkbox"
             className="form-checkbox h-5 w-5 ml-2"
