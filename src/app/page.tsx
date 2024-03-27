@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { AuthProvider } from "./components/context/AuthContext";
+import { AuthProvider } from "./components/context/authContext";
 
 export default function Page() {
   return (
