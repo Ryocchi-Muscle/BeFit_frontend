@@ -2,11 +2,13 @@ import React from "react";
 
 type Props = {
   children?: React.ReactNode;
+  className?: React.ReactNode;
 };
 
-const Footer: React.FC<Props> = ({ children }) => {
+const Footer: React.FC<Props> = ({ children, className }) => {
+  const combinedClassName = `flex flex-col fixed bottom-0 w-screen ${className}`;
   return (
-    <div className="flex flex-col fixed bottom-0 w-screen">
+    <div className={combinedClassName}>
       <main>{children}</main>
       <footer className="bg-white text-black p-4 shadow-md  border-t border-black ">
         <nav className="container mx-auto flex justify-between items-center">

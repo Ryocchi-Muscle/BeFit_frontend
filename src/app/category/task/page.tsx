@@ -13,7 +13,7 @@ export default function TaskPage() {
         <TrainingMenu />
         <AddTrainigMenu />
       </div>
-      <Footer />
+      <Footer className="w-full" />
     </div>
   );
 }
