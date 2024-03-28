@@ -12,7 +12,7 @@ export default function MissionPage() {
     <div>
       <DateCounter />
       <SetControlButtons></SetControlButtons>
-      <h1>日々のミッション</h1>
+      <h1 className="text-4xl">日々のミッション</h1>
       <TrainingMenu />
       <Footer />
     </div>
