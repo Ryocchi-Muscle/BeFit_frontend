@@ -13,6 +13,8 @@ const MenuComponent = ({ number }: { number: number }) => {
           <option value="">部位を選択</option>
           <option value="胸">胸</option>
           <option value="背中">背中</option>
+          <option value="肩">肩</option>
+          <option value="腕">腕</option>
           <option value="脚">脚</option>
         </select>
         <input
