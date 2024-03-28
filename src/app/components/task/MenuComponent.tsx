@@ -16,6 +16,7 @@ const MenuComponent = ({ number }: { number: number }) => {
           <option value="脚">脚</option>
         </select>
         <input
+          className="border border-gray-300 p-1 rounded w-1/4"
           type="text"
           value={exerciseName}
           onChange={(e) => setExerciseName(e.target.value)}
