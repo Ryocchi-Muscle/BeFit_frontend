@@ -2,7 +2,7 @@ import React from "react";
 
 type Props = {
   children?: React.ReactNode;
-  className?: React.ReactNode;
+  className?: string;
 };
 
 const Footer: React.FC<Props> = ({ children, className }) => {
