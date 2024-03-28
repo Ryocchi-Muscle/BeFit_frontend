@@ -1,7 +1,6 @@
-'use client'
+"use client";
 import React, { useState } from "react";
 import MenuComponent from "./MenuComponent";
-
 
 const TrainingMenu = () => {
   const [sets, setSets] = useState([
@@ -55,7 +54,7 @@ const TrainingMenu = () => {
           kg
           <input
             type="number"
-            className="border border-gray-300 p-1 rounded"
+            className="border border-gray-300 p-1 rounded w-1/4"
             value={set.reps}
             onChange={(e) => handleRepsChange(index, e.target.value)}
             placeholder="回数"
@@ -67,22 +66,24 @@ const TrainingMenu = () => {
             checked={set.completed}
             onChange={() => handleCompletedChange(index)}
           />
-          {sets.length > 1 && (
-            <button
-              className="bg-red-500 text-white p-1 ml-2 rounded"
-              onClick={() => handleRemoveSet(index)}
-            >
-              −
-            </button>
-          )}
         </div>
       ))}
-      <button
-        className="bg-blue-500 text-white p-1 mt-2 rounded"
-        onClick={handleAddSet}
-      >
-        +
-      </button>
+      <div className="flex items-center mt-2 ml-4">
+        <button
+          className="bg-blue-500 text-white p-1 mt-2 rounded"
+          onClick={handleAddSet}
+        >
+          追加
+        </button>
+        {sets.length > 1 && (
+          <button
+            className="bg-red-500 text-white p-1 ml-2 rounded"
+            onClick={() => handleRemoveSet(sets.length - 1)}
+          >
+            削除
+          </button>
+        )}
+      </div>
     </div>
   );
 };
