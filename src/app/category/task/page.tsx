@@ -4,7 +4,7 @@ import DateCounter from "@/app/components/task/DateCounter";
 import TrainingMenu from "@/app/components/task/TrainingMenu";
 import AddTrainigMenu from "@/app/components/task/AddTrainigMenu";
 
-export default function MissionPage() {
+export default function TaskPage() {
   return (
     <div>
       <DateCounter />
