@@ -11,7 +11,7 @@ export default function MissionPage() {
   return (
     <div>
       <DateCounter />
-      <SetControlButtons></SetControlButtons>
+      <SetControlButtons />
       <h1 className="text-4xl">日々のミッション</h1>
       <TrainingMenu />
       <Footer />
