@@ -6,11 +6,13 @@ import AddTrainigMenu from "@/app/components/task/AddTrainigMenu";
 
 export default function TaskPage() {
   return (
-    <div>
-      <DateCounter />
-      <h1 className="text-4xl">日々のミッション</h1>
-      <TrainingMenu />
-      <AddTrainigMenu />
+    <div className="flex flex-col h-screen">
+      <div className="flex-1 overflow-y-auto">
+        <h1 className="text-4xl">日々のミッション</h1>
+        <DateCounter />
+        <TrainingMenu />
+        <AddTrainigMenu />
+      </div>
       <Footer />
     </div>
   );
