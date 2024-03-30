@@ -9,7 +9,7 @@ import DeleteUser from "../Delete";
 
 const Header = ({ session }: { session: Session | null }) => {
   return (
-    <header className="flex items-center justify-between bg-blue-950 p-4 shadow-md">
+    <header className="fixed top-0 left-0 right-0 flex items-center justify-between bg-blue-950 p-4 shadow-md">
       <div className="flex items-center">
         <Link href="/" className="text-4xl font-bold">
           FitApp
@@ -35,7 +35,9 @@ const Header = ({ session }: { session: Session | null }) => {
                 ログアウト
               </button>
             </li>
-            <li><DeleteUser/></li>
+            <li>
+              <DeleteUser />
+            </li>
           </>
         ) : (
           <>
