@@ -25,7 +25,7 @@ export default function AddTrainigMenu() {
   };
 
   return (
-    <div>
+    <div className="flex-1 overflow-y-auto pb-20">
       {trainingMenus.map((menu) => menu)}
       <div className="flex justify-center my-4">
         <button
