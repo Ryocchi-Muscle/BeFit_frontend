@@ -1,7 +1,6 @@
 "use client";
 import React, { useState } from "react";
 import TrainingMenu from "./TrainingMenu";
-import DateCounter from "./DateCounter";
 import Footer from "../layout/Footer";
 
 export default function AddTrainigMenu() {
