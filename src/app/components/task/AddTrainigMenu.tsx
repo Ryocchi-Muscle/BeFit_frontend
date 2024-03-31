@@ -38,7 +38,7 @@ export default function AddTrainigMenu() {
           <button
             className="bg-red-500 text-white p-2 mx-2 rounded"
             onClick={handleRemoveTrainingMenu}
-            disabled={trainingMenus.length === 1} // 最後の1つは削除不可
+            disabled={trainingMenus.length === 1} 
           >
             削除
           </button>
