@@ -1,6 +1,10 @@
 "use client";
 import React, { useState } from "react";
-import MenuComponent from "./MenuComponent";
+
+type TrainingMenu = {
+  key: number;
+  number: number;
+};
 
 const TrainingMenu = () => {
   const [sets, setSets] = useState([
