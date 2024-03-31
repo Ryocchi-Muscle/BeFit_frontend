@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import React, { useState } from "react";
 
 const MenuComponent = ({ number }: { number: number }) => {
@@ -7,9 +7,13 @@ const MenuComponent = ({ number }: { number: number }) => {
 
   return (
     <div className="menu-component">
-      <div className="menu-header">
-        <h3>{`種目No. ${number}`}</h3>
-        <select value={bodyPart} onChange={(e) => setBodyPart(e.target.value)}>
+      <div className="menu-header flex items-center">
+        <h3 className="mr-3">{`種目No. ${number}`}</h3>
+        <select
+          className="mr-3"
+          value={bodyPart}
+          onChange={(e) => setBodyPart(e.target.value)}
+        >
           <option value="">部位を選択</option>
           <option value="胸">胸</option>
           <option value="背中">背中</option>

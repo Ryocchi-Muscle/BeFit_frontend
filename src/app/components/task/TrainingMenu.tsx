@@ -37,6 +37,8 @@ const TrainingMenu = () => {
       setSets(newSets);
     }
   };
+  const [menuNumbers, setMenuNumbers] = useState([1]);
+  
 
   return (
     <div className="border border-blue-500 p-4 m-4 rounded">
