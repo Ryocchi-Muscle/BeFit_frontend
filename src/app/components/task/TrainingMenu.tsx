@@ -2,11 +2,10 @@
 import React, { useState } from "react";
 
 type TrainingMenu = {
-  key: number;
   number: number;
 };
 
-const TrainingMenu = () => {
+const TrainingMenu: React.FC<TrainingMenu> = ({ number }) => {
   const [sets, setSets] = useState([
     { weight: "", reps: "", completed: false },
   ]);
