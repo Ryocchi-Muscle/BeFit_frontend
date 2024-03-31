@@ -8,11 +8,12 @@ on:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
+    timeout-minutes: 60
     steps:
-    - uses: actions/checkout@v2
-    - name: Vercel Deploy
-      uses: amondnet/vercel-action@v20
-      with:
-        vercel-token: ${{ secrets.VERCEL_TOKEN }} # GitHubシークレットからVercelトークンを取得
-        vercel-org-id: ${{ secrets.VERCEL_ORG_ID }} # VercelのOrganization ID
-        vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }} # VercelのProject ID
+      - uses: actions/checkout@v2
+      - name: Vercel Deploy
+        uses: amondnet/vercel-action@v20
+        with:
+          vercel-token: ${{ secrets.VERCEL_TOKEN }} # GitHubシークレットからVercelトークンを取得
+          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }} # VercelのOrganization ID
+          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }} # VercelのProject ID
