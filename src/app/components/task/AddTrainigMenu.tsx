@@ -34,13 +34,15 @@ export default function AddTrainigMenu() {
         >
           追加
         </button>
-        <button
-          className="bg-red-500 text-white p-2 mx-2 rounded"
-          onClick={handleRemoveTrainingMenu}
-          disabled={trainingMenus.length === 1} // 最後の1つは削除不可
-        >
-          削除
-        </button>
+        {trainingMenus.length > 1 && (
+          <button
+            className="bg-red-500 text-white p-2 mx-2 rounded"
+            onClick={handleRemoveTrainingMenu}
+            disabled={trainingMenus.length === 1} // 最後の1つは削除不可
+          >
+            削除
+          </button>
+        )}
       </div>
       <Footer />
     </div>
