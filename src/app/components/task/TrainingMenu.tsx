@@ -1,11 +1,12 @@
 "use client";
 import React, { useState } from "react";
+import MenuComponent from "./MenuComponent";
 
-type TrainingMenu = {
+type TrainingMenuProps = {
   number: number;
 };
 
-const TrainingMenu: React.FC<TrainingMenu> = ({ number }) => {
+const TrainingMenu: React.FC<TrainingMenuProps> = ({ number }) => {
   const [sets, setSets] = useState([
     { weight: "", reps: "", completed: false },
   ]);
@@ -42,6 +43,7 @@ const TrainingMenu: React.FC<TrainingMenu> = ({ number }) => {
 
   return (
     <div className="border border-blue-500 p-4 m-4 rounded">
+      <MenuComponent number={number} />
       {sets.map((set, index) => (
         <div key={index} className="flex items-center mb-2">
           <span className="mr-2">{index + 1} set</span>

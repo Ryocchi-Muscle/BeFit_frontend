@@ -1,6 +1,11 @@
 "use client";
 import React, { useState } from "react";
 
+
+type MenuComponent = {
+  number: number; // number propを追加
+};
+
 const MenuComponent = ({ number }: { number: number }) => {
   const [bodyPart, setBodyPart] = useState("");
   const [exerciseName, setExerciseName] = useState("");
