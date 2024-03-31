@@ -4,7 +4,6 @@ import MenuComponent from "./MenuComponent";
 
 const TrainingMenu = () => {
   const [sets, setSets] = useState([
-    { weight: 100, reps: 10, completed: false },
     { weight: "", reps: "", completed: false },
   ]);
 
@@ -38,7 +37,6 @@ const TrainingMenu = () => {
     }
   };
   const [menuNumbers, setMenuNumbers] = useState([1]);
-  
 
   return (
     <div className="border border-blue-500 p-4 m-4 rounded">
