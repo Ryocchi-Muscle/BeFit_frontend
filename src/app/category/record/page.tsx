@@ -6,7 +6,6 @@ function RecordPage() {
     <div className="flex flex-col min-h-screen">
       <div className="flex-grow">
         <h1 className="text-4xl ">記録</h1>
-        <TodoComponent />
       </div>
       <Footer />
     </div>
