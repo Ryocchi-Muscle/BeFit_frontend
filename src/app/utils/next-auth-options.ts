@@ -16,6 +16,12 @@ export const nextAuthOptions: NextAuthOptions = {
     }),
   ],
   callbacks: {
+    async jwt({ token, user }) {
+      if (user) {
+        token.id = user.id;
+      }
+      return token;
+    },
     async signIn({ user, account }) {
       const provider = account?.provider;
       const uid = user?.id;
