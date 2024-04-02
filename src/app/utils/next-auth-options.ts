@@ -22,11 +22,8 @@ export const nextAuthOptions: NextAuthOptions = {
       return token;
     },
     async session({ session, token }) {
-      if (token.accessToken && token.id) {
-        session.user = {
-          ...session.user,
-          id: token.id as string,
-        };// ユーザーIDをセッションに追加
+      if (session.user) {
+        (session.user as any).id = token?.id; // ユーザーIDをセッションに追加
       }
       // 他のトークン情報（例: accessToken）もここでセッションに追加可能
       return session;
@@ -35,7 +32,6 @@ export const nextAuthOptions: NextAuthOptions = {
       const provider = account?.provider;
       const uid = user?.id;
       const name = user?.name;
-      const avatar = user?.image;
       try {
         const response = await axios.post(
           `${apiUrl}/auth/${provider}/callback`,
@@ -43,12 +39,10 @@ export const nextAuthOptions: NextAuthOptions = {
             provider,
             uid,
             name,
-             avatar,
           },
           {
             headers: {
-              "Content-Type": "application/json",
-            'Authorization': `Bearer ${token}`,
+              "Authorization": "XMLHttpRequest",
             },
           }
         );
