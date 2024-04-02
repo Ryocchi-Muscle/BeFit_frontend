@@ -22,9 +22,11 @@ export const nextAuthOptions: NextAuthOptions = {
       return token;
     },
     async session({ session, token }) {
-      if (session.user) {
-        const token = session.accessToken as string;
-        (session.user as any).id = token?.id; // ユーザーIDをセッションに追加
+      if (token.accessToken && token.id) {
+        session.user = {
+          ...session.user,
+          id: token.id as string,
+        };// ユーザーIDをセッションに追加
       }
       // 他のトークン情報（例: accessToken）もここでセッションに追加可能
       return session;
