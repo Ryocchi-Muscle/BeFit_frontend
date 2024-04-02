@@ -58,7 +58,7 @@ export const nextAuthOptions: NextAuthOptions = {
           {
             headers: {
               "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
+              'Authorization': `Bearer ${token}`,
             },
           }
         );
