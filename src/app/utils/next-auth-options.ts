@@ -1,18 +1,6 @@
 import GoogleProvider from "next-auth/providers/google";
 import type { NextAuthOptions } from "next-auth";
 import axios from "axios";
-import { Session } from "next-auth";
-
-
-interface ExtendedSession extends Session {
-  // Session型を拡張
-  accessToken?: string; // accessTokenプロパティを追加
-}
-
-type TokenType = {
-  accessToken: string;
-  id: string;
-};
 
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
@@ -33,9 +21,9 @@ export const nextAuthOptions: NextAuthOptions = {
       }
       return token;
     },
-    async session({ session, token }: { session: ExtendedSession;  token: TokenType}) {
+    async session({ session, token }) {
       if (session.user) {
-        const token = session.accessToken;
+        const token = session.accessToken as string;
         (session.user as any).id = token?.id; // ユーザーIDをセッションに追加
       }
       // 他のトークン情報（例: accessToken）もここでセッションに追加可能
@@ -53,12 +41,12 @@ export const nextAuthOptions: NextAuthOptions = {
             provider,
             uid,
             name,
-            avatar,
+             avatar,
           },
           {
             headers: {
               "Content-Type": "application/json",
-              'Authorization': `Bearer ${token}`,
+            'Authorization': `Bearer ${token}`,
             },
           }
         );
