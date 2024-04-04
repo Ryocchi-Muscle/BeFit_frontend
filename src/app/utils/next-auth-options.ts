@@ -4,6 +4,7 @@ import axios from "axios";
 import { Session } from "next-auth";
 import jwt from "jsonwebtoken";
 
+
 interface ExtendedSession extends Session {
   jwtToken?: string; // jwtTokenプロパティを追加
 }
@@ -63,9 +64,9 @@ export const nextAuthOptions: NextAuthOptions = {
         },
         {
           // リクエスト設定（ヘッダーを含む）
-          headers: {
-            Authorization: `Bearer ${session.jwtToken}`, 
-          },
+          // headers: {
+          //   Authorization: `Bearer ${session.jwtToken}`, // この時点でセッションオブジェクトが存在しない
+          // },
         }
       );
 
