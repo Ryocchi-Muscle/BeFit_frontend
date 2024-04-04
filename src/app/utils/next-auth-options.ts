@@ -10,6 +10,9 @@ interface ExtendedSession extends Session {
 
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
+function isStringOrUndefined(value: unknown): value is string | undefined {
+  return typeof value === "string" || value === undefined;
+}
 
 export const nextAuthOptions: NextAuthOptions = {
   debug: true,
@@ -24,22 +27,23 @@ export const nextAuthOptions: NextAuthOptions = {
     async jwt({ token, user, account }) {
       if (account && user) {
         token.id = user.id;
-           token.jwtToken = jwt.sign(
-             { uid: user.id },
-             process.env.NEXTAUTH_SECRET!,
-             { algorithm: "HS256" }
-           );
+        token.jwtToken = jwt.sign(
+          { uid: user.id },
+          process.env.NEXTAUTH_SECRET!,
+          { algorithm: "HS256" }
+        );
       }
       return token;
     },
     async session({ session, token }) {
       if (session.user) {
         (session.user as any).id = token?.id; // ユーザーIDをセッションに追加
-        const customSession: ExtendedSession = {
-          ...session,
-          jwtToken: token?.jwtToken, // JWTトークンをセッションに追加
-        };
-
+        if (isStringOrUndefined(token?.jwtToken)) {
+          const customSession: ExtendedSession = {
+            ...session,
+            jwtToken: token?.jwtToken, // JWTトークンをセッションに追加
+          };return customSession;
+        }
       }
       // 他のトークン情報（例: accessToken）もここでセッションに追加可能
       return session;
@@ -55,7 +59,7 @@ export const nextAuthOptions: NextAuthOptions = {
             provider,
             uid,
             name,
-          },
+          }
         );
         if (response.status === 200) {
           return true;
