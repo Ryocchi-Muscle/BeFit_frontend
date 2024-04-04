@@ -1,6 +1,12 @@
 import GoogleProvider from "next-auth/providers/google";
 import type { NextAuthOptions } from "next-auth";
 import axios from "axios";
+import { Session } from "next-auth";
+import jwt from "jsonwebtoken";
+
+interface ExtendedSession extends Session {
+  jwtToken?: string; // jwtTokenプロパティを追加
+}
 
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
@@ -18,12 +24,22 @@ export const nextAuthOptions: NextAuthOptions = {
     async jwt({ token, user, account }) {
       if (account && user) {
         token.id = user.id;
+           token.jwtToken = jwt.sign(
+             { uid: user.id },
+             process.env.NEXTAUTH_SECRET!,
+             { algorithm: "HS256" }
+           );
       }
       return token;
     },
     async session({ session, token }) {
       if (session.user) {
         (session.user as any).id = token?.id; // ユーザーIDをセッションに追加
+        const customSession: ExtendedSession = {
+          ...session,
+          jwtToken: token?.jwtToken, // JWTトークンをセッションに追加
+        };
+
       }
       // 他のトークン情報（例: accessToken）もここでセッションに追加可能
       return session;
