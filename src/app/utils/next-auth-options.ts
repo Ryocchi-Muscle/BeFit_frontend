@@ -40,11 +40,6 @@ export const nextAuthOptions: NextAuthOptions = {
             uid,
             name,
           },
-          {
-            headers: {
-              "Authorization": "XMLHttpRequest",
-            },
-          }
         );
         if (response.status === 200) {
           return true;
