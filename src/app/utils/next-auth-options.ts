@@ -53,14 +53,22 @@ export const nextAuthOptions: NextAuthOptions = {
       const uid = user?.id;
       const name = user?.name;
       try {
-        const response = await axios.post(
-          `${apiUrl}/auth/${provider}/callback`,
-          {
-            provider,
-            uid,
-            name,
-          }
-        );
+      const response = await axios.post(
+        `${apiUrl}/auth/${provider}/callback`,
+        {
+          // リクエストボディ
+          provider,
+          uid,
+          name,
+        },
+        {
+          // リクエスト設定（ヘッダーを含む）
+          headers: {
+            Authorization: `Bearer ${session.jwtToken}`, 
+          },
+        }
+      );
+
         if (response.status === 200) {
           return true;
         } else {
