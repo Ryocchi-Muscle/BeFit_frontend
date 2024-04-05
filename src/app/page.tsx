@@ -16,7 +16,7 @@ export default function Page() {
             href="#services"
             className="bg-white text-blue-500 px-6 py-2 rounded-full font-semibold"
           >
-            Explore Services
+            Explore
           </a>
         </section>
         {/* サービスセクション */}
