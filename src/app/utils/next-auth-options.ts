@@ -66,9 +66,9 @@ export const nextAuthOptions: NextAuthOptions = {
           name,
         },
         {
-          headers: {
-            Authorization: `Bearer ${jwtToken}`, // この時点でセッションオブジェクトが存在しないか
-          },
+          // headers: {
+          //   Authorization: `Bearer ${jwtToken}`, // この時点でセッションオブジェクトが存在しないか
+          // },
         }
       );
 
