@@ -3,8 +3,6 @@ import type { NextAuthOptions } from "next-auth";
 import axios from "axios";
 import { Session } from "next-auth";
 import jwt from "jsonwebtoken";
-import { getSession } from "next-auth/react";
-
 
 
 // const [session, loading] = useSession();
