@@ -68,11 +68,13 @@ export const nextAuthOptions: NextAuthOptions = {
             name,
           },
           {
-            // headers: {
-            //   Authorization: `Bearer ${apiToken}`, // この時点でセッションオブジェクトが存在しないか
-            // },
+            headers: {
+              Authorization: `Bearer ${apiToken}`,
+              "Content-Type": "application/json",
+            },
           }
         );
+        console.log("レスポンス", response);
 
         if (response.status === 200) {
           return true;
