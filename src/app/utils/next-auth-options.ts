@@ -68,10 +68,10 @@ export const nextAuthOptions: NextAuthOptions = {
             name,
           },
           {
-            headers: {
-              Authorization: `Bearer ${apiToken}`,
-              "Content-Type": "application/json",
-            },
+            // headers: {
+            //   Authorization: `Bearer ${apiToken}`,
+            //   "Content-Type": "application/json",
+            // },
           }
         );
         console.log("レスポンス", response);
