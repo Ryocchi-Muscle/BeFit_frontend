@@ -1,19 +1,22 @@
-name: Deploy Next.js App to Vercel
+name: Vercel Preview Deployment
+env:
+  VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+  VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
 on:
   push:
-    branches:
-      - main # デプロイするブランチ
-
+    branches-ignore:
+      - main
 jobs:
-  build-and-deploy:
+  Deploy-Preview:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
-    - uses: actions/checkout@v2
-    - name: Vercel Deploy
-      uses: amondnet/vercel-action@v25
-      with:
-        vercel-token: ${{ secrets.VERCEL_TOKEN }} # GitHubシークレットからVercelトークンを取得
-        vercel-org-id: ${{ secrets.VERCEL_ORG_ID }} # VercelのOrganization ID
-        vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }} # VercelのProject ID
-        vercel-args: --confirm # デプロイ確認をスキップ
+      - uses: actions/checkout@v2
+      - name: Install Vercel CLI
+        run: npm install --global vercel@latest
+      - name: Pull Vercel Environment Information
+        run: vercel pull --yes --environment=preview --token=${{ secrets.VERCEL_TOKEN }}
+      - name: Build Project Artifacts
+        run: vercel build --token=${{ secrets.VERCEL_TOKEN }}
+      - name: Deploy Project Artifacts to Vercel
+        run: vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }}
