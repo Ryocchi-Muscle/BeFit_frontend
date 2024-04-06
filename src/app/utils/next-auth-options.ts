@@ -3,8 +3,11 @@ import type { NextAuthOptions } from "next-auth";
 import axios from "axios";
 import { Session } from "next-auth";
 import jwt from "jsonwebtoken";
+import { getSession } from "next-auth/react";
 
 
+
+// const [session, loading] = useSession();
 interface ExtendedSession extends Session {
   jwtToken?: string; // jwtTokenプロパティを追加
 }
@@ -53,6 +56,8 @@ export const nextAuthOptions: NextAuthOptions = {
       const provider = account?.provider;
       const uid = user?.id;
       const name = user?.name;
+      // ...
+
       try {
       const response = await axios.post(
         `${apiUrl}/auth/${provider}/callback`,
@@ -63,10 +68,9 @@ export const nextAuthOptions: NextAuthOptions = {
           name,
         },
         {
-          // リクエスト設定（ヘッダーを含む）
-          // headers: {
-          //   Authorization: `Bearer ${session.jwtToken}`, // この時点でセッションオブジェクトが存在しない
-          // },
+          headers: {
+            Authorization: `Bearer ${session.jwtToken}`, // この時点でセッションオブジェクトが存在しないか
+          },
         }
       );
 
