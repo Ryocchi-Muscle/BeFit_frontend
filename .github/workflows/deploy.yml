@@ -16,4 +16,4 @@ jobs:
         vercel-token: ${{ secrets.VERCEL_TOKEN }} # GitHubシークレットからVercelトークンを取得
         vercel-org-id: ${{ secrets.VERCEL_ORG_ID }} # VercelのOrganization ID
         vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }} # VercelのProject ID
-        args: --confirm # デプロイ確認をスキップ
+        vercel-args: --confirm # デプロイ確認をスキップ
