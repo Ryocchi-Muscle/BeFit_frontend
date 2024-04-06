@@ -34,6 +34,7 @@ export const nextAuthOptions: NextAuthOptions = {
           process.env.NEXTAUTH_SECRET!,
           { algorithm: "HS256" }
         );
+          console.log("トークン", token);
       }
       return token;
     },
@@ -44,7 +45,9 @@ export const nextAuthOptions: NextAuthOptions = {
           const customSession: ExtendedSession = {
             ...session,
             jwtToken: token?.jwtToken, // JWTトークンをセッションに追加
-          };return customSession;
+          };
+          console.log('セッション',session);
+          return customSession;
         }
       }
       // 他のトークン情報（例: accessToken）もここでセッションに追加可能
@@ -54,23 +57,22 @@ export const nextAuthOptions: NextAuthOptions = {
       const provider = account?.provider;
       const uid = user?.id;
       const name = user?.name;
-      // ...
-
       try {
-      const response = await axios.post(
-        `${apiUrl}/auth/${provider}/callback`,
-        {
-          // リクエストボディ
-          provider,
-          uid,
-          name,
-        },
-        {
-          // headers: {
-          //   Authorization: `Bearer ${jwtToken}`, // この時点でセッションオブジェクトが存在しないか
-          // },
-        }
-      );
+        const apiToken = process.env.API_TOKEN;
+        const response = await axios.post(
+          `${apiUrl}/auth/${provider}/callback`,
+          {
+            // リクエストボディ
+            provider,
+            uid,
+            name,
+          },
+          {
+            // headers: {
+            //   Authorization: `Bearer ${apiToken}`, // この時点でセッションオブジェクトが存在しないか
+            // },
+          }
+        );
 
         if (response.status === 200) {
           return true;
