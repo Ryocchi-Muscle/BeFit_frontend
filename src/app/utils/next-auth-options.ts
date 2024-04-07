@@ -42,6 +42,7 @@ export const nextAuthOptions: NextAuthOptions = {
       return session;
     },
     async signIn({ user, account }) {
+      if (!account) return false;
       const provider = account?.provider;
       const uid = user?.id;
       const name = user?.name;
@@ -52,7 +53,7 @@ export const nextAuthOptions: NextAuthOptions = {
             provider,
             uid,
             name,
-          },
+          }
         );
         if (response.status === 200) {
           return true;
