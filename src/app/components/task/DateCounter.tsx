@@ -20,8 +20,8 @@ const DateCounter = () => {
     const fetchTrainingData = async () => {
       try {
         const response = await fetch(
-          
-          `${process.env.NEXT_PUBLIC_API_URL}/api/training_days/${day}`
+
+          `${process.env.NEXT_PUBLIC_API_URL}/api/v1/training_days/${day}`
         );
         const data = await response.json();
         setTrainingData(data);
