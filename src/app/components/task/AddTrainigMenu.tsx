@@ -21,7 +21,6 @@ export default function AddTrainigMenu() {
     const newNumber = trainingMenus[trainingMenus.length - 1].number + 1;
     setTrainingMenus([...trainingMenus, { key: newKey, number: newNumber }]);
     if (session) {
-      console.log("ログイン中");
       fetch(`${apiUrl}/training_records`, {
         method: "POST",
         headers: {
