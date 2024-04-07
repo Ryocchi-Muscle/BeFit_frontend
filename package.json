@@ -15,6 +15,7 @@
     "@mui/material": "^5.15.14",
     "@types/express": "^4.17.21",
     "axios": "^1.6.8",
+    "date-fns": "^3.6.0",
     "jsonwebtoken": "^9.0.2",
     "next": "14.1.4",
     "next-auth": "^4.24.7",
