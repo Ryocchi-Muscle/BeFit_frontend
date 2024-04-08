@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { format, addDays, subDays } from "date-fns";
 
-const TrainingDayComponent = () => {
+const TrainingDay= () => {
   const [selectedDate, setSelectedDate] = useState(new Date());
 
   const incrementDate = () => {
@@ -26,4 +26,4 @@ const TrainingDayComponent = () => {
 
 }
 
-export default TrainingDayComponent;
+export default TrainingDay;
