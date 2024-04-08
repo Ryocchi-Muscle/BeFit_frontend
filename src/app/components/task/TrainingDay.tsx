@@ -2,7 +2,8 @@
 import React, { useState, useEffect } from "react";
 import { format, addDays, subDays } from "date-fns";
 
-const TrainingDay = () => {
+const TrainingDay = ({ currentDay, totalDays = 90 }: { currentDay: number; totalDays: number }) => {
+  const progressPercentage = (currentDay / totalDays) * 100;
   const [selectedDate, setSelectedDate] = useState(new Date());
 
   const incrementDate = () => {
@@ -12,6 +13,8 @@ const TrainingDay = () => {
   const decrementDate = () => {
     setSelectedDate((currentDate) => subDays(currentDate, 1));
   };
+
+
 
   useEffect(() => {
     console.log("日付が変更されました", selectedDate);
