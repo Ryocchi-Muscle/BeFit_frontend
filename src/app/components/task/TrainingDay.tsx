@@ -1,10 +1,14 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import { format, addDays, subDays } from "date-fns";
+import { format, differenceInCalendarDays, addDays, subDays } from "date-fns";
 
-const TrainingDay = ({ currentDay, totalDays = 90 }: { currentDay: number; totalDays: number }) => {
-  const progressPercentage = (currentDay / totalDays) * 100;
-  const [selectedDate, setSelectedDate] = useState(new Date());
+
+const TrainingDay = ({ totalDays = 90, startDate }: { totalDays: number; startDate: Date }) => {
+   const [selectedDate, setSelectedDate] = useState(new Date());
+   const currentDay = differenceInCalendarDays(selectedDate, startDate) + 1;
+   const progressPercentage = (currentDay / totalDays) * 100;
+
+
 
   let motivationalMessage = "";
   if (currentDay == 30) {
@@ -14,23 +18,30 @@ const TrainingDay = ({ currentDay, totalDays = 90 }: { currentDay: number; total
     motivationalMessage = "もう半分です！最後まで諦めずに頑張りましょう。";
   }
 
+  //日を増やす関数
   const incrementDate = () => {
     setSelectedDate((currentDate) => addDays(currentDate, 1));
   };
-
+//日を減らす関数
   const decrementDate = () => {
     setSelectedDate((currentDate) => subDays(currentDate, 1));
   };
 
-  useEffect(() => {
-    console.log("日付が変更されました", selectedDate);
-  }, [selectedDate]);
+  // useEffect(() => {
+  //   console.log("日付が変更されました", selectedDate);
+  // }, [selectedDate]);
 
   return (
     <div>
       <div>
         Day {currentDay} of {totalDays}
       </div>
+      <button onClick={decrementDate} disabled={currentDay <= 1}>
+        before
+      </button>
+      <button onClick={incrementDate} disabled={currentDay >= totalDays}>
+        next
+      </button>
       <div
         style={{ width: "100%", backgroundColor: "#e0e0e0", margin: "10px 0" }}
       >

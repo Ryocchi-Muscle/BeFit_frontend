@@ -8,7 +8,7 @@ export default function TaskPage() {
     <div className="flex flex-col h-screen">
       <div className="flex-1 overflow-y-auto">
         <h1 className="text-4xl">日々のミッション</h1>
-        <TrainingDay currentDay={1} totalDays={90} />
+        <TrainingDay totalDays={90} startDate={new Date()} />
         <AddTrainigMenu />
       </div>
       <Footer className="w-full" />
