@@ -12,7 +12,7 @@ const TrainingDayComponent = () => {
     setSelectedDate(currentDate => subDays(currentDate, 1))
   }
 
-  useEffect(() => {
+  useEffect(() => { 
     console.log("日付が変更されました", selectedDate);
   }, [selectedDate]);
 
