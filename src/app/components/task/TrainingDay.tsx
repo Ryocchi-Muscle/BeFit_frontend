@@ -1,16 +1,17 @@
-import React, { useState, useEffect } from 'react'
+"use client";
+import React, { useState, useEffect } from "react";
 import { format, addDays, subDays } from "date-fns";
 
-const TrainingDay= () => {
+const TrainingDay = () => {
   const [selectedDate, setSelectedDate] = useState(new Date());
 
   const incrementDate = () => {
-    setSelectedDate(currentDate => addDays(currentDate, 1))
+    setSelectedDate((currentDate) => addDays(currentDate, 1));
   };
 
   const decrementDate = () => {
-    setSelectedDate(currentDate => subDays(currentDate, 1))
-  }
+    setSelectedDate((currentDate) => subDays(currentDate, 1));
+  };
 
   useEffect(() => {
     console.log("日付が変更されました", selectedDate);
@@ -23,7 +24,6 @@ const TrainingDay= () => {
       <button onClick={incrementDate}>次の日</button>
     </div>
   );
-
-}
+};
 
 export default TrainingDay;
