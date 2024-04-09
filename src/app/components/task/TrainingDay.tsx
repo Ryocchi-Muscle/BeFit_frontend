@@ -36,10 +36,18 @@ const TrainingDay = ({ totalDays = 90, startDate }: { totalDays: number; startDa
       <div>
         Day {currentDay} of {totalDays}
       </div>
-      <button onClick={decrementDate} disabled={currentDay <= 1}>
+      <button
+        className="bg-blue-500 text-white p-2 mx-2 rounded"
+        onClick={decrementDate}
+        disabled={currentDay <= 1}
+      >
         before
       </button>
-      <button onClick={incrementDate} disabled={currentDay >= totalDays}>
+      <button
+        className="bg-blue-500 text-white p-2 mx-2 rounded"
+        onClick={incrementDate}
+        disabled={currentDay >= totalDays}
+      >
         next
       </button>
       <div
