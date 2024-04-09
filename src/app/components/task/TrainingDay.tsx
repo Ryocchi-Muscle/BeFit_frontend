@@ -4,16 +4,14 @@ import { format, differenceInCalendarDays, addDays, subDays } from "date-fns";
 
 
 const TrainingDay = ({ totalDays = 90, startDate }: { totalDays: number; startDate: Date }) => {
-   const [selectedDate, setSelectedDate] = useState(new Date());
-   const currentDay = differenceInCalendarDays(selectedDate, startDate) + 1;
-   const progressPercentage = (currentDay / totalDays) * 100;
-
-
+  const [selectedDate, setSelectedDate] = useState(new Date());
+  const currentDay = differenceInCalendarDays(selectedDate, startDate) + 1;
+  const progressPercentage = (currentDay / totalDays) * 100;
 
   let motivationalMessage = "";
   if (currentDay == 30) {
-        motivationalMessage =
-          "素晴らしい進捗です！次のステップに向けて頑張りましょう。";
+    motivationalMessage =
+      "素晴らしい進捗です！次のステップに向けて頑張りましょう。";
   } else if (currentDay == 60) {
     motivationalMessage = "もう半分です！最後まで諦めずに頑張りましょう。";
   }
@@ -22,11 +20,12 @@ const TrainingDay = ({ totalDays = 90, startDate }: { totalDays: number; startDa
   const incrementDate = () => {
     setSelectedDate((currentDate) => addDays(currentDate, 1));
   };
-//日を減らす関数
+  //日を減らす関数
   const decrementDate = () => {
     setSelectedDate((currentDate) => subDays(currentDate, 1));
   };
-
+  
+  // ここでAPIからトレーニングデータを取得
   // useEffect(() => {
   //   console.log("日付が変更されました", selectedDate);
   // }, [selectedDate]);
