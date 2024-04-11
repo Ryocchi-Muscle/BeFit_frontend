@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from "react";
-import TrainingMenu from "./TrainingMenu";
+import TrainingSet from "./TrainingSet";
 import Footer from "../layout/Footer";
 import { useSession } from "next-auth/react";
 import { Session } from "next-auth";
@@ -40,7 +40,7 @@ export default function AddTrainigMenu() {
   return (
     <div className="flex-1 overflow-y-auto pb-20">
       {trainingMenus.map((menu) => (
-        <TrainingMenu key={menu.key} number={menu.number} />
+        <TrainingSet key={menu.key} number={menu.number} />
       ))}
       <div className="flex justify-center my-4">
         <button

@@ -2,11 +2,11 @@
 import React, { useState } from "react";
 import MenuComponent from "./MenuComponent";
 
-type TrainingMenuProps = {
+type TrainingSetProps = {
   number: number;
 };
 
-const TrainingMenu: React.FC<TrainingMenuProps> = ({ number }) => {
+const TrainingSet: React.FC<TrainingSetProps> = ({ number }) => {
   const [sets, setSets] = useState([
     { weight: "", reps: "", completed: false },
   ]);
@@ -91,4 +91,4 @@ const TrainingMenu: React.FC<TrainingMenuProps> = ({ number }) => {
   );
 };
 
-export default TrainingMenu;
+export default TrainingSet;
