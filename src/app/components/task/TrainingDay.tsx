@@ -1,9 +1,13 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { format, differenceInCalendarDays, addDays, subDays } from "date-fns";
+import { TrainingDayProps } from "../../../../types";
 
-
-const TrainingDay = ({ totalDays = 90, startDate }: { totalDays: number; startDate: Date }) => {
+const TrainingDay = ({
+  totalDays = 90,
+  startDate
+}: TrainingDayProps
+) => {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const currentDay = differenceInCalendarDays(selectedDate, startDate) + 1;
   const progressPercentage = (currentDay / totalDays) * 100;
@@ -24,7 +28,7 @@ const TrainingDay = ({ totalDays = 90, startDate }: { totalDays: number; startDa
   const decrementDate = () => {
     setSelectedDate((currentDate) => subDays(currentDate, 1));
   };
-  
+
   // ここでAPIからトレーニングデータを取得
   // useEffect(() => {
   //   console.log("日付が変更されました", selectedDate);
