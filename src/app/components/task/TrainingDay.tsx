@@ -8,9 +8,13 @@ const TrainingDay = ({
   startDate
 }: TrainingDayProps
 ) => {
-  const [selectedDate, setSelectedDate] = useState(new Date());
+  const [selectedDate, setSelectedDate] = useState<Date>(new Date());
   const currentDay = differenceInCalendarDays(selectedDate, startDate) + 1;
   const progressPercentage = (currentDay / totalDays) * 100;
+  const [trainingData, setTrainingData] = useState<any>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
+
 
   let motivationalMessage = "";
   if (currentDay == 30) {
@@ -29,9 +33,22 @@ const TrainingDay = ({
     setSelectedDate((currentDate) => subDays(currentDate, 1));
   };
 
-  // ここでAPIからトレーニングデータを取得
+  // // ここでAPIからトレーニングデータを取得
   // useEffect(() => {
-  //   console.log("日付が変更されました", selectedDate);
+  //   const fetchData = async () => {
+  //     setIsLoading(true);
+  //     setError(null);
+  //     try {
+  //       const response = await.get();
+  //       setTrainingData(response.data);
+  //     } catch (err: any) {
+  //       setError(err.message);
+  //     } finally {
+  //       setIsLoading(false);
+  //     }
+  //   };
+
+  //   fetchData();
   // }, [selectedDate]);
 
   return (
