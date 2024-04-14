@@ -1,45 +1,44 @@
-"use client";
-import React, { useState } from "react";
 import MenuComponent from "./MenuComponent";
+import { TrainingSetProps } from "../../../../types";
 
-type TrainingSetProps = {
-  number: number;
+type Set = {
+  weight: string;
+  reps: string;
+  completed: boolean;
 };
 
-const TrainingSet: React.FC<TrainingSetProps> = ({ number }) => {
-  const [sets, setSets] = useState([
-    { weight: "", reps: "", completed: false },
-  ]);
-
+const TrainingSet: React.FC<
+  TrainingSetProps & { sets: Set[]; updateSets: (newSets: Set[]) => void }
+> = ({ number, sets = [], updateSets }) => {
   const handleWeightChange = (index: number, value: string) => {
-    const newSets = [...sets];
-    newSets[index].weight = value;
-    setSets(newSets);
+    const newSets = sets.map((set, i) =>
+      i == index ? { ...set, weight: value } : set
+    );
+    updateSets(newSets);
   };
-
   const handleRepsChange = (index: number, value: string) => {
-    const newSets = [...sets];
-    newSets[index].reps = value;
-    setSets(newSets);
+    const newSets = sets.map((set, i) =>
+      i == index ? { ...set, reps: value } : set
+    );
+    updateSets(newSets);
   };
 
-  const handleCompletedChange = (index: number) => {
-    const newSets = [...sets];
-    newSets[index].completed = !newSets[index].completed;
-    setSets(newSets);
-  };
+    const handleCompletedChange = (index: number) => {
+      const newSets = sets.map((set, i) =>
+        i === index ? { ...set, completed: !set.completed } : set
+      );
+      updateSets(newSets);
+    };
 
-  const handleAddSet = () => {
-    setSets([...sets, { weight: "", reps: "", completed: false }]);
-  };
+    const handleAddSet = () => {
+      updateSets([...sets, { weight: "", reps: "", completed: false }]);
+    };
+1
+    const handleRemoveSet = (index: number) => {
+      const newSets = sets.filter((_, i) => i !== index);
+      updateSets(newSets);
+    };
 
-  const handleRemoveSet = (index: number) => {
-    const newSets = [...sets];
-    if (newSets.length > 1) {
-      newSets.splice(index, 1);
-      setSets(newSets);
-    }
-  };
 
   return (
     <div className="border border-blue-500 p-4 m-4 rounded">
