@@ -11,7 +11,7 @@ export default function TrainingRecord() {
   const [trainingSets, setTrainingSets] = useState<any[]>([]); // ここで初期値を空の配列に設定
 
   const totalDays = 90; // トレーニングプログラムの総日数として固定値を使用
-  const [startDate, setStartDate] = useState<Date>(new Date());
+  const startDate = new Date();
 
   // Setの更新関数の実装
   const updateTrainingRecord = (newSets: any[]) => {
