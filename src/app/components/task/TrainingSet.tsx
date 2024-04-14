@@ -1,15 +1,11 @@
 import MenuComponent from "./MenuComponent";
 import { TrainingSetProps } from "../../../../types";
-
-type Set = {
-  weight: string;
-  reps: string;
-  completed: boolean;
-};
+import { Set } from "../../../../types";
 
 const TrainingSet: React.FC<
   TrainingSetProps & { sets: Set[]; updateSets: (newSets: Set[]) => void }
 > = ({ number, sets = [], updateSets }) => {
+  console.log("updateSets type:", typeof updateSets);
   const handleWeightChange = (index: number, value: string) => {
     const newSets = sets.map((set, i) =>
       i == index ? { ...set, weight: value } : set
@@ -23,22 +19,21 @@ const TrainingSet: React.FC<
     updateSets(newSets);
   };
 
-    const handleCompletedChange = (index: number) => {
-      const newSets = sets.map((set, i) =>
-        i === index ? { ...set, completed: !set.completed } : set
-      );
-      updateSets(newSets);
-    };
+  const handleCompletedChange = (index: number) => {
+    const newSets = sets.map((set, i) =>
+      i === index ? { ...set, completed: !set.completed } : set
+    );
+    updateSets(newSets);
+  };
 
-    const handleAddSet = () => {
-      updateSets([...sets, { weight: "", reps: "", completed: false }]);
-    };
-1
-    const handleRemoveSet = (index: number) => {
-      const newSets = sets.filter((_, i) => i !== index);
-      updateSets(newSets);
-    };
-
+  const handleAddSet = () => {
+    updateSets([...sets, { weight: "", reps: "", completed: false }]);
+  };
+  1;
+  const handleRemoveSet = (index: number) => {
+    const newSets = sets.filter((_, i) => i !== index);
+    updateSets(newSets);
+  };
 
   return (
     <div className="border border-blue-500 p-4 m-4 rounded">

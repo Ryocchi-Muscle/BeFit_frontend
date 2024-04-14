@@ -4,7 +4,7 @@ import TrainingSet from "./TrainingSet";
 import Footer from "../layout/Footer";
 import { useSession } from "next-auth/react";
 import { Session } from "next-auth";
-import { AddTrainigMenuProps, TrainingSetProps } from "../../../../types";
+import { AddTrainigMenuProps, Set } from "../../../../types";
 
 
 interface CustomSession extends Session {
@@ -16,7 +16,7 @@ export default function AddTrainigMenu({}: AddTrainigMenuProps) {
   const { data: session } = useSession();
   // TrainingMenu コンポーネントのリストを管理する状態
   const [trainingMenus, setTrainingMenus] = useState([{ key: 0, number: 1 }]);
-  const [trainingSets, setTrainingSets] = useState([]);
+  const [trainingSets, setTrainingSets] = useState<Set[]>([]);
   const apiUrl = process.env.NEXT_PUBLIC_API_URL;
   // TrainingMenu コンポーネントを追加する関数
   const handleAddTrainingMenu = () => {
@@ -46,7 +46,8 @@ export default function AddTrainigMenu({}: AddTrainigMenuProps) {
         <TrainingSet
           key={menu.key}
           number={menu.number}
-          setTrainingSets={setTrainingSets}
+          sets={trainingSets}
+          updateSets={setTrainingSets}
         />
       ))}
       <div className="flex justify-center my-4">

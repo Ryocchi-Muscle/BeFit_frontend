@@ -2,8 +2,8 @@
 import React, { useState } from "react";
 import { secureApiCall } from "@/app/utils/api";
 import TrainingDay from "./TrainingDay";
-import TrainingSet from "./TrainingSet";
 import AddTrainigMenu from "./AddTrainigMenu";
+import { Set } from "../../../../types"; // Set 型をインポート
 
 export default function TrainingRecord() {
   const [trainingDay, setTrainingDay] = useState<Date | null>(null);
@@ -13,9 +13,12 @@ export default function TrainingRecord() {
   const totalDays = 90; // トレーニングプログラムの総日数として固定値を使用
   const startDate = new Date();
 
-  // Setの更新関数の実装
-  const updateTrainingRecord = (newSets: any[]) => {
-    setTrainingSets(newSets);
+  // トレーニングセットの状態を更新する関数
+  const updateTrainingSets = (menuIndex: number, newSets: Set[]) => {
+    const updatedTrainingSets = [...trainingSets];
+    updatedTrainingSets[menuIndex] = newSets;
+    console.log("Updating sets");
+    setTrainingSets(updatedTrainingSets);
   };
   const handleSaveTrainingRecord = async () => {
     const payload = {
@@ -42,12 +45,11 @@ export default function TrainingRecord() {
         totalDays={totalDays} // ここでtotalDaysを渡す
         startDate={startDate} // ここでstartDateを渡す
       />
-      <AddTrainigMenu setTrainingMenus={setTrainingMenus} />
-      <TrainingSet
-        key={1}
-        number={1}
-        sets={trainingSets}
-        updateSets={updateTrainingRecord}
+      <AddTrainigMenu
+        trainingMenus={trainingMenus}
+        setTrainingMenus={setTrainingMenus}
+        trainingSets={trainingSets}
+        updateTrainingSets={updateTrainingSets}
       />
       <button onClick={handleSaveTrainingRecord}>Save Training Record</button>
     </div>
