@@ -10,7 +10,7 @@ export interface TrainingSetProps {
 }
 
 export interface AddTrainigMenuProps {
-  trainingMenus: any[]; 
+  trainingMenus: any[];
   setTrainingMenus: React.Dispatch<React.SetStateAction<any[]>>;
   trainingSets: Set[][]; // 2次元配列になっていることに注意
   updateTrainingSets: (menuIndex: number, newSets: Set[]) => void;

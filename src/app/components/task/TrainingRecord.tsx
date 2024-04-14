@@ -58,8 +58,16 @@ export default function TrainingRecord() {
         trainingSets={trainingSets}
         updateTrainingSets={updateTrainingSets}
       />
+      {saveSuccess && (
+        <p className="text-white bg-green-500 p-3 rounded-md">
+          保存が成功しました！
+        </p>
+      )}
+      {saveError && (
+        <p className="text-white bg-red-500 p-3 rounded-md">{saveError}</p>
+      )}
       <button
-        className="bg-blue-500 text-white p-2 mx-2 rounded"
+        className="bg-blue-500 text-white p-2 mx-2 rounded hover:bg-blue-700"
         onClick={handleSaveTrainingRecord}
       >
         保存
