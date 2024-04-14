@@ -1,5 +1,7 @@
 import { getSession } from "next-auth/react";
 import { ApiResponse } from "../../../types/api";
+import { TrainingDayData } from "../../../types/api";
+
 
 // APIを呼び出す関数の定義
 export async function secureApiCall<T>(
@@ -39,15 +41,11 @@ export async function secureApiCall<T>(
   return { data };
 }
 
-// export const createTrainingDay = async (trainingDayData: TrainingDayData) => {
-//   const endpoint = "api/v1/training_days";
-//   return await secureApiCall<TrainingDayData>(
-//     endpoint,
-//     "POST",
-//     trainingDayData
-//   );
-// };
 
+export const createTrainingDay = async (trainingDayData: TrainingDayData) => {
+  const endpoint = "api/v1/training_days"
+  return await secureApiCall<TrainingDayData>(endpoint, "POST", trainingDayData);
+}
 // // トレーニングメニューの作成
 // export const createTrainingMenu = async (
 //   trainingDayId: string,
