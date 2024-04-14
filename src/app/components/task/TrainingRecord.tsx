@@ -9,6 +9,8 @@ export default function TrainingRecord() {
   const [trainingDay, setTrainingDay] = useState<Date | null>(null);
   const [trainingMenus, setTrainingMenus] = useState<any[]>([]);
   const [trainingSets, setTrainingSets] = useState<any[]>([]); // ここで初期値を空の配列に設定
+  const [saveSuccess, setSaveSuccess] = useState(false);
+  const [saveError, setSaveError] = useState("");
 
   const totalDays = 90; // トレーニングプログラムの総日数として固定値を使用
   const startDate = new Date();
@@ -26,6 +28,7 @@ export default function TrainingRecord() {
       menu: trainingMenus,
       sets: trainingSets,
     };
+    console.log("Payload", payload);
     try {
       const response = await secureApiCall(
         "saveTrainingRecord",
@@ -33,8 +36,12 @@ export default function TrainingRecord() {
         payload
       );
       console.log("Record saved successfully", response);
+      setSaveSuccess(true);
+      setTimeout(() => setSaveSuccess(false), 3000); // 3秒後にメッセージを消す
     } catch (error) {
       console.log("Error saving record", error);
+      setSaveError("記録の保存に失敗しました。"); // エラーメッセージを設定
+      setTimeout(() => setSaveError(""), 3000); // 3秒後にメッセージを消す
     }
   };
 
@@ -51,7 +58,12 @@ export default function TrainingRecord() {
         trainingSets={trainingSets}
         updateTrainingSets={updateTrainingSets}
       />
-      <button onClick={handleSaveTrainingRecord}>Save Training Record</button>
+      <button
+        className="bg-blue-500 text-white p-2 mx-2 rounded"
+        onClick={handleSaveTrainingRecord}
+      >
+        保存
+      </button>
     </div>
   );
 }
