@@ -11,7 +11,9 @@ export async function secureApiCall<T>(
   //セッションと認証トークンの取得
   const session = await getSession();
   const token = session?.accessToken;
-
+  if (!token) {
+    throw new Error("No session token available.");
+  }
   // ヘッダーの設定;
   const headers = new Headers({
     Authorization: `Bearer ${token}`,
@@ -23,6 +25,7 @@ export async function secureApiCall<T>(
     method,
     headers,
     body: body ? JSON.stringify(body) : null,
+    credentials: "include",
   };
   console.log("コンフィグ", config);
   // GETメソッドではボディが不要なため、ボディを削除してる。
@@ -36,7 +39,8 @@ export async function secureApiCall<T>(
   );
   console.log(`Request URL: ${process.env.NEXT_PUBLIC_API_URL}/${endpoint}`);
   if (!response.ok) {
-    throw new Error(`API call failed with status: ${response.status}`);
+    const errorData = await response.json(); // サーバーからのエラーメッセージを取得
+    throw new Error(`API call failed: ${errorData.message}`);
   }
   const data: T = await response.json();
   return { data };
