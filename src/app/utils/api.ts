@@ -2,7 +2,6 @@ import { getSession } from "next-auth/react";
 import { ApiResponse } from "../../../types/api";
 import { TrainingDayData } from "../../../types/api";
 
-
 // APIを呼び出す関数の定義
 export async function secureApiCall<T>(
   endpoint: string,
@@ -18,13 +17,14 @@ export async function secureApiCall<T>(
     Authorization: `Bearer ${token}`,
     "Content-Type": "application/json",
   });
-
+  console.log("トークン2", token);
   // リクエスト設定
   const config: RequestInit = {
     method,
     headers,
     body: body ? JSON.stringify(body) : null,
   };
+  console.log("コンフィグ", config);
   // GETメソッドではボディが不要なため、ボディを削除してる。
   if (method === "GET") {
     delete config.body;
@@ -34,6 +34,7 @@ export async function secureApiCall<T>(
     `${process.env.NEXT_PUBLIC_API_URL}/${endpoint}`,
     config
   );
+  console.log(`Request URL: ${process.env.NEXT_PUBLIC_API_URL}/${endpoint}`);
   if (!response.ok) {
     throw new Error(`API call failed with status: ${response.status}`);
   }
@@ -41,11 +42,14 @@ export async function secureApiCall<T>(
   return { data };
 }
 
-
 export const createTrainingDay = async (trainingDayData: TrainingDayData) => {
-  const endpoint = "api/v1/training_days"
-  return await secureApiCall<TrainingDayData>(endpoint, "POST", trainingDayData);
-}
+  const endpoint = "api/v1/training_days";
+  return await secureApiCall<TrainingDayData>(
+    endpoint,
+    "POST",
+    trainingDayData
+  );
+};
 // // トレーニングメニューの作成
 // export const createTrainingMenu = async (
 //   trainingDayId: string,

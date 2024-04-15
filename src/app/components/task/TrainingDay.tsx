@@ -1,18 +1,15 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useCallback } from "react";
 import { format, differenceInCalendarDays, addDays, subDays } from "date-fns";
 import { TrainingDayProps } from "../../../../types";
 
 const TrainingDay: React.FC<TrainingDayProps> = ({
   setTrainingDay,
-  totalDays,
-  startDate,
+  totalDays =  90, // デフォルト値を設定
+  startDate = new Date(), // デフォルトの開始日を今日の日付に
 }) => {
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
-  const [trainingData, setTrainingData] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const currentDay = differenceInCalendarDays(selectedDate, startDate) + 1;
+  const currentDay = differenceInCalendarDays(new Date(selectedDate), startDate) + 1;
   const progressPercentage = (currentDay / totalDays) * 100;
 
   let motivationalMessage = "";
@@ -32,20 +29,24 @@ const TrainingDay: React.FC<TrainingDayProps> = ({
   //   setSelectedDate((currentDate) => subDays(currentDate, 1));
   // };
 
-  const handleDayChange = (change: number) => {
-    const newDate = addDays(selectedDate, change);
+   // 日付変更時のコールバック
+  const handleDateChange = useCallback((newDate: Date) => {
     setSelectedDate(newDate);
-    if (setTrainingDay) {
-      setTrainingDay(newDate); // 親コンポーネントの状態を更新
-    }
-  };
+    setTrainingDay(newDate);
+  }, [setTrainingDay]);
 
   return (
     <div>
       <div>
         Day {currentDay} of {totalDays}
       </div>
-      <button
+        {/* 日付選択部分（簡略化のためインプットタグを使用） */}
+      <input
+        type="date"
+        value={format(selectedDate, "yyyy-MM-dd")}
+        onChange={(e) => handleDateChange(new Date(e.target.value))}
+      />
+      {/* <button
         className="bg-blue-500 text-white p-2 mx-2 rounded"
         onClick={() => handleDayChange(-1)}
         disabled={currentDay <= 1}
@@ -58,7 +59,8 @@ const TrainingDay: React.FC<TrainingDayProps> = ({
         disabled={currentDay >= totalDays}
       >
         next
-      </button>
+      </button> */}
+        {/* 進捗バー */}
       <div
         style={{ width: "100%", backgroundColor: "#e0e0e0", margin: "10px 0" }}
       >
