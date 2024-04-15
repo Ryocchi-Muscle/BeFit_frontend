@@ -25,7 +25,6 @@ export async function secureApiCall<T>(
     method,
     headers,
     body: body ? JSON.stringify(body) : null,
-    credentials: "include",
   };
   console.log("コンフィグ", config);
   // GETメソッドではボディが不要なため、ボディを削除してる。
