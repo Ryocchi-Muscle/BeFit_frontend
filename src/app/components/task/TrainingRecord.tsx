@@ -29,17 +29,21 @@ export default function TrainingRecord() {
 
   const handleSaveTrainingRecord = async () => {
     const payload = {
-      day: trainingDay,
-      menu: trainingMenus.map((menu) => ({
-        bodyPart: menu.bodyPart,
-        exerciseName: menu.exerciseName,
-        sets: menu.sets.map((set: any) => ({
-          setNumber: set.number,
-          weight: set.weight,
-          reps: set.reps,
-          completed: set.completed,
-        })),
-      })),
+      day: 1,
+      menu: [
+        {
+          bodyPart: "胸",
+          exerciseName: "ベンチプレス",
+          sets: [
+            {
+              setNumber: 1,
+              weight: 60,
+              reps: 8,
+              completed: true,
+            },
+          ],
+        },
+      ],
     };
     console.log("ペイロード", payload);
     try {
