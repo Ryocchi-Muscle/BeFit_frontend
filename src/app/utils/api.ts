@@ -10,6 +10,7 @@ export async function secureApiCall<T>(
 ): Promise<ApiResponse<T>> {
   //セッションと認証トークンの取得
   const session = await getSession();
+  console.log("セッション", session);
   const token = session?.accessToken;
   if (!token) {
     throw new Error("No session token available.");
@@ -20,6 +21,7 @@ export async function secureApiCall<T>(
     "Content-Type": "application/json",
   });
   console.log("トークン2", token);
+  console.log("ヘッダー", headers) ;
   // リクエスト設定
   const config: RequestInit = {
     method,
@@ -53,29 +55,3 @@ export const createTrainingDay = async (trainingDayData: TrainingDayData) => {
     trainingDayData
   );
 };
-// // トレーニングメニューの作成
-// export const createTrainingMenu = async (
-//   trainingDayId: string,
-//   trainingMenuData: TrainingMenuData
-// ) => {
-//   const endpoint = `api/v1/training_days/${trainingDayId}/training_menus`;
-//   return await secureApiCall<TrainingMenuData>(
-//     endpoint,
-//     "POST",
-//     trainingMenuData
-//   );
-// };
-
-// // トレーニングセットの作成
-// export const createTrainingSet = async (
-//   trainingDayId: string,
-//   trainingMenuId: string,
-//   trainingSetData: TrainingSetData
-// ) => {
-//   const endpoint = `api/v1/training_days/${trainingDayId}/training_menus/${trainingMenuId}/training_sets`;
-//   return await secureApiCall<TrainingSetData>(
-//     endpoint,
-//     "POST",
-//     trainingSetData
-//   );
-// };
