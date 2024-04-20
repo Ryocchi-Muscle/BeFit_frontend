@@ -1,59 +1,45 @@
 "use client";
 import React, { useState, useCallback } from "react";
-import { format, differenceInCalendarDays, addDays, subDays } from "date-fns";
-import { TrainingDayProps } from "../../../../types";
+import { format, differenceInCalendarDays } from "date-fns";
 
-const TrainingDay: React.FC<TrainingDayProps> = ({
-  setTrainingDay,
-  totalDays = 90, // デフォルト値を設定
-  startDate = new Date(), // デフォルトの開始日を今日の日付に
-}) => {
-  const [selectedDate, setSelectedDate] = useState<Date>(new Date());
-  const currentDay =
-    differenceInCalendarDays(new Date(selectedDate), startDate) + 1;
-  const progressPercentage = (currentDay / totalDays) * 100;
+interface TrainingDayProps {
+  setTrainingDay: (date: Date) => void; // このPropsは親コンポーネントからの状態更新関数を受け取る
+}
 
-  let motivationalMessage = "";
-  if (currentDay == 30) {
-    motivationalMessage =
-      "素晴らしい進捗です！次のステップに向けて頑張りましょう。";
-  } else if (currentDay == 60) {
-    motivationalMessage = "もう半分です！最後まで諦めずに頑張りましょう。";
-  }
+const TrainingDay: React.FC<TrainingDayProps> = ({ setTrainingDay }) => {
+  const [startDate, setStartDate] = useState<Date>(new Date()); // トレーニングの開始日を管理
+  const currentDate = new Date();
 
-  // 日付変更時のコールバック
-  const handleDateChange = useCallback(
-    (newDate: Date) => {
-      setSelectedDate(newDate);
-      setTrainingDay(newDate);
+  // トレーニング開始日からの経過日数を計算
+  const dayCount = differenceInCalendarDays(currentDate, startDate) + 1;
+  console.log("currentDate", currentDate);
+  console.log("dayCount:", dayCount);
+
+  // 開始日が変更された時に呼び出される関数
+  const handleStartDateChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      const newStartDate = new Date(e.target.value);
+      setStartDate(newStartDate);
+      setTrainingDay(newStartDate); // 親コンポーネントの状態も更新
     },
     [setTrainingDay]
   );
 
+  // 現在の選択日を変更するための関数（日付ナビゲーションなどで使用可能）
+  // const handleCurrentDateChange = useCallback((newDate: Date) => {
+  //   setCurrentDate(newDate);
+  // }, []);
+
   return (
     <div>
-      <div>
-        Day {currentDay} of {totalDays}
-      </div>
-      {/* 日付選択部分（簡略化のためインプットタグを使用） */}
+      <label htmlFor="start-date">トレーニング開始日:</label>
       <input
         type="date"
-        value={format(selectedDate, "yyyy-MM-dd")}
-        onChange={(e) => handleDateChange(new Date(e.target.value))}
+        id="start-date"
+        value={format(startDate, "yyyy-MM-dd")}
+        onChange={handleStartDateChange}
       />
-      {/* 進捗バー */}
-      <div
-        style={{ width: "100%", backgroundColor: "#e0e0e0", margin: "10px 0" }}
-      >
-        <div
-          style={{
-            width: `${progressPercentage}%`,
-            backgroundColor: "#4caf50",
-            height: "20px",
-          }}
-        ></div>
-      </div>
-      {motivationalMessage && <div>{motivationalMessage}</div>}
+      <p>トレーニング開始から {dayCount} 日目です。</p>
     </div>
   );
 };

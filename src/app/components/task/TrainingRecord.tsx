@@ -13,9 +13,6 @@ export default function TrainingRecord() {
   const [saveSuccess, setSaveSuccess] = useState(false);
   const [saveError, setSaveError] = useState("");
 
-  // const totalDays = 90; // トレーニングプログラムの総日数として固定値を使用
-  // const startDate = new Date();
-
   // トレーニング日の更新
   const handleTrainingDayChange = useCallback((date: Date | null) => {
     setTrainingDay(date);
@@ -30,13 +27,6 @@ export default function TrainingRecord() {
     setTrainingSets(sets);
   }, []);
 
-  // トレーニングセットの状態を更新する関数
-  // const updateTrainingSets = (menuIndex: number, newSets: Set[]) => {
-  //   const updatedTrainingSets = [...trainingSets];
-  //   updatedTrainingSets[menuIndex] = newSets;
-  //   console.log("Updating sets");
-  //   setTrainingSets(updatedTrainingSets);
-  // };
   const handleSaveTrainingRecord = async () => {
     const payload = {
       day: trainingDay,
@@ -70,11 +60,6 @@ export default function TrainingRecord() {
 
   return (
     <div>
-      <TrainingDay
-        setTrainingDay={handleTrainingDayChange}
-        totalDays={90} // 必要に応じて
-        startDate={new Date()}
-      />
       <AddTrainigMenu
         setTrainingMenus={handleTrainingMenusChange}
         trainingMenus={trainingMenus}
