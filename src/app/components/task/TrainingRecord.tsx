@@ -29,29 +29,26 @@ export default function TrainingRecord() {
 
   const handleSaveTrainingRecord = async () => {
     const payload = {
-      training_day: {
-        day: 1,
-        menu: [
-          {
-            bodyPart: "胸",
-            exerciseName: "ベンチプレス",
-            sets: [
-              {
-                setNumber: 1,
-                weight: 60,
-                reps: 8,
-                completed: true,
-              },
-            ],
-          },
-        ],
-      },
+      training_menu: [
+        {
+          bodyPart: "胸",
+          exerciseName: "ベンチプレス",
+          sets: [
+            {
+              setNumber: 2,
+              weight: 60,
+              reps: 8,
+              completed: true,
+            },
+          ],
+        },
+      ],
     };
 
     console.log("ペイロード", payload);
     try {
       const response = await secureApiCall(
-        "api/v1/training_days",
+        "api/v1/training_menus",
         "POST",
         payload,
       );
