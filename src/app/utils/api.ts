@@ -21,7 +21,10 @@ export async function secureApiCall<T>(
     "Content-Type": "application/json",
   });
   console.log("トークン2", token);
-  console.log("ヘッダー", headers) ;
+  console.log("ヘッダー", headers);
+ headers.forEach((value, key) => {
+   console.log(`${key}: ${value}`);
+ });
   // リクエスト設定
   const config: RequestInit = {
     method,
@@ -38,9 +41,11 @@ export async function secureApiCall<T>(
     `${process.env.NEXT_PUBLIC_API_URL}/${endpoint}`,
     config
   );
+  console.log("レスポンス", response);
   console.log(`Request URL: ${process.env.NEXT_PUBLIC_API_URL}/${endpoint}`);
   if (!response.ok) {
     const errorData = await response.json(); // サーバーからのエラーメッセージを取得
+    console.error("API call失敗:", errorData);
     throw new Error(`API call failed: ${errorData.message}`);
   }
   const data: T = await response.json();

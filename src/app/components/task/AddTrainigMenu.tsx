@@ -24,7 +24,7 @@ export default function AddTrainigMenu({}: AddTrainigMenuProps) {
     const newNumber = trainingMenus[trainingMenus.length - 1].number + 1;
     setTrainingMenus([...trainingMenus, { key: newKey, number: newNumber }]);
     if (session) {
-      fetch(`${apiUrl}/training_records`, {
+      fetch(`${apiUrl}/training_days`, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${(session as CustomSession).accessToken}`,
