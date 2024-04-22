@@ -53,7 +53,7 @@ export async function secureApiCall<T>(
 }
 
 export const createTrainingDay = async (trainingDayData: TrainingDayData) => {
-  const endpoint = "api/v1/training_menus";
+  const endpoint = "api/v1/training_days";
   return await secureApiCall<TrainingDayData>(
     endpoint,
     "POST",

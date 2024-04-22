@@ -29,6 +29,7 @@ export default function TrainingRecord() {
 
   const handleSaveTrainingRecord = async () => {
     const payload = {
+      training_day: trainingDay,
       training_menu: [
         {
           bodyPart: "胸",
