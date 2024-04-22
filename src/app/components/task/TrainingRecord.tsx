@@ -49,7 +49,7 @@ export default function TrainingRecord() {
     console.log("ペイロード", payload);
     try {
       const response = await secureApiCall(
-        "api/v1/training_menus",
+        "api/v1/training_days",
         "POST",
         payload,
       );

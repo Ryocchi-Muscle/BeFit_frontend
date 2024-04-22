@@ -10,7 +10,7 @@ const TrainingSessionDetails: React.FC<{ sessionId: number }> = ({
 }) => {
   console.log(sessionId);
   const { sessionData, isLoading, isError } = useTrainingSession(sessionId);
-
+console.log("sessionData", sessionData)
   if (isLoading) return <div>Loading...</div>;
   if (isError || !sessionData) return <div>Error!</div>;
 
