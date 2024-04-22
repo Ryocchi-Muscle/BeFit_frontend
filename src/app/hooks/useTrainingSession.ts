@@ -1,5 +1,7 @@
 // トレーニングセッションの詳細と経過日数、残り日数をフェッチするカスタムフック
-import useSWR, { mutate } from "swr";
+"use client";
+import { mutate } from 'swr';
+import useSWR from "swr";
 import axios from "axios";
 
 interface TrainingSession {

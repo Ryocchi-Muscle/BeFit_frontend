@@ -1,7 +1,9 @@
 // components/TrainingSessionDetails.tsx
 // データの表示するコンポーネント
+'use client';
 import React from "react";
 import { useTrainingSession } from "@/app/hooks/useTrainingSession";
+
 
 const TrainingSessionDetails: React.FC<{ sessionId: number }> = ({
   sessionId,
