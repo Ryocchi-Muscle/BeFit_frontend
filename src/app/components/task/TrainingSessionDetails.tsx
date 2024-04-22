@@ -8,6 +8,7 @@ import { useTrainingSession } from "@/app/hooks/useTrainingSession";
 const TrainingSessionDetails: React.FC<{ sessionId: number }> = ({
   sessionId,
 }) => {
+  console.log(sessionId);
   const { sessionData, isLoading, isError } = useTrainingSession(sessionId);
 
   if (isLoading) return <div>Loading...</div>;

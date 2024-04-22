@@ -14,7 +14,9 @@ interface TrainingSession {
   remaining_days: number;
 }
 
-const fetcher = (url: string) => axios.get(url).then((res) => res.data);
+const fetcher = (url: string) =>
+  axios.get(`${process.env.NEXT_PUBLIC_API_URL}${url}`).then((res) => res.data);
+
 
 export function useTrainingSession(sessionId: number) {
   const { data, error } = useSWR<TrainingSession>(
@@ -22,6 +24,7 @@ export function useTrainingSession(sessionId: number) {
     fetcher
   );
   console.log(data);
+  console.log(error);
   return {
     sessionData: data,
     isLoading: !error && !data,
