@@ -17,13 +17,16 @@ interface MyToken extends JWT {
 
 export const nextAuthOptions: NextAuthOptions = {
   debug: true,
-  session: { strategy: "jwt" },
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID!,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
     }),
   ],
+  session: {
+    strategy: "jwt",
+    maxAge: 60 * 24 * 24, // JWTの最大有効期限を秒で指定（ここでは30日）
+  },
   callbacks: {
     async jwt({ token, account, user }) {
       if (account && account.access_token && user) {
