@@ -1,3 +1,4 @@
+"use client";
 import React, { useState, FormEvent } from "react";
 import axios from "axios";
 import { useTrainingSession } from "../hooks/useTrainingSession";
@@ -24,14 +25,14 @@ const StartDateForm: React.FC<Props> = ({ userId }) => {
 
   return (
     <form onSubmit={handleSubmit}>
-      <label htmlFor="start-date">Start Date:</label>
+      <label htmlFor="start-date">トレーニング開始日</label>
       <input
         type="date"
         id="start-date"
         value={startDate}
         onChange={(e) => setStartDate(e.target.value)}
       />
-      <button type="submit">Set Start Date</button>
+      ←トレーニング開始日を設定
     </form>
   );
 };
