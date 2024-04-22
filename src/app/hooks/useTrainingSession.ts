@@ -1,22 +1,27 @@
-import useSWR from "swr";
+// トレーニングセッションの詳細と経過日数、残り日数をフェッチするカスタムフック
+import useSWR, { mutate } from "swr";
 import axios from "axios";
 
 interface TrainingSession {
-  id: number;
-  userId: number;
-  startDate: string;
+  training_session: {
+    id: number;
+    userId: number;
+    start_date: string;
+  };
+  elapsed_days: number;
+  remaining_days: number;
 }
 
 const fetcher = (url: string) => axios.get(url).then((res) => res.data);
 
-export function useTrainingSession(userId: number) {
-  const { data, error, mutate } = useSWR<TrainingSession>(
-    `/api/v1/training_sessions/${userId}`,
+export function useTrainingSession(sessionId: number) {
+  const { data, error } = useSWR<TrainingSession>(
+    `/api/v1/training_sessions/${sessionId}`,
     fetcher
   );
-
+  console.log(data);
   return {
-    session: data,
+    sessionData: data,
     isLoading: !error && !data,
     isError: error,
     mutate,

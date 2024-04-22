@@ -1,7 +1,7 @@
 import React from "react";
 import Footer from "@/app/components/layout/Footer";
 import TrainingRecord from "@/app/components/task/TrainingRecord";
-import StartDateForm from "@/app/components/StartDateForm";
+import StartDateForm from "@/app/components/task/StartDateForm";
 
 export default function TaskPage() {
   return (

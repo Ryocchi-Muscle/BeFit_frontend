@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, FormEvent } from "react";
 import axios from "axios";
-import { useTrainingSession } from "../hooks/useTrainingSession";
+import { useTrainingSession } from "../../hooks/useTrainingSession";
 
 interface Props {
   userId: number;
