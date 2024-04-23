@@ -1,6 +1,4 @@
 // トレーニングセッションの詳細と経過日数、残り日数をフェッチするカスタムフック
-"use client";
-import { mutate } from "swr";
 import useSWR from "swr";
 import axios from "axios";
 import { useSession } from "next-auth/react";
@@ -15,15 +13,18 @@ interface TrainingSession {
   remaining_days: number;
 }
 
-const fetcher = ([url, token]: [string, string]) => {
+const fetcher = async ([url, token]: [string, string]) => {
   const headers = token ? { Authorization: `Bearer ${token}` } : {};
+  console.log("Fetcher headers:", headers);
   return axios.get(url, { headers }).then((res) => res.data);
 };
 
 export function useTrainingSession(sessionId: number) {
   const { data: session } = useSession();
+  console.log("セッション", session);
   const apiUrl = process.env.NEXT_PUBLIC_API_URL;
   const token = session?.accessToken;
+  console.log("トークン", token);
   const url = `${apiUrl}/api/v1/training_sessions/${sessionId}`;
   const REFRESH_INTERVAL_MS = 3600000; // 1時間ごとに再取得
   console.log("URL", url);
