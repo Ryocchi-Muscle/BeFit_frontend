@@ -18,8 +18,7 @@ console.log("sessionData", sessionData)
     <div>
       <h1>Training Session Details</h1>
       <p>Start Date: {sessionData.training_session.start_date}</p>
-      <p>Elapsed Days: {sessionData.elapsed_days}</p>
-      <p>Remaining Days: {sessionData.remaining_days}</p>
+      <p>DAY: {sessionData.days_info.elapsed_days}</p>
     </div>
   );
 };
