@@ -16,7 +16,6 @@ console.log("sessionData", sessionData)
 
   return (
     <div>
-      <h1>Training Session Details</h1>
       <p>Start Date: {sessionData.training_session.start_date}</p>
       <p>DAY: {sessionData.days_info.elapsed_days}</p>
     </div>
