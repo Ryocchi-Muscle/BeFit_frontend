@@ -3,15 +3,15 @@ import useSWR from "swr";
 import axios from "axios";
 import { useSession } from "next-auth/react";
 
-interface TrainingSession {
-  training_session: {
-    id: number;
-    userId: number;
-    start_date: string;
-  };
-  elapsed_days: number;
-  remaining_days: number;
-}
+// interface TrainingSession {
+//   training_session: {
+//     id: number;
+//     userId: number;
+//     start_date: string;
+//   };
+//   elapsed_days: number;
+//   remaining_days: number;
+// }
 
 const fetcher = async ([url, token]: [string, string]) => {
   const headers = token ? { Authorization: `Bearer ${token}` } : {};
