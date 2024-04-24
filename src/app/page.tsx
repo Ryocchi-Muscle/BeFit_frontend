@@ -11,7 +11,7 @@ export default function Page() {
         {/* ヒーローセクション */}
         <section className="text-white bg-blue-500 p-12 text-center">
           <h1 className="text-4xl font-bold mb-4">Welcome to FitAPP</h1>
-          <p className="mb-8">Your fitness journey starts here.</p>
+          <p className="mb-8">Your  journey starts here.</p>
           <a
             href="#services"
             className="bg-white text-blue-500 px-6 py-2 rounded-full font-semibold"
