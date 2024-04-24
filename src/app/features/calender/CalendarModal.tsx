@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-const TrainingModal = ({ isOpen, onClose, selectedDate }: { isOpen: boolean, onClose: any, selectedDate: any }) => {
+export const TrainingModal = ({ isOpen, onClose, selectedDate }: { isOpen: boolean, onClose: any, selectedDate: any }) => {
   const [trainingDetails, setTrainingDetails] = useState("");
 
   const handleSubmit = (e: React.FormEvent) => {
