@@ -43,6 +43,7 @@ const StartDateForm: React.FC<StartDateFormProps> = ({ userId }) => {
           <form onSubmit={handleSubmit}>
             <label htmlFor="start-date">トレーニング開始日</label>
             <input
+              name = "date"
               type="date"
               id="start-date"
               value={startDate ? startDate.toISOString().split('T')[0] : ''}
