@@ -11,7 +11,7 @@ const Header = ({ session }: { session: Session | null }) => {
   return (
     <header className="fixed top-0 left-0 right-0 flex items-center justify-between bg-blue-950 shadow-md p-2 lg:p-4">
       <div className="flex items-center">
-        <Link href="/" className="text-4xl font-bold">
+        <Link href="/" className="text-4xl  text-white font-bold">
           FitApp
         </Link>
       </div>
@@ -35,9 +35,7 @@ const Header = ({ session }: { session: Session | null }) => {
                 ログアウト
               </button>
             </li>
-            <li>
-              {/* <DeleteUser /> */}
-            </li>
+            <li>{/* <DeleteUser /> */}</li>
           </>
         ) : (
           <>
