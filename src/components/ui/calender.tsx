@@ -6,6 +6,17 @@ import React, { useState } from "react";
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button";
 import { TrainingModal } from "@/app/features/calender/CalendarModal";
+import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/app/features/calender/CalendarDialog";
+
 
 export type CalendarProps = React.ComponentProps<typeof DayPicker>;
 
