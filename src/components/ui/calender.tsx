@@ -5,7 +5,6 @@ import { DayPicker } from "react-day-picker";
 import React, { useState } from "react";
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button";
-import { TrainingModal } from "@/app/features/calender/CalendarModal";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
