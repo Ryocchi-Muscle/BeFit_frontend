@@ -8,7 +8,7 @@ export default function TaskPage() {
   return (
     <div className="flex flex-col h-screen">
       <div className="flex-1 overflow-y-auto">
-        <h1 className="text-4xl">日々のミッション</h1>
+        <h1 className="text-2xl">日々のミッション</h1>
         <StartDateForm userId={1} />
         <TrainingSessionDetails sessionId={1} />
         <TrainingRecord />
