@@ -15,6 +15,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
+  DialogClose,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -28,11 +29,11 @@ function Calendar({
   ...props
 }: CalendarProps) {
   const [selectedDate, setSelectedDate] = useState<Date | undefined>();
-  const [isModalOpen, setModalOpen] = useState(false);
+  const [isDialogOpen, setDialogOpen] = useState(false);
 
   const handleDayClick = (date: Date) => {
     setSelectedDate(date);
-    setModalOpen(true);
+    setDialogOpen(true);
   };
 
   return (
@@ -86,12 +87,36 @@ function Calendar({
         }}
         {...props}
       />
-      {isModalOpen && selectedDate && (
-        <TrainingModal
-          isOpen={isModalOpen}
-          onClose={() => setModalOpen(false)}
-          selectedDate={selectedDate}
-        />
+      {isDialogOpen && selectedDate && (
+        <Dialog open={isDialogOpen} onOpenChange={setDialogOpen}>
+          <DialogContent>
+            <DialogTitle>トレーニングメニュー入力</DialogTitle>
+            <DialogDescription>
+              {selectedDate.toLocaleDateString()}{" "}
+              のトレーニング詳細を入力してください。
+            </DialogDescription>
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                console.log("Submit training details");
+                setDialogOpen(false); // You would handle form submission here
+              }}
+            >
+              <Label htmlFor="trainingDetails">Details:</Label>
+              <Input
+                id="trainingDetails"
+                type="text"
+                placeholder="Enter training details"
+              />
+              <DialogFooter>
+                <Button type="submit">保存</Button>
+                <DialogClose asChild>
+                  <Button variant="ghost">キャンセル</Button>
+                </DialogClose>
+              </DialogFooter>
+            </form>
+          </DialogContent>
+        </Dialog>
       )}
     </>
   );
