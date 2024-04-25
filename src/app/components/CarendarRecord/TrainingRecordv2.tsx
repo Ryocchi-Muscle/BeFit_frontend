@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { BodyPartCombobox } from "./BodyPartCombobox";
 
 interface TrainingMenu {
   bodyPart: string;
@@ -24,6 +25,11 @@ const TrainingForm: React.FC = () => {
     menuName: "",
   });
   const [trainingSets, setTrainingSets] = useState<TrainingSet[]>(initialSets);
+
+  const handleBodyPartSelect = (value: string) => {
+    setTrainingMenu((prev) => ({ ...prev, bodyPart: value }));
+  };
+
 
   // トレーニングメニューの入力を処理
   const handleMenuChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -54,14 +60,7 @@ const TrainingForm: React.FC = () => {
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       <div className="flex space-x-2">
-        <input
-          type="text"
-          name="bodyPart"
-          placeholder="部位を選択"
-          value={trainingMenu.bodyPart}
-          onChange={handleMenuChange}
-          className="border-2 border-gray-300 p-2 rounded-md flex-1"
-        />
+        <BodyPartCombobox onSelect={handleBodyPartSelect} />
         <input
           type="text"
           name="menuName"
