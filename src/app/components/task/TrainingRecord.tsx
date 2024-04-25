@@ -78,12 +78,12 @@ export default function TrainingRecord() {
       {saveError && (
         <p className="text-white bg-red-500 p-3 rounded-md">{saveError}</p>
       )}
-      <button
+      {/* <button
         className="bg-blue-500 text-white p-2 mx-2 rounded hover:bg-blue-700"
         onClick={handleSaveTrainingRecord}
       >
         保存
-      </button>
+      </button> */}
     </div>
   );
 }

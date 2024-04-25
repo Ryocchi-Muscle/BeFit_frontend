@@ -52,6 +52,7 @@ export default function AddTrainigMenu({}: AddTrainigMenuProps) {
       ))}
       <div className="flex justify-center my-4">
         <button
+          type = "button"
           className="bg-blue-500 text-white p-2 mx-2 rounded"
           onClick={handleAddTrainingMenu}
         >
