@@ -18,6 +18,7 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import TrainingRecord from "@/app/components/task/TrainingRecord";
 
 export type CalendarProps = React.ComponentProps<typeof DayPicker>;
 
@@ -107,6 +108,7 @@ function Calendar({
                 type="text"
                 placeholder="Enter training details"
               />
+              <TrainingRecord />
               <DialogFooter>
                 <Button type="submit">保存</Button>
                 <DialogClose asChild>

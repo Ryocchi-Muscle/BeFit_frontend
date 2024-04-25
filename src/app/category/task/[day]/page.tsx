@@ -23,7 +23,7 @@ export default function TaskPage() {
         />
         <StartDateForm userId={1} />
         <TrainingSessionDetails sessionId={1} />
-        <TrainingRecord />
+       
       </div>
       <Footer className="w-full" />
     </div>
