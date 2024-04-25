@@ -21,9 +21,9 @@ export default function TaskPage() {
           onSelect={setDate}
           className="rounded-md border"
         />
-        {/* <StartDateForm userId={1} />
+        <StartDateForm userId={1} />
         <TrainingSessionDetails sessionId={1} />
-        <TrainingRecord /> */}
+        <TrainingRecord />
       </div>
       <Footer className="w-full" />
     </div>
