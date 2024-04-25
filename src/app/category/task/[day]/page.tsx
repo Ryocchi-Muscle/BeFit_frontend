@@ -1,15 +1,13 @@
-'use client';
+"use client";
 import React from "react";
 import Footer from "@/app/components/layout/Footer";
-import TrainingRecord from "@/app/components/task/TrainingRecord";
-import StartDateForm from "@/app/components/task/StartDateForm";
-import TrainingSessionDetails from "@/app/components/task/TrainingSessionDetails";
+import TrainingRecord from "@/app/components/CarendarRecord/TrainingRecord";
+import StartDateForm from "@/app/components/CarendarRecord/StartDateForm";
+import TrainingSessionDetails from "@/app/components/CarendarRecord/TrainingSessionDetails";
 import { Calendar } from "@/components/ui/calender";
-
 
 export default function TaskPage() {
   const [date, setDate] = React.useState<Date | undefined>(new Date());
-
 
   return (
     <div className="flex flex-col h-screen">
@@ -23,7 +21,6 @@ export default function TaskPage() {
         />
         <StartDateForm userId={1} />
         <TrainingSessionDetails sessionId={1} />
-       
       </div>
       <Footer className="w-full" />
     </div>

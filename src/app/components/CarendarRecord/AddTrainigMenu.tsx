@@ -41,7 +41,7 @@ export default function AddTrainigMenu({}: AddTrainigMenuProps) {
   };
 
   return (
-    <div className="flex-1 overflow-y-auto pb-20">
+    <div className="flex-1 w-2/3 overflow-y-auto pb-20">
       {trainingMenus.map((menu) => (
         <TrainingSet
           key={menu.key}
