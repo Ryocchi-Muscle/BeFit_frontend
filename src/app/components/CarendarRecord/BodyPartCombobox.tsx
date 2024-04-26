@@ -1,5 +1,9 @@
-import React, { useState } from "react";
+"use client";
+
+import * as React from "react";
 import { Check, ChevronsUpDown } from "lucide-react";
+
+import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import {
   Command,
@@ -14,23 +18,32 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 
-const bodyParts = [
-  { value: "chest", label: "胸" },
-  { value: "back", label: "背中" },
-  { value: "arms", label: "腕" },
-  { value: "shoulders", label: "肩" },
-  { value: "legs", label: "脚" },
+const frameworks = [
+  {
+    value: "next.js",
+    label: "Next.js",
+  },
+  {
+    value: "sveltekit",
+    label: "SvelteKit",
+  },
+  {
+    value: "nuxt.js",
+    label: "Nuxt.js",
+  },
+  {
+    value: "remix",
+    label: "Remix",
+  },
+  {
+    value: "astro",
+    label: "Astro",
+  },
 ];
 
-export function BodyPartCombobox({ onSelect }: { onSelect: (value: string) => void }) {
-  const [open, setOpen] = useState(false);
-  const [selectedValue, setSelectedValue] = useState("");
-
-  const handleSelect = (value: string) => {
-    setSelectedValue(value);
-    onSelect(value);
-    setOpen(false);
-  };
+export function ComboboxDemo() {
+  const [open, setOpen] = React.useState(false);
+  const [value, setValue] = React.useState("");
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -41,29 +54,33 @@ export function BodyPartCombobox({ onSelect }: { onSelect: (value: string) => vo
           aria-expanded={open}
           className="w-[200px] justify-between"
         >
-          {selectedValue
-            ? bodyParts.find((part) => part.value === selectedValue)?.label
-            : "部位を選択"}
+          {value
+            ? frameworks.find((framework) => framework.value === value)?.label
+            : "Select framework..."}
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-[200px] p-0">
         <Command>
-          <CommandInput placeholder="部位を検索..." />
-          <CommandEmpty>見つかりません。</CommandEmpty>
+          <CommandInput placeholder="Search framework..." />
+          <CommandEmpty>No framework found.</CommandEmpty>
           <CommandGroup>
-            {bodyParts.map((part) => (
+            {frameworks.map((framework) => (
               <CommandItem
-                key={part.value}
-                value={part.value}
-                onSelect={() => handleSelect(part.value)}
+                key={framework.value}
+                value={framework.value}
+                onSelect={(currentValue) => {
+                  setValue(currentValue === value ? "" : currentValue);
+                  setOpen(false);
+                }}
               >
                 <Check
-                  className={`mr-2 h-4 w-4 ${
-                    selectedValue === part.value ? "opacity-100" : "opacity-0"
-                  }`}
+                  className={cn(
+                    "mr-2 h-4 w-4",
+                    value === framework.value ? "opacity-100" : "opacity-0"
+                  )}
                 />
-                {part.label}
+                {framework.label}
               </CommandItem>
             ))}
           </CommandGroup>

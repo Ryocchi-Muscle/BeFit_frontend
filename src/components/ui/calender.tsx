@@ -103,12 +103,12 @@ function Calendar({
                 setDialogOpen(false); // You would handle form submission here
               }}
             >
-              <Label htmlFor="trainingDetails">Details:</Label>
+              {/* <Label htmlFor="trainingDetails">Details:</Label>
               <Input
                 id="trainingDetails"
                 type="text"
                 placeholder="Enter training details"
-              />
+              /> */}
               {/* <TrainingRecord /> */}
               <TrainingForm/>
               <DialogFooter>

@@ -1,5 +1,7 @@
 import React, { useState } from "react";
-import { BodyPartCombobox } from "./BodyPartCombobox";
+import { ComboboxDemo } from "./BodyPartCombobox";
+import MyComboBox from "./Combobox";
+// import { BodyPartCombobox } from "./BodyPartCombobox";
 
 interface TrainingMenu {
   bodyPart: string;
@@ -60,7 +62,8 @@ const TrainingForm: React.FC = () => {
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       <div className="flex space-x-2">
-        <BodyPartCombobox onSelect={handleBodyPartSelect} />
+        {/* <ComboboxDemo   /> */}
+        <MyComboBox />
         <input
           type="text"
           name="menuName"
