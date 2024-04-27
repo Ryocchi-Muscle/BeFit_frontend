@@ -7,7 +7,9 @@ import TrainingSessionDetails from "@/app/components/CarendarRecord/TrainingSess
 import { Calendar } from "@/components/ui/calender";
 import { ComboboxDemo } from "@/components/ui/commbobox";
 
-export default function TaskPage() {
+export default function TaskPage({ params }: {
+  params: { day: string };
+}) {
   const [date, setDate] = React.useState<Date | undefined>(new Date());
 
   return (
@@ -20,8 +22,8 @@ export default function TaskPage() {
           onSelect={setDate}
           className="rounded-md border"
         />
-        <StartDateForm userId={1} />
-        <TrainingSessionDetails sessionId={1} />
+        {/* <StartDateForm userId={1} />
+        <TrainingSessionDetails sessionId={1} /> */}
       </div>
       <Footer className="w-full" />
     </div>
