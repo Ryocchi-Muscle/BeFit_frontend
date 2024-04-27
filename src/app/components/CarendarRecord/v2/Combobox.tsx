@@ -12,6 +12,8 @@ const people = [
   { id: 6, name: "Hellen Schmidt" },
 ];
 
+
+
 function MyComboBox() {
   const [selectedPerson, setSelectedPerson] = React.useState(people[0]);
 

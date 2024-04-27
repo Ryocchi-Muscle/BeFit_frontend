@@ -16,11 +16,10 @@ interface TrainingSet {
 
 // 初期のセットの状態
 const initialSets: TrainingSet[] = [
-  { setNumber: 1, weight: 100, reps: 10, completed: true },
-  { setNumber: 2, weight: 0, reps: 0, completed: false },
+  { setNumber: 1, weight: 0, reps: 0, completed: true },
 ];
 
-const TrainingForm: React.FC = () => {
+const TrainingMenu: React.FC = () => {
   const [trainingMenu, setTrainingMenu] = useState<TrainingMenu>({
     bodyPart: "",
     menuName: "",
@@ -69,7 +68,7 @@ const TrainingForm: React.FC = () => {
           placeholder="メニュー名"
           value={trainingMenu.menuName}
           onChange={handleMenuChange}
-          className="border-2 border-gray-300 p-2 rounded-md flex-1"
+          className="border-2 border-gray-300 p-2 rounded-md sm"
         />
       </div>
 
@@ -82,7 +81,7 @@ const TrainingForm: React.FC = () => {
             placeholder="kg"
             value={set.weight}
             onChange={(e) => handleSetChange(index, "weight", e.target.value)}
-            className="border-2 border-gray-300 p-2 rounded-md flex-1"
+            className="border-2 border-gray-300 p-2 rounded-md w-24"
           />
           <input
             type="number"
@@ -90,7 +89,7 @@ const TrainingForm: React.FC = () => {
             placeholder="回数"
             value={set.reps}
             onChange={(e) => handleSetChange(index, "reps", e.target.value)}
-            className="border-2 border-gray-300 p-2 rounded-md flex-1"
+            className="border-2 border-gray-300 p-2 rounded-md w-24"
           />
           <input
             type="checkbox"
@@ -126,4 +125,4 @@ const TrainingForm: React.FC = () => {
   );
 };
 
-export default TrainingForm;
+export default TrainingMenu;
