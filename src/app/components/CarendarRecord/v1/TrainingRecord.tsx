@@ -3,7 +3,7 @@ import React, { useState, useCallback } from "react";
 import { secureApiCall } from "@/app/utils/api";
 import TrainingDay from "./TrainingDay";
 import AddTrainigMenu from "./AddTrainigMenu";
-import { Set, TrainingMenu } from "../../../../types"; // Set 型をインポート
+import { Set, TrainingMenu } from "../../../../../types"; // Set 型をインポート
 
 export default function TrainingRecord() {
   // ここで初期値を空の配列に設定
@@ -51,7 +51,7 @@ export default function TrainingRecord() {
       const response = await secureApiCall(
         "api/v1/training_days",
         "POST",
-        payload,
+        payload
       );
       console.log("記録保存成功", response);
       setSaveSuccess(true);

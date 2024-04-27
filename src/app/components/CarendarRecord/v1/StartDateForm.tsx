@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, FormEvent } from "react";
 import axios from "axios";
-import { useTrainingSession } from "../../hooks/useTrainingSession";
+import { useTrainingSession } from "../../../hooks/useTrainingSession";
 import Button from "@mui/material/Button";
 import { Box, Modal } from "@mui/material";
 
@@ -14,8 +14,8 @@ const StartDateForm: React.FC<StartDateFormProps> = ({ userId }) => {
   const [modalOpen, setModalOpen] = useState(false);
   const [startDate, setStartDate] = useState<Date | null>(new Date());
 
-   const handleOpen = () => setModalOpen(true);
-   const handleClose = () => setModalOpen(false);
+  const handleOpen = () => setModalOpen(true);
+  const handleClose = () => setModalOpen(false);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -43,10 +43,10 @@ const StartDateForm: React.FC<StartDateFormProps> = ({ userId }) => {
           <form onSubmit={handleSubmit}>
             <label htmlFor="start-date">トレーニング開始日</label>
             <input
-              name = "date"
+              name="date"
               type="date"
               id="start-date"
-              value={startDate ? startDate.toISOString().split('T')[0] : ''}
+              value={startDate ? startDate.toISOString().split("T")[0] : ""}
               onChange={(e) => setStartDate(new Date(e.target.value))}
             />
             ←トレーニング開始日を設定

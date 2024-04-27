@@ -1,15 +1,13 @@
 "use client";
 import React from "react";
 import Footer from "@/app/components/layout/Footer";
-import TrainingRecord from "@/app/components/CarendarRecord/TrainingRecord";
-import StartDateForm from "@/app/components/CarendarRecord/StartDateForm";
-import TrainingSessionDetails from "@/app/components/CarendarRecord/TrainingSessionDetails";
+import TrainingRecord from "@/app/components/CarendarRecord/v1/TrainingRecord";
+import StartDateForm from "@/app/components/CarendarRecord/v1/StartDateForm";
+import TrainingSessionDetails from "@/app/components/CarendarRecord/v1/TrainingSessionDetails";
 import { Calendar } from "@/components/ui/calender";
 import { ComboboxDemo } from "@/components/ui/commbobox";
 
-export default function TaskPage({ params }: {
-  params: { day: string };
-}) {
+export default function TaskPage({ params }: { params: { day: string } }) {
   const [date, setDate] = React.useState<Date | undefined>(new Date());
 
   return (

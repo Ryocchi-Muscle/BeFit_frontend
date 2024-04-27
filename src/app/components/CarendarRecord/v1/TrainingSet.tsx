@@ -1,6 +1,6 @@
 import MenuComponent from "./MenuComponent";
-import { TrainingSetProps } from "../../../../types";
-import { Set } from "../../../../types";
+import { TrainingSetProps } from "../../../../../types";
+import { Set } from "../../../../../types";
 
 const TrainingSet: React.FC<
   TrainingSetProps & { sets: Set[]; updateSets: (newSets: Set[]) => void }
@@ -67,7 +67,7 @@ const TrainingSet: React.FC<
       ))}
       <div className="flex items-center mt-2 ml-4">
         <button
-          type = "button"
+          type="button"
           className="bg-blue-500 text-white p-1 mt-2 rounded"
           onClick={handleAddSet}
         >

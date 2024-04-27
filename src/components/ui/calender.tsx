@@ -18,8 +18,8 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import TrainingRecord from "@/app/components/CarendarRecord/TrainingRecord";
-import TrainingForm from "@/app/components/CarendarRecord/TrainingRecordv2";
+import TrainingRecord from "@/app/components/CarendarRecord/v1/TrainingRecord";
+import TrainingForm from "@/app/components/CarendarRecord/TrainingFrom";
 
 export type CalendarProps = React.ComponentProps<typeof DayPicker>;
 
@@ -103,14 +103,7 @@ function Calendar({
                 setDialogOpen(false); // You would handle form submission here
               }}
             >
-              {/* <Label htmlFor="trainingDetails">Details:</Label>
-              <Input
-                id="trainingDetails"
-                type="text"
-                placeholder="Enter training details"
-              /> */}
-              {/* <TrainingRecord /> */}
-              <TrainingForm/>
+              <TrainingForm />
               <DialogFooter>
                 <Button type="submit">保存</Button>
                 <DialogClose asChild>

@@ -1,11 +1,10 @@
 "use client";
 import React, { useState } from "react";
 import TrainingSet from "./TrainingSet";
-import Footer from "../layout/Footer";
+import Footer from "../../layout/Footer";
 import { useSession } from "next-auth/react";
 import { Session } from "next-auth";
-import { AddTrainigMenuProps, Set } from "../../../../types";
-
+import { AddTrainigMenuProps, Set } from "../../../../../types";
 
 interface CustomSession extends Session {
   user_id: string;
@@ -52,7 +51,7 @@ export default function AddTrainigMenu({}: AddTrainigMenuProps) {
       ))}
       <div className="flex justify-center my-4">
         <button
-          type = "button"
+          type="button"
           className="bg-blue-500 text-white p-2 mx-2 rounded"
           onClick={handleAddTrainingMenu}
         >
