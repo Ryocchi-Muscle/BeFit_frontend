@@ -16,7 +16,7 @@ interface TrainingSet {
 
 // 初期のセットの状態
 const initialSets: TrainingSet[] = [
-  { setNumber: 1, weight: 0, reps: 0, completed: true },
+  { setNumber: 1, weight: 0, reps: 0, completed: false },
 ];
 
 const TrainingMenu: React.FC = () => {
