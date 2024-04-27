@@ -5,11 +5,10 @@ import React from "react";
 
 const people = [
   { id: 1, name: "胸" },
-  { id: 2, name: "Arlene Mccoy" },
-  { id: 3, name: "Devon Webb" },
-  { id: 4, name: "Tom Cook" },
-  { id: 5, name: "Tanya Fox" },
-  { id: 6, name: "Hellen Schmidt" },
+  { id: 2, name: "背中" },
+  { id: 3, name: "肩" },
+  { id: 4, name: "腕" },
+  { id: 5, name: "脚" },
 ];
 
 

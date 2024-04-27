@@ -103,6 +103,7 @@ function Calendar({
               }}
             >
               <TrainingMenu />
+              <TrainingMenu />
               {/* <TrainingMenuList /> */}
               <DialogFooter>
                 <Button type="submit">保存</Button>
