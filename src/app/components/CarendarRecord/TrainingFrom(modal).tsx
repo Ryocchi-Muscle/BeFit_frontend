@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { ComboboxDemo } from "./BodyPartCombobox";
 import MyComboBox from "./Combobox";
 // import { BodyPartCombobox } from "./BodyPartCombobox";
 

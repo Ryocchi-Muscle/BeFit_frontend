@@ -19,7 +19,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import TrainingRecord from "@/app/components/CarendarRecord/v1/TrainingRecord";
-import TrainingForm from "@/app/components/CarendarRecord/TrainingFrom";
+import TrainingForm from "@/app/components/CarendarRecord/TrainingFrom(modal)";
 
 export type CalendarProps = React.ComponentProps<typeof DayPicker>;
 
