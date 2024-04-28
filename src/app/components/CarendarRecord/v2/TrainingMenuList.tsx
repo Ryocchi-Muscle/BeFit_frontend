@@ -21,7 +21,7 @@ export default function TrainingMenuList() {
 
   return (
     <div>
-      <div className="flex flex-col items-center justify-center">
+      <div className="flex flex-col items-center justify-center overflow-auto max-h-[500px]">
         {menus.map((menu) => (
           <TrainingMenuComponet
             key={menu.menuId}
