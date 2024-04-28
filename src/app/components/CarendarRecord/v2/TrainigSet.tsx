@@ -1,0 +1,60 @@
+import React from 'react'
+import { TrainingSetProps } from '../../../../../types';
+
+interface TrainigSetProps {
+  setId: number;
+  weight: number;
+  reps: number;
+  completed: boolean;
+  updateSet: (
+    setId: number,
+    field: "weight" | "reps" | "completed",
+    value: string | boolean
+  ) => void;
+  removeSet: () => void;
+}
+
+export default function TrainigSet({ setId, weight, reps, completed, updateSet, removeSet }: TrainigSetProps) {
+  const handleWeightChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    updateSet(setId,'weight', e.target.value);
+  };
+  const handleRepsChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    updateSet(setId, 'reps', e.target.value)
+  };
+  const handleCompletedChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    updateSet(setId, 'completed', e.target.checked);
+   };
+  return (
+    <div className="training-set bg-white shadow-sm rounded p-3 flex items-center justify-between mb-2">
+      <span className="mr-3">{setId} set</span>
+      <input
+        className="border p-1 mr-2"
+        type="number"
+        value={weight}
+        placeholder="重量"
+        onChange={handleWeightChange}
+      />
+      <input
+        className="border p-1 mr-2"
+        type="number"
+        value={reps}
+        placeholder="回数"
+        onChange={handleRepsChange}
+      />
+      <label>
+        <input
+          type="checkbox"
+          checked={completed}
+          onChange={handleCompletedChange}
+        />
+        完了
+      </label>
+      <button
+        className="ml-3 bg-red-500 hover:bg-red-600 text-white p-2 rounded"
+        onClick={removeSet}
+      >
+        削除
+      </button>
+    </div>
+  );
+}
