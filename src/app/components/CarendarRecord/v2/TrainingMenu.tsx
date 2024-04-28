@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import MyComboBox from "./Combobox";
+import TrainingSet from "../v1/TrainingSet";
+import TrainigSet from "./TrainigSet";
 
 interface TrainingSet {
   setId: number;
@@ -11,7 +13,7 @@ interface TrainingSet {
 interface TrainingMenuProps {
   menuId: number;
   menuName: string;
-  removeMenu: () => void;
+  removeMenu: (menuId: number) => void;
 }
 
 export default function TrainingMenuComponet({ menuId, removeMenu }: TrainingMenuProps) {
@@ -46,10 +48,10 @@ export default function TrainingMenuComponet({ menuId, removeMenu }: TrainingMen
     return (
       <div className="training-menu my-4 p-4 border rounded">
         <div className="menu-header flex justify-between items-center mb-4">
-          <div>
+          <div className="flex items-center">
             <MyComboBox />
             <input
-              className="p-1 border"
+              className="ml-2 p-1 border"
               type="text"
               value={menuName}
               onChange={(e) => setMenuName(e.target.value)}
@@ -57,8 +59,8 @@ export default function TrainingMenuComponet({ menuId, removeMenu }: TrainingMen
             />
           </div>
         </div>
-        {/* {sets.map((set) => (
-          <TrainingSet
+        {sets.map((set) => (
+          <TrainigSet
             key={set.setId}
             setId={set.setId}
             weight={set.weight}
@@ -67,7 +69,7 @@ export default function TrainingMenuComponet({ menuId, removeMenu }: TrainingMen
             updateSet={handleSetChange}
             removeSet={() => handleRemoveSet(set.setId)}
           />
-        ))} */}
+        ))}
         <button
           type="button"
           className="mt-2 py-1 px-2 bg-blue-500 text-white rounded"
@@ -76,9 +78,9 @@ export default function TrainingMenuComponet({ menuId, removeMenu }: TrainingMen
           セットを追加
         </button>
         <button
-          className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+          className="mt-2 py-1 px-2 bg-red-500 text-white rounded"
           type="button"
-          onClick={() => handleRemoveSet(menuId)}
+          onClick={() => removeMenu(menuId)}
         >
           メニューを削除
         </button>
