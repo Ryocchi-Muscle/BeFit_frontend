@@ -3,7 +3,7 @@ import { Fragment } from "react";
 import { ChevronUpDownIcon } from "@heroicons/react/20/solid";
 import React from "react";
 
-const people = [
+const body_part = [
   { id: 1, name: "胸" },
   { id: 2, name: "背中" },
   { id: 3, name: "肩" },
@@ -14,7 +14,7 @@ const people = [
 
 
 function MyComboBox() {
-  const [selectedPerson, setSelectedPerson] = React.useState(people[0]);
+  const [selectedPerson, setSelectedPerson] = React.useState(body_part[0]);
 
   return (
     <div className="w-20">
@@ -29,7 +29,7 @@ function MyComboBox() {
               />
             </Listbox.Button>
             <Listbox.Options className="absolute w-full py-1 mt-1 overflow-auto text-base bg-white rounded-md shadow-lg max-h-60 ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
-              {people.map((person) => (
+              {body_part.map((person) => (
                 <Listbox.Option
                   key={person.id}
                   value={person}

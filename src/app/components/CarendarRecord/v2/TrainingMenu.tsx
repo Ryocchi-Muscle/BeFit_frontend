@@ -1,128 +1,112 @@
 import React, { useState } from "react";
 import MyComboBox from "./Combobox";
-// import { BodyPartCombobox } from "./BodyPartCombobox";
-
-interface TrainingMenu {
-  bodyPart: string;
-  menuName: string;
-}
 
 interface TrainingSet {
-  setNumber: number;
+  setId: number;
   weight: number;
   reps: number;
   completed: boolean;
 }
 
-// 初期のセットの状態
-const initialSets: TrainingSet[] = [
-  { setNumber: 1, weight: 0, reps: 0, completed: false },
-];
+interface TrainingMenuProps {
+  menuId: number;
+  menuName: string;
+  removeMenu: () => void;
+}
 
-const TrainingMenu: React.FC = () => {
-  const [trainingMenu, setTrainingMenu] = useState<TrainingMenu>({
-    bodyPart: "",
-    menuName: "",
-  });
-  const [trainingSets, setTrainingSets] = useState<TrainingSet[]>(initialSets);
+export default function TrainingMenuComponet({ menuId, removeMenu }: TrainingMenuProps) {
+  const [sets, setSets] = useState<TrainingSet[]>([]);
+  const [menuName, setMenuName] = useState("");
 
-  const handleBodyPartSelect = (value: string) => {
-    setTrainingMenu((prev) => ({ ...prev, bodyPart: value }));
+  const handleAddSet = () => {
+    const newSetId = sets.length > 0 ? sets[sets.length - 1].setId + 1 : 1;
+    setSets((sets) => [
+      ...sets,
+      { setId: newSetId, weight: 0, reps: 0, completed: false },
+    ]);
   };
 
-
-  // トレーニングメニューの入力を処理
-  const handleMenuChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setTrainingMenu({ ...trainingMenu, [e.target.name]: e.target.value });
+  const handleRemoveSet = (setId: number) => {
+    setSets((prevSets) => prevSets.filter((set) => set.setId !== setId));
   };
 
-  // トレーニングセットの入力を処理
+  // ユーザーがセットの重量や回数を変更したときに呼び出される関数
   const handleSetChange = (
-    index: number,
+    setId: number,
     field: keyof TrainingSet,
     value: string | boolean
   ) => {
-    setTrainingSets(
-      trainingSets.map((set, i) =>
-        i === index ? { ...set, [field]: value } : set
+    setSets(
+      sets.map((set) =>
+        set.setId === setId ? { ...set, [field]: value } : set
       )
     );
   };
 
-  // フォームの送信を処理
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    // 送信するデータを確認するためにコンソールに出力
-    console.log(trainingMenu, trainingSets);
-    // API呼び出しやその他の処理をここで行う
-  };
+    return (
+      <div className="training-menu my-4 p-4 border rounded">
+        <div className="menu-header flex justify-between items-center mb-4">
+          <div>
+            <MyComboBox />
+            <input
+              className="p-1 border"
+              type="text"
+              value={menuName}
+              onChange={(e) => setMenuName(e.target.value)}
+              placeholder="メニュー名"
+            />
+          </div>
 
-  return (
-    <form onSubmit={handleSubmit} className="space-y-4">
-      <div className="flex space-x-2">
-        {/* <ComboboxDemo   /> */}
-        <MyComboBox />
-        <input
-          type="text"
-          name="menuName"
-          placeholder="メニュー名"
-          value={trainingMenu.menuName}
-          onChange={handleMenuChange}
-          className="border-2 border-gray-300 p-2 rounded-md sm"
-        />
-      </div>
-
-      {trainingSets.map((set, index) => (
-        <div key={index} className="flex space-x-2 items-center">
-          <span>{set.setNumber} set</span>
-          <input
-            type="number"
-            name="weight"
-            placeholder="kg"
-            value={set.weight}
-            onChange={(e) => handleSetChange(index, "weight", e.target.value)}
-            className="border-2 border-gray-300 p-2 rounded-md w-24"
-          />
-          <input
-            type="number"
-            name="reps"
-            placeholder="回数"
-            value={set.reps}
-            onChange={(e) => handleSetChange(index, "reps", e.target.value)}
-            className="border-2 border-gray-300 p-2 rounded-md w-24"
-          />
-          <input
-            type="checkbox"
-            checked={set.completed}
-            onChange={(e) =>
-              handleSetChange(index, "completed", e.target.checked)
-            }
-            className="h-5 w-5"
-          />
+          <button
+            className="py-1 px-2 bg-red-500 text-white rounded"
+            onClick={removeMenu}
+          >
+            メニュー削除
+          </button>
         </div>
-      ))}
-
-      <div className="flex justify-end space-x-2">
+        {sets.map((set, index) => (
+          <div key={index} className="set flex items-center mb-2">
+            <div className="mr-2">{set.setId} set</div>
+            <input
+              className="mr-2 p-1 border"
+              type="number"
+              value={set.weight}
+              onChange={(e) =>
+                handleSetChange(set.setId, "weight", e.target.value)
+              }
+              placeholder="重量"
+            />
+            <input
+              className="mr-2 p-1 border"
+              type="number"
+              value={set.reps}
+              onChange={(e) =>
+                handleSetChange(set.setId, "reps", e.target.value)
+              }
+              placeholder="回数"
+            />
+            <input
+              type="checkbox"
+              checked={set.completed}
+              onChange={(e) =>
+                handleSetChange(set.setId, "completed", e.target.checked)
+              }
+            />
+            <button
+              className="ml-2 p-1 bg-red-500 text-white rounded"
+              onClick={() => handleRemoveSet(set.setId)}
+            >
+              削除
+            </button>
+          </div>
+        ))}
         <button
           type="button"
-          onClick={() =>
-            setTrainingSets([
-              ...trainingSets,
-              {
-                setNumber: trainingSets.length + 1,
-                weight: 0,
-                reps: 0,
-                completed: false,
-              },
-            ])
-          }
-          className="bg-blue-500 text-white px-4 py-2 rounded-md"
+          className="mt-2 py-1 px-2 bg-blue-500 text-white rounded"
+          onClick={handleAddSet}
         >
           セットを追加
         </button>
       </div>
-    </form>
-  );
-};
-
-export default TrainingMenu;
+    );
+}
