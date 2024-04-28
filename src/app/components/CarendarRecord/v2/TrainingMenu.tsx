@@ -56,56 +56,31 @@ export default function TrainingMenuComponet({ menuId, removeMenu }: TrainingMen
               placeholder="メニュー名"
             />
           </div>
-
-          <button
-            className="py-1 px-2 bg-red-500 text-white rounded"
-            onClick={removeMenu}
-          >
-            メニュー削除
-          </button>
         </div>
-        {sets.map((set, index) => (
-          <div key={index} className="set flex items-center mb-2">
-            <div className="mr-2">{set.setId} set</div>
-            <input
-              className="mr-2 p-1 border"
-              type="number"
-              value={set.weight}
-              onChange={(e) =>
-                handleSetChange(set.setId, "weight", e.target.value)
-              }
-              placeholder="重量"
-            />
-            <input
-              className="mr-2 p-1 border"
-              type="number"
-              value={set.reps}
-              onChange={(e) =>
-                handleSetChange(set.setId, "reps", e.target.value)
-              }
-              placeholder="回数"
-            />
-            <input
-              type="checkbox"
-              checked={set.completed}
-              onChange={(e) =>
-                handleSetChange(set.setId, "completed", e.target.checked)
-              }
-            />
-            <button
-              className="ml-2 p-1 bg-red-500 text-white rounded"
-              onClick={() => handleRemoveSet(set.setId)}
-            >
-              削除
-            </button>
-          </div>
-        ))}
+        {/* {sets.map((set) => (
+          <TrainingSet
+            key={set.setId}
+            setId={set.setId}
+            weight={set.weight}
+            reps={set.reps}
+            completed={set.completed}
+            updateSet={handleSetChange}
+            removeSet={() => handleRemoveSet(set.setId)}
+          />
+        ))} */}
         <button
           type="button"
           className="mt-2 py-1 px-2 bg-blue-500 text-white rounded"
           onClick={handleAddSet}
         >
           セットを追加
+        </button>
+        <button
+          className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+          type="button"
+          onClick={() => handleRemoveSet(menuId)}
+        >
+          メニューを削除
         </button>
       </div>
     );
