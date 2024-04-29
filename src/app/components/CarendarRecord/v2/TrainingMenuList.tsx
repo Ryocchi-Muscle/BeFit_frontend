@@ -6,13 +6,13 @@ interface MenuData {
   menuName: string;
 }
 
-export default function TrainingMenuList() {
-  const [menus, setMenus] = useState<MenuData[]>([]);
+export default function TrainingMenuList({ menus, setMenus }: { menus: MenuData[], setMenus: React.Dispatch<React.SetStateAction<MenuData[]>> }) {
+  // const [menus, setMenus] = useState<MenuData[]>([]);
 
   const addMenu = () => {
     const newMenuId = menus.length > 0 ? menus[menus.length - 1].menuId + 1 : 1;
-    setMenus((menus) => [...menus, { menuId: newMenuId, menuName: "" }]);
-   console.log("メニュー", menus);
+    setMenus([...menus, { menuId: newMenuId, menuName: "" }]);
+    console.log("メニュー", menus);
   };
 
   const removeMenu = (menuId: number) => {

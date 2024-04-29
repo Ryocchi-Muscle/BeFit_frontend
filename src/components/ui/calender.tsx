@@ -16,13 +16,14 @@ import {
   DialogTrigger,
   DialogClose,
 } from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import TrainingMenu from "@/app/components/CarendarRecord/v2/TrainingMenu";
 import TrainingMenuList from "@/app/components/CarendarRecord/v2/TrainingMenuList";
-import AddTrainigMenu from "@/app/components/CarendarRecord/v1/AddTrainigMenu";
 
 export type CalendarProps = React.ComponentProps<typeof DayPicker>;
+
+interface MenuData {
+  menuId: number;
+  menuName: string;
+}
 
 function Calendar({
   className,
@@ -32,10 +33,35 @@ function Calendar({
 }: CalendarProps) {
   const [selectedDate, setSelectedDate] = useState<Date | undefined>();
   const [isDialogOpen, setDialogOpen] = useState(false);
+  const [menus, setMenus] = useState<MenuData[]>([]);
 
   const handleDayClick = (date: Date) => {
     setSelectedDate(date);
     setDialogOpen(true);
+  };
+
+  const handleFormSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    // TODO: ここでTrainingMenuListからデータを取得する必要があります
+    // 例: const menuData = getMenusFromTrainingMenuList();
+    const endpoint = "http://localhost:3000/api/v2/training_records";
+    try {
+      const response = await fetch(endpoint, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          // その他のヘッダー(認証が必要な場合)
+        },
+        body: JSON.stringify({ menus }),
+      });
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      console.log("メニューが保存されました。");
+      setDialogOpen(false);
+    } catch (error) {
+      console.error("メニューの保存に失敗しました: ", error);
+    }
   };
 
   return (
@@ -98,15 +124,8 @@ function Calendar({
               のトレーニング詳細を入力してください。
             </DialogDescription>
             <div className="flex flex-col flex-grow overflow-y-auto">
-              <form
-                onSubmit={(e) => {
-                  e.preventDefault();
-                  console.log("Submit training details");
-                  setDialogOpen(false); // You would handle form submission here
-                  className = "flex-grow";
-                }}
-              >
-                <TrainingMenuList />
+              <form onSubmit={handleFormSubmit}>
+                <TrainingMenuList menus={menus} setMenus={setMenus} />
               </form>
             </div>
             <DialogFooter>
