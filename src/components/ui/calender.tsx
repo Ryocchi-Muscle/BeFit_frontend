@@ -107,9 +107,6 @@ function Calendar({
                 }}
               >
                 <TrainingMenuList />
-                {/* <AddTrainigMenu /> */}
-                {/* <TrainingMenu /> */}
-                {/* <TrainingMenuList /> */}
               </form>
             </div>
             <DialogFooter>
