@@ -1,17 +1,19 @@
 import React, { useState } from "react";
 import TrainingMenuComponet from "./TrainingMenu";
+import { MenuData, TrainingSet } from "../../../../../types/v2/types";
 
-interface MenuData {
-  menuId: number;
-  menuName: string;
-}
-
-export default function TrainingMenuList({ menus, setMenus }: { menus: MenuData[], setMenus: React.Dispatch<React.SetStateAction<MenuData[]>> }) {
+export default function TrainingMenuList({
+  menus,
+  setMenus,
+}: {
+  menus: MenuData[];
+  setMenus: React.Dispatch<React.SetStateAction<MenuData[]>>;
+}) {
   // const [menus, setMenus] = useState<MenuData[]>([]);
 
   const addMenu = () => {
     const newMenuId = menus.length > 0 ? menus[menus.length - 1].menuId + 1 : 1;
-    setMenus([...menus, { menuId: newMenuId, menuName: "" }]);
+    setMenus([...menus, { menuId: newMenuId, menuName: "", sets: [] }]);
     console.log("メニュー", menus);
   };
 
@@ -19,9 +21,22 @@ export default function TrainingMenuList({ menus, setMenus }: { menus: MenuData[
     setMenus((menus) => menus.filter((menu) => menu.menuId !== menuId));
   };
 
-// メニュー名を更新する関数
+  // メニュー名を更新する関数
   const updateMenuName = (menuId: number, menuName: string) => {
-    setMenus(menus.map(menu => menu.menuId === menuId ? { ...menu, menuName } : menu))
+    setMenus(
+      menus.map((menu) =>
+        menu.menuId === menuId ? { ...menu, menuName } : menu
+      )
+    );
+  };
+
+  // setを更新する関数
+  const updateSetsInMenu = (menuId: number, newSets: TrainingSet[]) => {
+    setMenus(
+      menus.map((menu) =>
+        menu.menuId === menuId ? { ...menu, sets: newSets } : menu
+      )
+    );
   };
 
   return (
@@ -35,7 +50,9 @@ export default function TrainingMenuList({ menus, setMenus }: { menus: MenuData[
             key={menu.menuId}
             menuId={menu.menuId}
             menuName={menu.menuName}
+            sets={menu.sets}
             updateMenuName={updateMenuName}
+            updateSetInMenu={updateSetsInMenu}
             removeMenu={() => removeMenu(menu.menuId)}
           />
         ))}

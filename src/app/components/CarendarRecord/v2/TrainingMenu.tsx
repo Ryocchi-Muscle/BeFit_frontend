@@ -1,18 +1,13 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import MyComboBox from "./Combobox";
-import TrainingSet from "../v1/TrainingSet";
 import TrainigSet from "./TrainigSet";
-
-interface TrainingSet {
-  setId: number;
-  weight: number;
-  reps: number;
-  completed: boolean;
-}
+import { TrainingSet } from "../../../../../types/v2/types";
 
 interface TrainingMenuProps {
   menuId: number;
   menuName: string;
+  sets: TrainingSet[];
+  updateSetInMenu: (menuId: number, newSets: TrainingSet[]) => void;
   updateMenuName: (menuId: number, newName: string) => void;
   removeMenu: (menuId: number) => void;
 }
@@ -20,22 +15,26 @@ interface TrainingMenuProps {
 export default function TrainingMenuComponet({
   menuId,
   menuName,
+  sets,
   updateMenuName,
+  updateSetInMenu,
   removeMenu,
 }: TrainingMenuProps) {
-  const [sets, setSets] = useState<TrainingSet[]>([]);
+  // const [sets, setSets] = useState<TrainingSet[]>([]);
   // const [menuName, setMenuName] = useState("");
 
   const handleAddSet = () => {
     const newSetId = sets.length > 0 ? sets[sets.length - 1].setId + 1 : 1;
-    setSets((sets) => [
+    const newSets = [
       ...sets,
       { setId: newSetId, weight: 0, reps: 0, completed: false },
-    ]);
+    ];
+    updateSetInMenu(menuId, newSets);
   };
 
   const handleRemoveSet = (setId: number) => {
-    setSets((prevSets) => prevSets.filter((set) => set.setId !== setId));
+    const filteredSets = sets.filter((set) => set.setId !== setId);
+    updateSetInMenu(menuId, filteredSets);
   };
 
   // ユーザーがセットの重量や回数を変更したときに呼び出される関数
@@ -44,18 +43,17 @@ export default function TrainingMenuComponet({
     field: keyof TrainingSet,
     value: string | boolean
   ) => {
-    setSets(
-      sets.map((set) =>
-        set.setId === setId ? { ...set, [field]: value } : set
-      )
+    const updatedSets = sets.map((set) =>
+      set.setId === setId ? { ...set, [field]: value } : set
     );
+    updateSetInMenu(menuId, updatedSets);
   };
 
   return (
     <div className="training-menu my-4 p-4 border rounded">
       <div className="menu-header flex justify-between items-center mb-4">
         <div className="flex items-center">
-          <MyComboBox />
+          {/* <MyComboBox /> */}
           <input
             className="ml-2 p-1 border"
             type="text"
