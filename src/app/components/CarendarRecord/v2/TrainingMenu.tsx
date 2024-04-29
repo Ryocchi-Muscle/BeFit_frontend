@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import MyComboBox from "./Combobox";
 import TrainigSet from "./TrainigSet";
-import { TrainingSet } from "../../../../../types/v2/types";
+import { TrainingSet } from "../../../../../types/types";
 
 interface TrainingMenuProps {
   menuId: number;

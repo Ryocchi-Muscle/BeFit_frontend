@@ -17,13 +17,10 @@ import {
   DialogClose,
 } from "@/components/ui/dialog";
 import TrainingMenuList from "@/app/components/CarendarRecord/v2/TrainingMenuList";
+import { MenuData } from "../../../types/types";
 
 export type CalendarProps = React.ComponentProps<typeof DayPicker>;
 
-interface MenuData {
-  menuId: number;
-  menuName: string;
-}
 
 function Calendar({
   className,

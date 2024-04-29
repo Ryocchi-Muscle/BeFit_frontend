@@ -1,6 +1,6 @@
 import MenuComponent from "./MenuComponent";
-import { TrainingSetProps } from "../../../../../types/v1";
-import { Set } from "../../../../../types/v1";
+import { TrainingSetProps } from "../../../../../types";
+import { Set } from "../../../../../types";
 
 const TrainingSet: React.FC<
   TrainingSetProps & { sets: Set[]; updateSets: (newSets: Set[]) => void }

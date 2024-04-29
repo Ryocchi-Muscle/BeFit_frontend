@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import TrainingMenuComponet from "./TrainingMenu";
-import { MenuData, TrainingSet } from "../../../../../types/v2/types";
+import { MenuData, TrainingSet } from "../../../../../types/types";
 
 export default function TrainingMenuList({
   menus,
@@ -9,8 +9,6 @@ export default function TrainingMenuList({
   menus: MenuData[];
   setMenus: React.Dispatch<React.SetStateAction<MenuData[]>>;
 }) {
-  // const [menus, setMenus] = useState<MenuData[]>([]);
-
   const addMenu = () => {
     const newMenuId = menus.length > 0 ? menus[menus.length - 1].menuId + 1 : 1;
     setMenus([...menus, { menuId: newMenuId, menuName: "", sets: [] }]);
