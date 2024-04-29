@@ -21,7 +21,10 @@ export default function TrainingMenuList() {
 
   return (
     <div>
-      <div className="flex flex-col items-center justify-center overflow-auto max-h-[500px]">
+      <div
+        className="flex flex-col items-center justify-center overflow-auto"
+        style={{ maxHeight: "calc(100% - 138px)" }}
+      >
         {menus.map((menu) => (
           <TrainingMenuComponet
             key={menu.menuId}
@@ -33,7 +36,7 @@ export default function TrainingMenuList() {
         <button
           type="button"
           onClick={addMenu}
-          className="mt-4 p-2 bg-blue-500 text-white rounded"
+          className="my-4 p-2 bg-blue-500 text-white rounded"
         >
           新しいメニューを追加
         </button>

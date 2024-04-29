@@ -91,30 +91,33 @@ function Calendar({
       />
       {isDialogOpen && selectedDate && (
         <Dialog open={isDialogOpen} onOpenChange={setDialogOpen}>
-          <DialogContent>
+          <DialogContent className="flex flex-col max-h-[90vh]">
             <DialogTitle>トレーニングメニュー入力</DialogTitle>
             <DialogDescription>
               {selectedDate.toLocaleDateString()}{" "}
               のトレーニング詳細を入力してください。
             </DialogDescription>
-            <form
-              onSubmit={(e) => {
-                e.preventDefault();
-                console.log("Submit training details");
-                setDialogOpen(false); // You would handle form submission here
-              }}
-            >
-              <TrainingMenuList />
-              {/* <AddTrainigMenu /> */}
-              {/* <TrainingMenu /> */}
-              {/* <TrainingMenuList /> */}
-              <DialogFooter>
-                <Button type="submit">保存</Button>
-                <DialogClose asChild>
-                  <Button variant="ghost">キャンセル</Button>
-                </DialogClose>
-              </DialogFooter>
-            </form>
+            <div className="flex flex-col flex-grow overflow-y-auto">
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  console.log("Submit training details");
+                  setDialogOpen(false); // You would handle form submission here
+                  className = "flex-grow";
+                }}
+              >
+                <TrainingMenuList />
+                {/* <AddTrainigMenu /> */}
+                {/* <TrainingMenu /> */}
+                {/* <TrainingMenuList /> */}
+              </form>
+            </div>
+            <DialogFooter>
+              <Button type="submit">保存</Button>
+              <DialogClose asChild>
+                <Button variant="ghost">キャンセル</Button>
+              </DialogClose>
+            </DialogFooter>
           </DialogContent>
         </Dialog>
       )}
