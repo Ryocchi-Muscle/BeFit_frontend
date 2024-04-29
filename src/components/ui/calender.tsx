@@ -42,8 +42,10 @@ function Calendar({
 
   const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // TODO: ここでTrainingMenuListからデータを取得する必要があります
-    // 例: const menuData = getMenusFromTrainingMenuList();
+    console.log("保存ボタンがクリックされました。");
+    const body = JSON.stringify({ menus }); // 送信するデータ
+      console.log("body:", body);
+    // TODO: ここでTrainingMenuListからデータを取得してAPIに送信する
     const endpoint = "http://localhost:3000/api/v2/training_records";
     try {
       const response = await fetch(endpoint, {
@@ -124,12 +126,14 @@ function Calendar({
               のトレーニング詳細を入力してください。
             </DialogDescription>
             <div className="flex flex-col flex-grow overflow-y-auto">
-              <form onSubmit={handleFormSubmit}>
+              <form id="training-menu-form" onSubmit={handleFormSubmit}>
                 <TrainingMenuList menus={menus} setMenus={setMenus} />
               </form>
             </div>
             <DialogFooter>
-              <Button type="submit">保存</Button>
+              <Button type="submit" form="training-menu-form">
+                保存
+              </Button>
               <DialogClose asChild>
                 <Button variant="ghost">キャンセル</Button>
               </DialogClose>

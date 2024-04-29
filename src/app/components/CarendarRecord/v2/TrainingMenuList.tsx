@@ -19,6 +19,11 @@ export default function TrainingMenuList({ menus, setMenus }: { menus: MenuData[
     setMenus((menus) => menus.filter((menu) => menu.menuId !== menuId));
   };
 
+// メニュー名を更新する関数
+  const updateMenuName = (menuId: number, menuName: string) => {
+    setMenus(menus.map(menu => menu.menuId === menuId ? { ...menu, menuName } : menu))
+  };
+
   return (
     <div>
       <div
@@ -30,6 +35,7 @@ export default function TrainingMenuList({ menus, setMenus }: { menus: MenuData[
             key={menu.menuId}
             menuId={menu.menuId}
             menuName={menu.menuName}
+            updateMenuName={updateMenuName}
             removeMenu={() => removeMenu(menu.menuId)}
           />
         ))}

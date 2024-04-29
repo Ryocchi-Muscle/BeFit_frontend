@@ -13,12 +13,18 @@ interface TrainingSet {
 interface TrainingMenuProps {
   menuId: number;
   menuName: string;
+  updateMenuName: (menuId: number, newName: string) => void;
   removeMenu: (menuId: number) => void;
 }
 
-export default function TrainingMenuComponet({ menuId, removeMenu }: TrainingMenuProps) {
+export default function TrainingMenuComponet({
+  menuId,
+  menuName,
+  updateMenuName,
+  removeMenu,
+}: TrainingMenuProps) {
   const [sets, setSets] = useState<TrainingSet[]>([]);
-  const [menuName, setMenuName] = useState("");
+  // const [menuName, setMenuName] = useState("");
 
   const handleAddSet = () => {
     const newSetId = sets.length > 0 ? sets[sets.length - 1].setId + 1 : 1;
@@ -45,45 +51,45 @@ export default function TrainingMenuComponet({ menuId, removeMenu }: TrainingMen
     );
   };
 
-    return (
-      <div className="training-menu my-4 p-4 border rounded">
-        <div className="menu-header flex justify-between items-center mb-4">
-          <div className="flex items-center">
-            <MyComboBox />
-            <input
-              className="ml-2 p-1 border"
-              type="text"
-              value={menuName}
-              onChange={(e) => setMenuName(e.target.value)}
-              placeholder="メニュー名"
-            />
-          </div>
-        </div>
-        {sets.map((set) => (
-          <TrainigSet
-            key={set.setId}
-            setId={set.setId}
-            weight={set.weight}
-            reps={set.reps}
-            completed={set.completed}
-            updateSet={handleSetChange}
-            removeSet={() => handleRemoveSet(set.setId)}
+  return (
+    <div className="training-menu my-4 p-4 border rounded">
+      <div className="menu-header flex justify-between items-center mb-4">
+        <div className="flex items-center">
+          <MyComboBox />
+          <input
+            className="ml-2 p-1 border"
+            type="text"
+            value={menuName}
+            onChange={(e) => updateMenuName(menuId, e.target.value)}
+            placeholder="メニュー名"
           />
-        ))}
-        <button
-          type="button"
-          className="mt-2 py-1 px-2 bg-blue-500 text-white rounded"
-          onClick={handleAddSet}
-        >
-          セットを追加
-        </button>
-        <button
-          className="mt-2 py-1 px-2 bg-red-500 text-white rounded"
-          type="button"
-          onClick={() => removeMenu(menuId)}
-        >
-          メニューを削除
-        </button>
+        </div>
       </div>
-    );
+      {sets.map((set) => (
+        <TrainigSet
+          key={set.setId}
+          setId={set.setId}
+          weight={set.weight}
+          reps={set.reps}
+          completed={set.completed}
+          updateSet={handleSetChange}
+          removeSet={() => handleRemoveSet(set.setId)}
+        />
+      ))}
+      <button
+        type="button"
+        className="mt-2 py-1 px-2 bg-blue-500 text-white rounded"
+        onClick={handleAddSet}
+      >
+        セットを追加
+      </button>
+      <button
+        className="mt-2 py-1 px-2 bg-red-500 text-white rounded"
+        type="button"
+        onClick={() => removeMenu(menuId)}
+      >
+        メニューを削除
+      </button>
+    </div>
+  );
 }
