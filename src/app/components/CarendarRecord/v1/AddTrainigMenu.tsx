@@ -4,7 +4,7 @@ import TrainingSet from "./TrainingSet";
 import Footer from "../../layout/Footer";
 import { useSession } from "next-auth/react";
 import { Session } from "next-auth";
-import { AddTrainigMenuProps, Set } from "../../../../../types";
+import { AddTrainigMenuProps, Set } from "../../../../../types/v1";
 
 interface CustomSession extends Session {
   user_id: string;

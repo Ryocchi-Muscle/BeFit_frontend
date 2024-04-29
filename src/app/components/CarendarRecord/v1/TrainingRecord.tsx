@@ -3,7 +3,7 @@ import React, { useState, useCallback } from "react";
 import { secureApiCall } from "@/app/utils/api";
 import TrainingDay from "./TrainingDay";
 import AddTrainigMenu from "./AddTrainigMenu";
-import { Set, TrainingMenu } from "../../../../../types"; // Set 型をインポート
+import { Set, TrainingMenu } from "../../../../../types/v1"; // Set 型をインポート
 
 export default function TrainingRecord() {
   // ここで初期値を空の配列に設定
