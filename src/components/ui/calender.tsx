@@ -40,7 +40,11 @@ function Calendar({
   const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     console.log("保存ボタンがクリックされました。");
-    const body = JSON.stringify({ menus }); // 送信するデータ
+    if (!selectedDate) {
+      console.error("日付が選択されていません。");
+      return;
+    }
+    const body = JSON.stringify({ menus, date: selectedDate.toLocaleDateString()}); // 送信するデータ
       console.log("body:", body);
     // TODO: ここでTrainingMenuListからデータを取得してAPIに送信する
     const endpoint = "http://localhost:3000/api/v2/training_records";
@@ -51,7 +55,7 @@ function Calendar({
           "Content-Type": "application/json",
           // その他のヘッダー(認証が必要な場合)
         },
-        body: JSON.stringify({ menus }),
+        body: body,
       });
       if (!response.ok) {
         throw new Error("Network response was not ok");
@@ -124,6 +128,7 @@ function Calendar({
             </DialogDescription>
             <div className="flex flex-col flex-grow overflow-y-auto">
               <form id="training-menu-form" onSubmit={handleFormSubmit}>
+
                 <TrainingMenuList menus={menus} setMenus={setMenus} />
               </form>
             </div>
