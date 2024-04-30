@@ -45,7 +45,6 @@ export const nextAuthOptions: NextAuthOptions = {
       return session;
     },
     async signIn({ user, account }) {
-      return true;
       if (!account) return false;
       const provider = account?.provider;
       const uid = user?.id;
@@ -59,6 +58,7 @@ export const nextAuthOptions: NextAuthOptions = {
             name,
           }
         );
+        console.log("signIn response", response.data);
         if (response.status === 200) {
           return true;
         } else {
