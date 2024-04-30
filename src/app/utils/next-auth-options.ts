@@ -45,8 +45,6 @@ export const nextAuthOptions: NextAuthOptions = {
       return session;
     },
     async signIn({ user, account }) {
-      console.log("signIn", user, account);
-      return true;
       if (!account) return false;
       const provider = account?.provider;
       const uid = user?.id;
