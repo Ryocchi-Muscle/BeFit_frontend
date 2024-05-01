@@ -20,9 +20,6 @@ export default function TrainingMenuComponet({
   updateSetInMenu,
   removeMenu,
 }: TrainingMenuProps) {
-  // const [sets, setSets] = useState<TrainingSet[]>([]);
-  // const [menuName, setMenuName] = useState("");
-
   const handleAddSet = () => {
     const newSetId = sets.length > 0 ? sets[sets.length - 1].setId + 1 : 1;
     const newSets = [
@@ -34,7 +31,11 @@ export default function TrainingMenuComponet({
 
   const handleRemoveSet = (setId: number) => {
     const filteredSets = sets.filter((set) => set.setId !== setId);
-    updateSetInMenu(menuId, filteredSets);
+    const renumberedSets = filteredSets.map((set, index) => ({
+      ...set,
+      setId: index + 1,
+    }));
+    updateSetInMenu(menuId, renumberedSets);
   };
 
   // ユーザーがセットの重量や回数を変更したときに呼び出される関数
@@ -63,9 +64,9 @@ export default function TrainingMenuComponet({
           />
         </div>
       </div>
-      {sets.map((set) => (
+      {sets.map((set, index) => (
         <TrainigSet
-          key={set.setId}
+          key={index}
           setId={set.setId}
           weight={set.weight}
           reps={set.reps}
