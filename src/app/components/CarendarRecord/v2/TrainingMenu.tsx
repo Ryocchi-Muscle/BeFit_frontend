@@ -80,7 +80,7 @@ export default function TrainingMenuComponet({
         className="mt-2 py-1 px-2 bg-blue-500 text-white rounded"
         onClick={handleAddSet}
       >
-        セットを追加
+        + セットを追加
       </button>
       <button
         className="mt-2 py-1 px-2 bg-red-500 text-white rounded"
