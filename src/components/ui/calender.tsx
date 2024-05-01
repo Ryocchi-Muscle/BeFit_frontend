@@ -21,7 +21,6 @@ import { MenuData } from "../../../types/types";
 
 export type CalendarProps = React.ComponentProps<typeof DayPicker>;
 
-
 function Calendar({
   className,
   classNames,
@@ -30,11 +29,21 @@ function Calendar({
 }: CalendarProps) {
   const [selectedDate, setSelectedDate] = useState<Date | undefined>();
   const [isDialogOpen, setDialogOpen] = useState(false);
-  const [menus, setMenus] = useState<MenuData[]>([]);
+  // const [menus, setMenus] = useState<MenuData[]>([]);
+  const [menuDataByDate, setMenuDataByDate] = useState<{
+    [date: string]: MenuData[];
+  }>({});
 
   const handleDayClick = (date: Date) => {
     setSelectedDate(date);
     setDialogOpen(true);
+    // 選択された日付に対応するメニューデータがなければ初期化
+    if (!menuDataByDate[date.toISOString().split("T")[0]]) {
+      setMenuDataByDate((prev) => ({
+        ...prev,
+        [date.toISOString().split("T")[0]]: [],
+      }));
+    }
   };
 
   const handleFormSubmit = async (e: React.FormEvent) => {
@@ -44,8 +53,13 @@ function Calendar({
       console.error("日付が選択されていません。");
       return;
     }
-    const body = JSON.stringify({ menus, date: selectedDate.toLocaleDateString()}); // 送信するデータ
-      console.log("body:", body);
+    const datekey = selectedDate.toISOString().split("T")[0]; // 日付をキーにする
+    const menus = menuDataByDate[datekey]; // 日付に対応するメニューデータを取得
+    const body = JSON.stringify({
+      menus,
+      date: selectedDate.toLocaleDateString(),
+    }); // 送信するデータ
+    console.log("body:", body);
     // TODO: ここでTrainingMenuListからデータを取得してAPIに送信する
     const endpoint = "http://localhost:3000/api/v2/training_records";
     try {
@@ -128,8 +142,21 @@ function Calendar({
             </DialogDescription>
             <div className="flex flex-col flex-grow overflow-y-auto">
               <form id="training-menu-form" onSubmit={handleFormSubmit}>
-
-                <TrainingMenuList menus={menus} setMenus={setMenus} />
+                <TrainingMenuList
+                  menus={
+                    menuDataByDate[selectedDate.toISOString().split("T")[0]] ||
+                    []
+                  }
+                  setMenus={(newMenus) =>
+                    setMenuDataByDate((prev) => {
+                      const dateKey = selectedDate.toISOString().split("T")[0];
+                      return {
+                        ...prev,
+                        [dateKey]: newMenus as MenuData[],
+                      };
+                    })
+                  }
+                />
               </form>
             </div>
             <DialogFooter>
