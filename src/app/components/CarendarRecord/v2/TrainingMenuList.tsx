@@ -14,11 +14,25 @@ export default function TrainingMenuList({
     setMenus([...menus, { menuId: newMenuId, menuName: "", sets: [] }]);
     console.log("メニュー", menus);
   };
-
-  const removeMenu = (menuId: number) => {
-    setMenus((menus) => menus.filter((menu) => menu.menuId !== menuId));
-  };
-
+  console.log("メニュー", menus);
+  // const removeMenu = (menuId: number) => {
+  //   console.log("Menus before removal:", menus);
+  //   const newMenus = menus.filter((menu) => menu.menuId !== menuId);
+  //   setMenus(newMenus);
+  // };
+ const removeMenu = (menuId: number) => {
+   console.log("Menus before removal:", menus);
+   // メニューを削除
+   const filteredMenus = menus.filter((menu) => menu.menuId !== menuId);
+   // 削除後のメニューで menuId を再割り当て
+   const renumberedMenus = filteredMenus.map((menu, index) => ({
+     ...menu,
+     menuId: index + 1, // menuId を 1 から連番に
+     sets: menu.sets.map((set, setIndex) => ({ ...set, setId: setIndex + 1 })), // 必要に応じて set の ID も更新
+   }));
+   setMenus(renumberedMenus);
+   console.log("Menus after removal:", renumberedMenus);
+ };
   // メニュー名を更新する関数
   const updateMenuName = (menuId: number, menuName: string) => {
     setMenus(

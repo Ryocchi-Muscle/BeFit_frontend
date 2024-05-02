@@ -37,24 +37,30 @@ function Calendar({
   const handleDayClick = (date: Date) => {
     setSelectedDate(date);
     setDialogOpen(true);
+    const dateKey = date.toISOString().split("T")[0];
     // 選択された日付に対応するメニューデータがなければ初期化
-    if (!menuDataByDate[date.toISOString().split("T")[0]]) {
+    if (!menuDataByDate[dateKey]) {
       setMenuDataByDate((prev) => ({
         ...prev,
-        [date.toISOString().split("T")[0]]: [],
+        [dateKey]: [],
       }));
     }
+    console.log("menuDataByDate:", menuDataByDate);
   };
 
   const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
     console.log("保存ボタンがクリックされました。");
     if (!selectedDate) {
       console.error("日付が選択されていません。");
       return;
     }
     const datekey = selectedDate.toISOString().split("T")[0]; // 日付をキーにする
+    console.log("selectedDate", selectedDate);
+    console.log("menuDataByDate[datekey]", menuDataByDate[datekey]);
     const menus = menuDataByDate[datekey]; // 日付に対応するメニューデータを取得
+    console.log("menus", menus);
     const body = JSON.stringify({
       menus,
       date: selectedDate.toLocaleDateString(),
@@ -147,15 +153,15 @@ function Calendar({
                     menuDataByDate[selectedDate.toISOString().split("T")[0]] ||
                     []
                   }
-                  setMenus={(newMenus) =>
-                    setMenuDataByDate((prev) => {
-                      const dateKey = selectedDate.toISOString().split("T")[0];
-                      return {
+                  setMenus={(newMenus) => {
+                    const dateKey = selectedDate?.toISOString().split("T")[0];
+                    if (dateKey) {
+                      setMenuDataByDate((prev) => ({
                         ...prev,
                         [dateKey]: newMenus as MenuData[],
-                      };
-                    })
-                  }
+                      }));
+                    }
+                  }}
                 />
               </form>
             </div>

@@ -55,6 +55,12 @@ export default function TrainingMenuComponet({
       <div className="menu-header flex justify-between items-center mb-4">
         <div className="flex items-center">
           {/* <MyComboBox /> */}
+          {/* <span className="bg-yellow-300 text-blue-800 font-bold p-2 rounded-lg shadow-md">
+            {menuId}
+          </span> */}
+          <span className="mr-3 text-lg font-bold text-white py-1 px-2 bg-gradient-to-r from-blue-500 to-teal-500 shadow-md">
+            {menuId}
+          </span>
           <input
             className="ml-2 p-1 border"
             type="text"
