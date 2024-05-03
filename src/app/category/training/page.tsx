@@ -15,9 +15,9 @@ export default function TrainingTutorialPage() {
               筋トレする上で大切なこと
             </Link>
           </Button>
-          <Button>
+          <Button asChild>
             <Link
-              href="/anatomy"
+              href="trainig/training_position"
               className="text-blue-500 hover:underline block mt-2"
             >
               筋トレの部位別解説
