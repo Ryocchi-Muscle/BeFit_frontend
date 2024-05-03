@@ -53,7 +53,7 @@ function Calendar({
 
   const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("session",  session);
+    console.log("session", session);
     console.log("保存ボタンがクリックされました。");
     if (!selectedDate) {
       console.error("日付が選択されていません。");
@@ -70,7 +70,9 @@ function Calendar({
     }); // 送信するデータ
     console.log("body:", body);
     // TODO: ここでTrainingMenuListからデータを取得してAPIに送信する
-    const endpoint = "http://localhost:3000/api/v2/training_records";
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+    const endpoint = `${apiUrl}/api/v2/training_records`;
+
     try {
       const response = await fetch(endpoint, {
         method: "POST",
