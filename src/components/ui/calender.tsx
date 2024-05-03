@@ -18,6 +18,7 @@ import {
 } from "@/components/ui/dialog";
 import TrainingMenuList from "@/app/components/CarendarRecord/v2/TrainingMenuList";
 import { MenuData } from "../../../types/types";
+import { useSession } from "next-auth/react";
 
 export type CalendarProps = React.ComponentProps<typeof DayPicker>;
 
@@ -48,9 +49,11 @@ function Calendar({
     console.log("menuDataByDate:", menuDataByDate);
   };
 
+  const { data: session } = useSession();
+
   const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
+    console.log("session",  session);
     console.log("保存ボタンがクリックされました。");
     if (!selectedDate) {
       console.error("日付が選択されていません。");
@@ -74,6 +77,7 @@ function Calendar({
         headers: {
           "Content-Type": "application/json",
           // その他のヘッダー(認証が必要な場合)
+          Authorization: `Bearer ${session?.accessToken}`,
         },
         body: body,
       });
