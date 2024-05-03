@@ -2,14 +2,28 @@
 import React from "react";
 import Link from "next/link";
 import Footer from "@/app/components/layout/Footer";
+import { Button } from "@/components/ui/button";
 
-export default function MissionPage() {
+export default function TrainingTutorialPage() {
   return (
     <div className="flex flex-col min-h-screen">
       <div className="flex-grow">
         <h1> トレーニング解説</h1>
-        <p>ここに日々のミッションに関する内容を表示します。</p>
-        <Link href="/">ホームに戻る</Link>
+        <div className="mt-4">
+          <Button asChild>
+            <Link href="/basics" className="text-blue-500 hover:underline">
+              筋トレする上で大切なこと
+            </Link>
+          </Button>
+          <Button>
+            <Link
+              href="/anatomy"
+              className="text-blue-500 hover:underline block mt-2"
+            >
+              筋トレの部位別解説
+            </Link>
+          </Button>
+        </div>
       </div>
       <Footer />
     </div>
