@@ -71,7 +71,7 @@ export default function TrainingMenuComponet({
           />
         </div>
       </div>
-      {(sets || []).map((set, index) => (
+      {sets.map((set, index) => (
         <TrainigSet
           key={index}
           setId={set.setId}

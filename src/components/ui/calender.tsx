@@ -20,6 +20,25 @@ import TrainingMenuList from "@/app/components/CarendarRecord/v2/TrainingMenuLis
 import { MenuData } from "../../../types/types";
 import { useSession } from "next-auth/react";
 
+interface ApiResponse {
+  id: number;
+  body_part: string | null;
+  exercise_name: string;
+  training_day_id: number;
+  created_at: string;
+  updated_at: string;
+  training_sets: TrainingSet[];
+}
+
+interface TrainingSet {
+  id: number;
+  set_number: number;
+  weight: number;
+  reps: number;
+  completed: boolean;
+  training_menu_id: number;
+}
+
 export type CalendarProps = React.ComponentProps<typeof DayPicker>;
 
 function toJST(date: Date): Date {
@@ -60,7 +79,19 @@ function Calendar({
       }
       const data = await response.json();
       console.log("data", data);
-      return data;
+      const transformedData = data.map((item: ApiResponse) => ({
+        menuId: item.id,
+        menuName: item.exercise_name,
+        sets: item.training_sets.map((set: TrainingSet) => ({
+          setId: set.id,
+          setNumber: set.set_number,
+          weight: set.weight,
+          reps: set.reps,
+          completed: set.completed,
+        })),
+      }));
+      console.log("transformed data", transformedData);
+      return transformedData;
     } catch (error) {
       console.error("メニューデータの取得に失敗しました: ", error);
       return null;

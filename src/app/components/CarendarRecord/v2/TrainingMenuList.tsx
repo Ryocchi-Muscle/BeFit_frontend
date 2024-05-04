@@ -14,7 +14,10 @@ export default function TrainingMenuList({
     setMenus([...menus, { menuId: newMenuId, menuName: "", sets: [] }]);
     console.log("メニュー", menus);
   };
-  console.log("メニュー", menus);
+  console.log("All menus data:", menus);
+  menus.forEach((menu) => {
+    console.log(`Menu ID: ${menu.menuId}, Sets:`, menu.sets);
+  });
   // const removeMenu = (menuId: number) => {
   //   console.log("Menus before removal:", menus);
   //   const newMenus = menus.filter((menu) => menu.menuId !== menuId);
