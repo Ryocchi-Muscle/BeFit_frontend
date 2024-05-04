@@ -20,6 +20,7 @@ export default function TrainingMenuComponet({
   updateSetInMenu,
   removeMenu,
 }: TrainingMenuProps) {
+  console.log("sets", sets);
   const handleAddSet = () => {
     const newSetId = sets.length > 0 ? sets[sets.length - 1].setId + 1 : 1;
     const newSets = [
@@ -70,7 +71,7 @@ export default function TrainingMenuComponet({
           />
         </div>
       </div>
-      {sets.map((set, index) => (
+      {(sets || []).map((set, index) => (
         <TrainigSet
           key={index}
           setId={set.setId}

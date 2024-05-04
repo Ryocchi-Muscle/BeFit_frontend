@@ -22,6 +22,11 @@ import { useSession } from "next-auth/react";
 
 export type CalendarProps = React.ComponentProps<typeof DayPicker>;
 
+function toJST(date: Date): Date {
+  const JST_OFFSET = 9 * 60 * 60 * 1000; // 9時間をミリ秒に変換
+  return new Date(date.getTime() + JST_OFFSET);
+}
+
 function Calendar({
   className,
   classNames,
@@ -30,27 +35,64 @@ function Calendar({
 }: CalendarProps) {
   const [selectedDate, setSelectedDate] = useState<Date | undefined>();
   const [isDialogOpen, setDialogOpen] = useState(false);
-  // const [menus, setMenus] = useState<MenuData[]>([]);
   const [menuDataByDate, setMenuDataByDate] = useState<{
     [date: string]: MenuData[];
   }>({});
-
-  const handleDayClick = (date: Date) => {
-    setSelectedDate(date);
-    setDialogOpen(true);
-    const dateKey = date.toISOString().split("T")[0];
-    // 選択された日付に対応するメニューデータがなければ初期化
-    if (!menuDataByDate[dateKey]) {
-      setMenuDataByDate((prev) => ({
-        ...prev,
-        [dateKey]: [],
-      }));
-    }
-    console.log("menuDataByDate:", menuDataByDate);
-  };
-
   const { data: session } = useSession();
 
+  // メニューデータを取得する関数
+  const fetchMenuData = async (data: Date) => {
+    const dateKey = data.toISOString().split("T")[0];
+    console.log("dateKey", dateKey);
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+    const endpoint = `${apiUrl}/api/v2/training_records/${dateKey}`;
+    console.log("endpoint", endpoint);
+    try {
+      const response = await fetch(endpoint, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${session?.accessToken}`,
+        },
+      });
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      const data = await response.json();
+      console.log("data", data);
+      return data;
+    } catch (error) {
+      console.error("メニューデータの取得に失敗しました: ", error);
+      return null;
+    }
+  };
+
+  const handleDayClick = async (date: Date) => {
+    const jstDate = toJST(date);
+    setSelectedDate(jstDate);
+    const menuData = await fetchMenuData(jstDate);
+    if (menuData) {
+      const dateKey = jstDate.toISOString().split("T")[0];
+      setMenuDataByDate((prev) => ({
+        ...prev,
+        [dateKey]: menuData,
+      }));
+    }
+    setDialogOpen(true);
+    console.log("menuDataByDate", menuDataByDate);
+
+    // 選択された日付に対応するメニューデータがなければ初期化
+    // if (!menuDataByDate[dateKey]) {
+    //   setMenuDataByDate((prev) => ({
+    //     ...prev,
+    //     [dateKey]: [],
+    //   }));
+    // }
+    // console.log("menuDataByDate:", menuDataByDate);
+    // console.log("date", date);
+  };
+
+  // フォームが送信されたときに呼び出される関数
   const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     console.log("session", session);

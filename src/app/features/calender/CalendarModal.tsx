@@ -1,12 +1,26 @@
 import React, { useState } from "react";
 
-export const TrainingModal = ({ isOpen, onClose, selectedDate }: { isOpen: boolean, onClose: any, selectedDate: any }) => {
+export const TrainingModal = ({
+  isOpen,
+  onClose,
+  selectedDate,
+}: {
+  isOpen: boolean;
+  onClose: any;
+  selectedDate: any;
+}) => {
   const [trainingDetails, setTrainingDetails] = useState("");
+  const [flashMessage, setFlashMessage] = useState("");
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     console.log("Training details:", trainingDetails);
     onClose(); // モーダルを閉じる
+    setFlashMessage("保存しました");
+
+    setTimeout(() => {
+      setFlashMessage("");
+    }, 2000);
   };
 
   return isOpen ? (
@@ -24,6 +38,8 @@ export const TrainingModal = ({ isOpen, onClose, selectedDate }: { isOpen: boole
           />
           <button type="submit">保存</button>
         </form>
+        {flashMessage && (<div className="alert alert-success" role="alert">{flashMessage}</div>
+        )}
       </div>
     </div>
   ) : null;
