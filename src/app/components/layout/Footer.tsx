@@ -6,7 +6,7 @@ type Props = {
 };
 
 const Footer: React.FC<Props> = ({ children, className }) => {
-  const combinedClassName = `flex flex-col fixed bottom-0 w-screen ${className}`;
+  const combinedClassName = `fixed inset-x-0 bottom-0 ${className}`;
   return (
     <div className={combinedClassName}>
       <main>{children}</main>
