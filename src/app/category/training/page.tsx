@@ -17,7 +17,7 @@ export default function TrainingTutorialPage() {
           </Button>
           <Button asChild>
             <Link
-              href="trainig/training_position"
+              href="training/training_position"
               className="text-blue-500 hover:underline block mt-2"
             >
               筋トレの部位別解説

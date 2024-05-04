@@ -1,11 +1,11 @@
 import React from "react";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 
 const TrainingPartsSelector = () => {
   const router = useRouter();
   const handleSelectChange = (e: any) => {
     const selectedPart = e.target.value;
-    router.push(`/training/${selectedPart}`);
+    router.push(`${selectedPart}`);
   };
 
   return (
