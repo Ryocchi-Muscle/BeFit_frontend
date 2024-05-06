@@ -174,7 +174,7 @@ function Calendar({
       }
       setFlashMessage("保存しました"); // Update the argument to an empty string
       console.log("setFlashMessage", setFlashMessage);
-      console.log("メニューが保存されました。");
+      // console.log("メニューが保存されました。");
       setTimeout(() => {
         setFlashMessage(null);
       }, 3000);
