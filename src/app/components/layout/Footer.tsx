@@ -1,4 +1,5 @@
 import React from "react";
+import { FaRegCalendar, FaHistory, FaDumbbell, FaSearch } from "react-icons/fa";
 
 type Props = {
   children?: React.ReactNode;
@@ -15,15 +16,12 @@ const Footer: React.FC<Props> = ({ children, className }) => {
           <ul className="flex flex-grow justify-evenly">
             <li>
               <a href="/category/record" className="hover:underline text-black">
-                記録
+                <FaHistory />
               </a>
             </li>
             <li>
-              <a
-                href="/category/task"
-                className="hover:underline text-black"
-              >
-                日々のミッション
+              <a href="/category/task" className="hover:underline text-black">
+                <FaRegCalendar />
               </a>
             </li>
             <li>
@@ -31,12 +29,12 @@ const Footer: React.FC<Props> = ({ children, className }) => {
                 href="/category/training"
                 className="hover:underline text-black"
               >
-                トレーニング
+                <FaDumbbell />
               </a>
             </li>
             <li>
               <a href="/category/search" className="hover:underline text-black">
-                動画検索
+                <FaSearch />
               </a>
             </li>
           </ul>
