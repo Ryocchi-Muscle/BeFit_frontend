@@ -55,6 +55,7 @@ export default function TrainigSet({
       <button
         className="ml-3 bg-red-500 hover:bg-red-600 text-white p-2 rounded"
         onClick={removeSet}
+        type="button"
       >
         削除
       </button>
