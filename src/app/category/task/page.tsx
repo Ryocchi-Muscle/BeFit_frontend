@@ -24,7 +24,7 @@ export default function TaskPage({ params }: { params: { day: string } }) {
             className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative"
             role="alert"
           >
-            <strong className="font-bold">成功！</strong>
+            <strong className="font-bold"></strong>
             <span className="block sm:inline">{flashMessage}</span>
             <button
               className="absolute top-0 bottom-0 right-0 px-4 py-3"
