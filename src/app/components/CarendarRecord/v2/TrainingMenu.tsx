@@ -25,7 +25,7 @@ export default function TrainingMenuComponet({
     const newSetId = sets.length > 0 ? sets[sets.length - 1].setId + 1 : 1;
     const newSets = [
       ...sets,
-      { setId: newSetId, weight: 0, reps: 0, completed: false },
+      { setId: newSetId, setNumber: newSetId, weight: 0, reps: 0, completed: false },
     ];
     updateSetInMenu(menuId, newSets);
   };
