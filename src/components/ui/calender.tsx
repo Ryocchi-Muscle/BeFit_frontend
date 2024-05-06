@@ -41,6 +41,7 @@ interface TrainingSet {
 
 export type CalendarProps = React.ComponentProps<typeof DayPicker>;
 
+// UTCからJSTに変換する関数
 function toJST(date: Date): Date {
   const JST_OFFSET = 9 * 60 * 60 * 1000; // 9時間をミリ秒に変換
   return new Date(date.getTime() + JST_OFFSET);
@@ -77,18 +78,33 @@ function Calendar({
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }
-      const data = await response.json();
+      const data: ApiResponse[] = await response.json();
       console.log("data", data);
-      const transformedData = data.map((item: ApiResponse) => ({
-        menuId: item.id,
+      // const transformedData = data.map((item: ApiResponse) => ({
+      //   menuId: item.id,
+      //   menuName: item.exercise_name,
+      //   sets: item.training_sets.map((set: TrainingSet) => ({
+      //     setId: set.id,
+      //     setNumber: set.set_number,
+      //     weight: set.weight,
+      //     reps: set.reps,
+      //     completed: set.completed,
+      //   })),
+      // }));
+
+      // backからのメニューデータを変換
+      const transformedData = data.map((item, menuIndex) => ({
+        menuId: menuIndex + 1,
         menuName: item.exercise_name,
-        sets: item.training_sets.map((set: TrainingSet) => ({
-          setId: set.id,
-          setNumber: set.set_number,
-          weight: set.weight,
-          reps: set.reps,
-          completed: set.completed,
-        })),
+        sets: item.training_sets
+          .sort((a, b) => a.set_number - b.set_number)
+          .map((set, setIndex) => ({
+            setId: set.id,
+            setNumber: setIndex + 1,
+            weight: set.weight,
+            reps: set.reps,
+            completed: set.completed,
+          })),
       }));
       console.log("transformed data", transformedData);
       return transformedData;
@@ -98,29 +114,52 @@ function Calendar({
     }
   };
 
+  // const handleDayClick = async (date: Date) => {
+  //   const jstDate = toJST(date);
+  //   setSelectedDate(jstDate);
+  //   const menuData = await fetchMenuData(jstDate);
+  //   const dateKey = jstDate.toISOString().split("T")[0];
+  //   if (menuData) {
+  //     setMenuDataByDate((prev) => ({
+  //       ...prev,
+  //       [dateKey]: menuData,
+  //     }));
+  //   } else {
+  //     setMenuDataByDate((prev) => ({
+  //       ...prev,
+  //       [dateKey]: [],
+  //     }));
+  //   }
+  //   setDialogOpen(true);
+  //   console.log("menuDataByDate", menuDataByDate);
+  // };
+
+  // 日付がクリックされたときに呼び出される関数
   const handleDayClick = async (date: Date) => {
     const jstDate = toJST(date);
     setSelectedDate(jstDate);
     const menuData = await fetchMenuData(jstDate);
+    const dateKey = jstDate.toISOString().split("T")[0];
     if (menuData) {
-      const dateKey = jstDate.toISOString().split("T")[0];
-      setMenuDataByDate((prev) => ({
-        ...prev,
-        [dateKey]: menuData,
-      }));
+      setMenuDataByDate({
+        ...menuDataByDate,
+        [dateKey]: menuData.map((menu, index) => ({
+          ...menu,
+          menuId: index + 1,
+          sets: menu.sets.map((set, setIndex) => ({
+            ...set,
+            setId: setIndex + 1,
+          })),
+        })),
+      });
+    }
+    else {
+      setMenuDataByDate({
+        ...menuDataByDate,
+        [dateKey]: [],
+      });
     }
     setDialogOpen(true);
-    console.log("menuDataByDate", menuDataByDate);
-
-    // 選択された日付に対応するメニューデータがなければ初期化
-    // if (!menuDataByDate[dateKey]) {
-    //   setMenuDataByDate((prev) => ({
-    //     ...prev,
-    //     [dateKey]: [],
-    //   }));
-    // }
-    // console.log("menuDataByDate:", menuDataByDate);
-    // console.log("date", date);
   };
 
   // フォームが送信されたときに呼び出される関数
@@ -156,6 +195,7 @@ function Calendar({
         },
         body: body,
       });
+      console.log("body:", body);
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }
