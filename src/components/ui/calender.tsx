@@ -1,7 +1,7 @@
 "use client";
 
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { DayPicker } from "react-day-picker";
+import { DayPicker, DayPickerProps } from "react-day-picker";
 import React, { useState } from "react";
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button";
@@ -40,6 +40,9 @@ interface TrainingSet {
 }
 
 export type CalendarProps = React.ComponentProps<typeof DayPicker>;
+export type ExtendedCalendarProps = DayPickerProps & {
+  setFlashMessage: (message: string | null) => void;
+};
 
 // UTCからJSTに変換する関数
 function toJST(date: Date): Date {
@@ -50,9 +53,10 @@ function toJST(date: Date): Date {
 function Calendar({
   className,
   classNames,
+  setFlashMessage,
   showOutsideDays = true,
   ...props
-}: CalendarProps) {
+}: ExtendedCalendarProps) {
   const [selectedDate, setSelectedDate] = useState<Date | undefined>();
   const [isDialogOpen, setDialogOpen] = useState(false);
   const [menuDataByDate, setMenuDataByDate] = useState<{
@@ -80,17 +84,6 @@ function Calendar({
       }
       const data: ApiResponse[] = await response.json();
       console.log("data", data);
-      // const transformedData = data.map((item: ApiResponse) => ({
-      //   menuId: item.id,
-      //   menuName: item.exercise_name,
-      //   sets: item.training_sets.map((set: TrainingSet) => ({
-      //     setId: set.id,
-      //     setNumber: set.set_number,
-      //     weight: set.weight,
-      //     reps: set.reps,
-      //     completed: set.completed,
-      //   })),
-      // }));
 
       // backからのメニューデータを変換
       const transformedData = data.map((item, menuIndex) => ({
@@ -114,26 +107,6 @@ function Calendar({
     }
   };
 
-  // const handleDayClick = async (date: Date) => {
-  //   const jstDate = toJST(date);
-  //   setSelectedDate(jstDate);
-  //   const menuData = await fetchMenuData(jstDate);
-  //   const dateKey = jstDate.toISOString().split("T")[0];
-  //   if (menuData) {
-  //     setMenuDataByDate((prev) => ({
-  //       ...prev,
-  //       [dateKey]: menuData,
-  //     }));
-  //   } else {
-  //     setMenuDataByDate((prev) => ({
-  //       ...prev,
-  //       [dateKey]: [],
-  //     }));
-  //   }
-  //   setDialogOpen(true);
-  //   console.log("menuDataByDate", menuDataByDate);
-  // };
-
   // 日付がクリックされたときに呼び出される関数
   const handleDayClick = async (date: Date) => {
     const jstDate = toJST(date);
@@ -152,8 +125,7 @@ function Calendar({
           })),
         })),
       });
-    }
-    else {
+    } else {
       setMenuDataByDate({
         ...menuDataByDate,
         [dateKey]: [],
@@ -186,6 +158,7 @@ function Calendar({
     const endpoint = `${apiUrl}/api/v2/training_records`;
 
     try {
+      console.log(setFlashMessage);
       const response = await fetch(endpoint, {
         method: "POST",
         headers: {
@@ -199,10 +172,16 @@ function Calendar({
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }
+      setFlashMessage("保存しました"); // Update the argument to an empty string
+      console.log("setFlashMessage", setFlashMessage);
       console.log("メニューが保存されました。");
+      setTimeout(() => {
+        setFlashMessage(null);
+      }, 3000);
       setDialogOpen(false);
     } catch (error) {
       console.error("メニューの保存に失敗しました: ", error);
+      setFlashMessage("保存に失敗しました。");
     }
   };
 
