@@ -10,12 +10,6 @@ function RecordPage() {
     <div className="flex flex-col min-h-screen">
       <div className="flex-grow">
         <h1 className="text-4xl ">記録</h1>
-        <Calendar
-          mode="single"
-          selected={date}
-          onSelect={setDate}
-          className="rounded-md border"
-        />
       </div>
       <Footer />
     </div>
