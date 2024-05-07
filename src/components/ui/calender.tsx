@@ -40,9 +40,9 @@ interface TrainingSet {
 }
 
 export type CalendarProps = React.ComponentProps<typeof DayPicker>;
-export type ExtendedCalendarProps = DayPickerProps & {
-  setFlashMessage: (message: string | null) => void;
-};
+// export type ExtendedCalendarProps = DayPickerProps & {
+//   setFlashMessage: (message: string | null) => void;
+// };
 
 // UTCからJSTに変換する関数
 function toJST(date: Date): Date {
@@ -53,10 +53,9 @@ function toJST(date: Date): Date {
 function Calendar({
   className,
   classNames,
-  setFlashMessage,
   showOutsideDays = true,
   ...props
-}: ExtendedCalendarProps) {
+}: CalendarProps) {
   const [selectedDate, setSelectedDate] = useState<Date | undefined>();
   const [isDialogOpen, setDialogOpen] = useState(false);
   const [menuDataByDate, setMenuDataByDate] = useState<{
@@ -158,7 +157,6 @@ function Calendar({
     const endpoint = `${apiUrl}/api/v2/training_records`;
 
     try {
-      console.log(setFlashMessage);
       const response = await fetch(endpoint, {
         method: "POST",
         headers: {
@@ -172,16 +170,10 @@ function Calendar({
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }
-      setFlashMessage("保存しました"); // Update the argument to an empty string
-      console.log("setFlashMessage", setFlashMessage);
-      // console.log("メニューが保存されました。");
-      setTimeout(() => {
-        setFlashMessage(null);
-      }, 3000);
+      console.log("メニューの保存に成功しました。");
       setDialogOpen(false);
     } catch (error) {
       console.error("メニューの保存に失敗しました: ", error);
-      setFlashMessage("保存に失敗しました。");
     }
   };
 
