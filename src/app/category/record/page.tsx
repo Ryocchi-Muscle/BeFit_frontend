@@ -9,7 +9,6 @@ function RecordPage() {
       <div className="flex-grow">
         <h1 className="text-4xl ">記録</h1>
       </div>
-
       <Footer />
     </div>
   );
