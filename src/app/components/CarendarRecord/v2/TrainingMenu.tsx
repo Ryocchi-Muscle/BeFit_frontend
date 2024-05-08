@@ -25,7 +25,13 @@ export default function TrainingMenuComponet({
     const newSetId = sets.length > 0 ? sets[sets.length - 1].setId + 1 : 1;
     const newSets = [
       ...sets,
-      { setId: newSetId, setNumber: newSetId, weight: 0, reps: 0, completed: false },
+      {
+        setId: newSetId,
+        setNumber: newSetId,
+        weight: 0,
+        reps: 0,
+        completed: false,
+      },
     ];
     updateSetInMenu(menuId, newSets);
   };
@@ -52,18 +58,15 @@ export default function TrainingMenuComponet({
   };
 
   return (
-    <div className="training-menu my-4 p-4 border rounded">
+    <div className="training-menu my-4 p-4 border rounded shadow">
       <div className="menu-header flex justify-between items-center mb-4">
-        <div className="flex items-center">
-          {/* <MyComboBox /> */}
-          {/* <span className="bg-yellow-300 text-blue-800 font-bold p-2 rounded-lg shadow-md">
-            {menuId}
-          </span> */}
-          <span className="mr-3 text-lg font-bold text-white py-1 px-2 bg-gradient-to-r from-blue-500 to-teal-500 shadow-md">
+        <div className="flex items-center space-x-3 flex-grow">
+          <span className="mr-3 text-lg font-bold text-white py-1 px-2 bg-gradient-to-r from-blue-500 to-teal-500 shadow-md flex-none">
             {menuId}
           </span>
+          <MyComboBox />
           <input
-            className="ml-2 p-1 border"
+            className="ml-2 p-1 border flex-grow"
             type="text"
             value={menuName}
             onChange={(e) => updateMenuName(menuId, e.target.value)}
