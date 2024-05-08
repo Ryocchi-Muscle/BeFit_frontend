@@ -9,15 +9,14 @@ const body_part = [
   { id: 3, name: "肩" },
   { id: 4, name: "腕" },
   { id: 5, name: "脚" },
+  { id: 6, name: "腹" },
 ];
-
-
 
 function MyComboBox() {
   const [selectedPerson, setSelectedPerson] = React.useState(body_part[0]);
 
   return (
-    <div className="w-20">
+    <div className="w-12.5">
       <Listbox value={selectedPerson} onChange={setSelectedPerson}>
         {({ open }) => (
           <Fragment>
@@ -28,7 +27,7 @@ function MyComboBox() {
                 aria-hidden="true"
               />
             </Listbox.Button>
-            <Listbox.Options className="absolute w-full py-1 mt-1 overflow-auto text-base bg-white rounded-md shadow-lg max-h-60 ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
+            <Listbox.Options className="absolute w-full py-1 mt-1 overflow-auto text-base bg-white rounded-md shadow-lg max-h-60 ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm z-50">
               {body_part.map((person) => (
                 <Listbox.Option
                   key={person.id}
