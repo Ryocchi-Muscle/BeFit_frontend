@@ -13,7 +13,7 @@ export default function TrainingMenuList({
     const newMenuId = menus.length > 0 ? menus[menus.length - 1].menuId + 1 : 1;
     setMenus([
       ...menus,
-      { menuId: newMenuId, menuName: "", body_part: "", sets: [] },
+      { menuId: newMenuId, menuName: "", body_part: null, sets: [] },
     ]);
     console.log("メニュー", menus);
   };

@@ -16,8 +16,8 @@ const MyComboBox: React.FC<Props> = ({
   selectedBodyPart,
   onBodyPartSelect,
 }) => {
-  const [selected, setSelected] = useState<BodyPart>(
-    bodyParts.find((bp) => bp.name === selectedBodyPart) || bodyParts[0]
+  const [selected, setSelected] = useState<BodyPart | null>(
+    bodyParts.find((bp) => bp.name === selectedBodyPart) || null
   );
 
   const handleChange = (part: BodyPart) => {
@@ -31,7 +31,9 @@ const MyComboBox: React.FC<Props> = ({
         {({ open }) => (
           <Fragment>
             <Listbox.Button className="relative w-full p-2 text-left bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-orange-300 focus-visible:ring-offset-2 sm:text-sm">
-              <span className="block truncate">{selected.name}</span>
+              <span className="block truncate">
+                {selected ? selected.name : "部位"}
+              </span>
               <ChevronUpDownIcon
                 className="w-5 h-5 absolute right-2 top-2"
                 aria-hidden="true"
