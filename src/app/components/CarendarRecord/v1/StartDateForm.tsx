@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, FormEvent } from "react";
 import axios from "axios";
-import { useTrainingSession } from "../../../hooks/useTrainingSession";
+import { useTrainingSession } from "../../../../hooks/useTrainingSession";
 import Button from "@mui/material/Button";
 import { Box, Modal } from "@mui/material";
 
