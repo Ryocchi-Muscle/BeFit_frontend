@@ -26,7 +26,7 @@ const MyComboBox: React.FC<Props> = ({
   };
 
   return (
-    <div className="w-20">
+    <div className="relative w-20">
       <Listbox value={selected} onChange={handleChange}>
         {({ open }) => (
           <Fragment>
@@ -37,7 +37,7 @@ const MyComboBox: React.FC<Props> = ({
                 aria-hidden="true"
               />
             </Listbox.Button>
-            <Listbox.Options className="absolute w-full py-1 mt-1 overflow-auto text-base bg-white rounded-md shadow-lg max-h-60 ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
+            <Listbox.Options className="absolute w-full py-1  overflow-auto text-base bg-white rounded-md shadow-lg max-h-60 ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm z-10">
               {bodyParts.map((part) => (
                 <Listbox.Option
                   key={part.id}
