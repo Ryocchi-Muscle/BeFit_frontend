@@ -1,7 +1,6 @@
 "use client";
 import Footer from "@/app/components/layout/Footer";
-// import TrainingChart from "@/components/ui/TrainingChart";
-// import WeekSelector from "@/components/ui/WeekSelector";
+import WeeklySummaryChart from "@/components/ui/TrainingChart";
 import React, { useState } from "react";
 
 // 初期値を現在日を含む週の開始日に設定するヘルパー関数
@@ -27,8 +26,7 @@ function RecordPage() {
     <div className="flex flex-col min-h-screen">
       <div className="flex-grow">
         <h1 className="text-4xl">記録</h1>
-        {/* <WeekSelector onWeekSelected={setSelectedDate}initialDate={selectedDate} />
-        <TrainingChart date={selectedDate} /> */}
+        <WeeklySummaryChart startDate={selectedDate} />
       </div>
       <Footer />
     </div>
