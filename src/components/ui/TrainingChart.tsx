@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import { Bar } from "react-chartjs-2";
 import "chart.js/auto";
@@ -39,7 +40,9 @@ const options = {
         pinch: {
           enabled: true, // ピンチでのズームを有効化 (タッチデバイス用)
         },
-        mode: "x", // 'x' 軸方向にズーム
+        mode: (chart: any) => {
+          return "x";
+        }, // 'x' 軸方向にズーム
       },
     },
   },
@@ -69,7 +72,7 @@ const WeeklySummaryChart = ({ startDate }: { startDate: string }) => {
       },
     ],
   };
-  return <Bar data={chartData} />;
+  return <Bar options={options as any} data={chartData} />;
 };
 
 export default WeeklySummaryChart;
