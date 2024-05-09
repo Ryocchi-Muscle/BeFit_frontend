@@ -1,72 +1,75 @@
-import React, { useEffect, useState } from "react";
-import { Bar, Doughnut } from "react-chartjs-2";
-import axios from "axios";
+import React from "react";
+import { Bar } from "react-chartjs-2";
 import "chart.js/auto";
-import { useSession } from "next-auth/react";
-import useSWR from "swr";
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend,
+} from "chart.js";
+import zoomPlugin from "chartjs-plugin-zoom";
+import useWeeklySummary from "@/hooks/useWeeklySummary";
 
-interface ChartDataProps {
-  date: string;
-}
+// Chart.js とそのプラグインを登録
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend,
+  zoomPlugin
+);
 
-interface ChartData {
-  labels: string[];
-  datasets: {
-    label: string;
-    data: number[];
-    backgroundColor: string;
-    borderColor: string;
-    borderWidth: number;
-  }[];
-}
-
-const fetcher = (url: string, accessToken: string) =>
-  axios
-    .get(url, {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${accessToken}`,
+const options = {
+  responsive: true,
+  plugins: {
+    zoom: {
+      pan: {
+        enabled: true,
+        mode: "x",
       },
-    })
-    .then((res) => res.data);
-
-const TrainingChart: React.FC<ChartDataProps> = ({ date }) => {
-  const apiUrl = process.env.NEXT_PUBLIC_API_URL;
-  const { data: session } = useSession();
-  const endpoint = `${apiUrl}/api/v2/training_records/weekly_summary?date=${date}`;
-  console.log("endpoint", endpoint);
-
-  console.log("session", session);
-
-  const { data, error } = useSWR(
-    session?.accessToken ? [endpoint, session.accessToken] : null,
-    fetcher,
-    {
-      onSuccess: (data) => {
-        console.log("Data fetched successfully:", data);
+      zoom: {
+        wheel: {
+          enabled: true, // マウスホイールでのズームを有効化
+        },
+        pinch: {
+          enabled: true, // ピンチでのズームを有効化 (タッチデバイス用)
+        },
+        mode: "x", // 'x' 軸方向にズーム
       },
-    }
-  );
+    },
+  },
+  scales: {
+    x: {
+      type: "time",
+      time: {
+        unit: "week",
+      },
+    },
+  },
+};
+
+const WeeklySummaryChart = ({ startDate }: { startDate: string }) => {
+  const { data, isLoading, isError } = useWeeklySummary(startDate);
+
+  if (isLoading) return <div>Loading...</div>;
+  if (isError) return <div>Error</div>;
 
   const chartData = {
-    labels: ["Total Weight"],
-    datasets: data
-      ? [
-          {
-            label: "Weekly Training Volume",
-            data: [data.total_weight],
-            backgroundColor: "rgba(53, 162, 235, 0.5)",
-            borderColor: "rgba(53, 162, 235, 1)",
-            borderWidth: 1,
-          },
-        ]
-      : [],
+    labels: Object.keys(data || {}),
+    datasets: [
+      {
+        label: "Total Weight by Body Part",
+        data: Object.values(data || {}),
+        backgroundColor: ["rgba(255, 99, 132, 0.2)", "rgba(54, 162, 235, 0.2)"],
+      },
+    ],
   };
-
-  if (error) return <div>Failed to load data!</div>;
-  if (!data) return <div>Loading...</div>;
-
   return <Bar data={chartData} />;
 };
 
-export default TrainingChart;
+export default WeeklySummaryChart;
