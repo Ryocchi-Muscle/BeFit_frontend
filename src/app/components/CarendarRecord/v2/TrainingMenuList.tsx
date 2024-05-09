@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import TrainingMenuComponet from "./TrainingMenu";
 import { MenuData, TrainingSet } from "../../../../../types/types";
 
@@ -13,7 +13,7 @@ export default function TrainingMenuList({
     const newMenuId = menus.length > 0 ? menus[menus.length - 1].menuId + 1 : 1;
     setMenus([
       ...menus,
-      { menuId: newMenuId, menuName: "", body_part: "", sets: [] },
+      { menuId: newMenuId, menuName: "", body_part: null, sets: [] },
     ]);
     console.log("メニュー", menus);
   };
@@ -44,7 +44,11 @@ export default function TrainingMenuList({
   };
 
   const updateBodyPart = (menuId: number, newBodyPart: string) => {
-    setMenus(menus.map((menu) => (menu.menuId === menuId ? { ...menu, body_part: newBodyPart } : menu)));
+    setMenus(
+      menus.map((menu) =>
+        menu.menuId === menuId ? { ...menu, body_part: newBodyPart } : menu
+      )
+    );
   };
 
   // setを更新する関数
