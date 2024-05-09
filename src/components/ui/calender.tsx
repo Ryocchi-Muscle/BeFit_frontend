@@ -40,9 +40,6 @@ interface TrainingSet {
 }
 
 export type CalendarProps = React.ComponentProps<typeof DayPicker>;
-// export type ExtendedCalendarProps = DayPickerProps & {
-//   setFlashMessage: (message: string | null) => void;
-// };
 
 // UTCからJSTに変換する関数
 function toJST(date: Date): Date {
@@ -88,6 +85,7 @@ function Calendar({
       const transformedData = data.map((item, menuIndex) => ({
         menuId: menuIndex + 1,
         menuName: item.exercise_name,
+        body_part: item.body_part,
         sets: item.training_sets
           .sort((a, b) => a.set_number - b.set_number)
           .map((set, setIndex) => ({
@@ -147,8 +145,9 @@ function Calendar({
     console.log("menuDataByDate[datekey]", menuDataByDate[datekey]);
     const menus = menuDataByDate[datekey]; // 日付に対応するメニューデータを取得
     console.log("menus", menus);
+
     const body = JSON.stringify({
-      menus,
+      menus: menus,
       date: selectedDate.toLocaleDateString(),
     }); // 送信するデータ
     console.log("body:", body);

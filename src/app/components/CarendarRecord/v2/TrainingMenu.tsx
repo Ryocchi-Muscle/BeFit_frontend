@@ -2,25 +2,35 @@ import React, { useEffect, useState } from "react";
 import MyComboBox from "./Combobox";
 import TrainigSet from "./TrainigSet";
 import { TrainingSet } from "../../../../../types/types";
+import { bodyParts } from "@/data/bodyParts";
 
 interface TrainingMenuProps {
   menuId: number;
   menuName: string;
+  bodyPart: string | null;
   sets: TrainingSet[];
   updateSetInMenu: (menuId: number, newSets: TrainingSet[]) => void;
   updateMenuName: (menuId: number, newName: string) => void;
+  updateBodyPart: (menuId: number, bodyPart: string) => void;
   removeMenu: (menuId: number) => void;
 }
+
 
 export default function TrainingMenuComponet({
   menuId,
   menuName,
+  bodyPart,
   sets,
   updateMenuName,
+  updateBodyPart,
   updateSetInMenu,
   removeMenu,
 }: TrainingMenuProps) {
   console.log("sets", sets);
+
+  const handleBodyPartChange = (newBodyPart: string) => {
+    updateBodyPart(menuId, newBodyPart);
+  };
   const handleAddSet = () => {
     const newSetId = sets.length > 0 ? sets[sets.length - 1].setId + 1 : 1;
     const newSets = [
@@ -64,7 +74,11 @@ export default function TrainingMenuComponet({
           <span className="mr-3 text-lg font-bold text-white py-1 px-2 bg-gradient-to-r from-blue-500 to-teal-500 shadow-md flex-none">
             {menuId}
           </span>
-          <MyComboBox />
+          <MyComboBox
+            bodyParts={bodyParts}
+            selectedBodyPart={bodyPart}
+            onBodyPartSelect={handleBodyPartChange}
+          />
           <input
             className="ml-2 p-1 border flex-grow"
             type="text"
