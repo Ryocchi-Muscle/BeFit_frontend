@@ -1,16 +1,15 @@
 // components/TrainingSessionDetails.tsx
 // データの表示するコンポーネント
-'use client';
+"use client";
 import React from "react";
-import { useTrainingSession } from "@/app/hooks/useTrainingSession";
-
+import { useTrainingSession } from "@/hooks/useTrainingSession";
 
 const TrainingSessionDetails: React.FC<{ sessionId: number }> = ({
   sessionId,
 }) => {
   console.log(sessionId);
   const { sessionData, isLoading, isError } = useTrainingSession(sessionId);
-console.log("sessionData", sessionData)
+  console.log("sessionData", sessionData);
   if (isLoading) return <div>Loading...</div>;
   if (isError || !sessionData) return <div>Error!</div>;
 
