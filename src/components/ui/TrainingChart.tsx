@@ -13,6 +13,7 @@ import {
 import "chartjs-adapter-date-fns";
 import zoomPlugin from "chartjs-plugin-zoom";
 import useTrainingData from "@/hooks/TrainingData";
+import { parseISO, startOfWeek, format } from 'date-fns';
 
 // Chart.js とそのプラグインを登録
 ChartJS.register(
@@ -29,9 +30,19 @@ const options = {
   responsive: true,
   plugins: {
     zoom: {
+      limits: {
+        x: { min: "2024-01-01", max: "2024-03-31" }, // 3ヶ月間の制限
+        minRange: 7 * 24 * 60 * 60 * 1000, // 最小ズーム範囲を1週間に設定
+      },
       pan: {
         enabled: true,
         mode: "x",
+        rangeMin: {
+          x: new Date("2024-01-01").getTime(), // パンの最小限界
+        },
+        rangeMax: {
+          x: new Date("2024-03-31").getTime(), // パンの最大限界
+        },
       },
       zoom: {
         wheel: {
@@ -40,9 +51,7 @@ const options = {
         pinch: {
           enabled: true, // ピンチでのズームを有効化 (タッチデバイス用)
         },
-        mode: (chart: any) => {
-          return "x";
-        }, // 'x' 軸方向にズーム
+        mode: "x", // 'x' 軸方向にズーム
       },
     },
   },
@@ -51,8 +60,8 @@ const options = {
       type: "time",
       time: {
         unit: "week",
-        min: '2024-01-01',
-        max: '2025-12-31',
+        min: "2024-01-01",
+        max: "2025-12-31",
       },
     },
   },
@@ -65,7 +74,11 @@ const WeeklySummaryChart = () => {
   if (isError) return <div>Error</div>;
 
   const chartData = {
-    labels: data?.map((record) => record.date) || [],
+    labels: data?.map((record) => {
+      const date = parseISO(record.date);
+      const startOfWeekDate = startOfWeek(date, { weekStartsOn: 1 });
+      return format(startOfWeekDate, "yyyy-MM-dd");
+    }),
     datasets: [
       {
         label: "Total Weight by Body Part",
