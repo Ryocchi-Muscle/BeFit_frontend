@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
-import { Bar } from "react-chartjs-2";
+// import { Bar } from "react-chartjs-2";
+import dynamic from "next/dynamic";
 import "chart.js/auto";
 import {
   Chart as ChartJS,
@@ -11,8 +12,13 @@ import {
   Tooltip,
   Legend,
 } from "chart.js";
+import 'chartjs-adapter-date-fns';
 import zoomPlugin from "chartjs-plugin-zoom";
 import useWeeklySummary from "@/hooks/useWeeklySummary";
+
+const Bar = dynamic(() => import("react-chartjs-2").then((mod) => mod.Bar), {
+  ssr: false,
+});
 
 // Chart.js とそのプラグインを登録
 ChartJS.register(
