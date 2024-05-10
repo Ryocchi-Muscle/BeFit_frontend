@@ -1,6 +1,7 @@
 import React from "react";
 import { Bar } from "react-chartjs-2";
 import useTrainingData from "@/hooks/TrainingData";
+import "chart.js/auto";
 
 const TrainingChart = () => {
   const { data, isLoading, isError } = useTrainingData();
