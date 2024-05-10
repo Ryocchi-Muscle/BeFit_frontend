@@ -9,6 +9,7 @@ const TrainingChart = () => {
   if (isLoading) return <div>Loading...</div>;
   if (isError) return <div>Error</div>;
 
+  console.log("data", data);
   const chartData = {
     labels: data?.map((record) => record.date) || [],
     datasets: [
@@ -20,6 +21,7 @@ const TrainingChart = () => {
     ],
   };
 
+  console.log("chartData", chartData);
   return <Bar data={chartData} />;
 };
 
