@@ -26,7 +26,7 @@ export default async function RootLayout({
       <body className={`${inter.className} pt-10`}>
         <NextAuthProvider>
           <Header session={session} />
-          <main className=" mt-0 bg-yellow-75"> {children}</main>
+          <main className=" mt-0"> {children}</main>
         </NextAuthProvider>
       </body>
     </html>

@@ -5,7 +5,6 @@ import React from "react";
 import { type Session } from "next-auth";
 import Link from "next/link"; // Next.jsのLinkコンポーネントをインポート
 import { signOut } from "next-auth/react";
-import DeleteUser from "../Delete";
 
 const Header = ({ session }: { session: Session | null }) => {
   return (
@@ -35,7 +34,6 @@ const Header = ({ session }: { session: Session | null }) => {
                 ログアウト
               </button>
             </li>
-            <li>{/* <DeleteUser /> */}</li>
           </>
         ) : (
           <>
