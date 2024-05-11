@@ -1,5 +1,6 @@
 import React from "react";
-import { FaRegCalendar, FaHistory, FaDumbbell, FaSearch } from "react-icons/fa";
+import { FaRegCalendar, FaHistory, FaDumbbell } from "react-icons/fa";
+import { IoPerson } from "react-icons/io5";
 
 type Props = {
   children?: React.ReactNode;
@@ -33,8 +34,8 @@ const Footer: React.FC<Props> = ({ children, className }) => {
               </a>
             </li>
             <li>
-              <a href="/category/search" className="hover:underline text-black">
-                <FaSearch />
+              <a href="/category/user_info" className="hover:underline text-black">
+                <IoPerson />
               </a>
             </li>
           </ul>

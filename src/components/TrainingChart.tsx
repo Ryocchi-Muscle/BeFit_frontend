@@ -62,7 +62,7 @@ const TrainingChart: React.FC = () => {
   console.log("chartData", chartData);
 
   if (isLoading) return <div>Loading...</div>;
-  if (isError) return <div>Error</div>;
+  // if (isError) return <div>Error</div>;
 
   return (
     <>
