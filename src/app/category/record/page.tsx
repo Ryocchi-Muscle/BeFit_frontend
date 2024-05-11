@@ -1,8 +1,6 @@
 "use client";
 import Footer from "@/app/components/layout/Footer";
 import React, { useState } from "react";
-import dynamic from "next/dynamic";
-// import WeeklySummaryChart from "@/components/ui/TrainingChart";
 import TrainingChart from "@/components/TrainingChart";
 
 // 初期値を現在日を含む週の開始日に設定するヘルパー関数
@@ -18,13 +16,6 @@ function getWeekStartDate(date: Date) {
   return startDate.toISOString().split("T")[0]; // YYYY-MM-DD形式で返す
 }
 
-// const WeeklySummaryChart = dynamic(
-//   () => import("@/components/ui/TrainingChart"),
-//   {
-//     ssr: false, // このオプションにより、サーバーサイドレンダリングが無効になります
-//   }
-// );
-
 function RecordPage() {
   const [selectedDate, setSelectedDate] = useState(
     getWeekStartDate(new Date())
@@ -34,8 +25,9 @@ function RecordPage() {
   return (
     <div className="flex flex-col min-h-screen">
       <div className="flex-grow">
-        <h1 className="text-4xl">記録</h1>
-        {/* <WeeklySummaryChart  /> */}
+        <h1 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-950">
+          記録
+        </h1>
         <TrainingChart />
       </div>
       <Footer />

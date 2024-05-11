@@ -6,7 +6,6 @@ import aggregateWeeklyData from "./aggregateWeeklyData";
 import { parseISO, addMonths, subMonths, startOfMonth, format } from "date-fns";
 import { WeeklySummary } from "./aggregateWeeklyData";
 
-
 interface Period {
   label: string;
   value: string;
@@ -15,8 +14,10 @@ interface Period {
 const generatePeriods = (): Period[] => {
   let periods: Period[] = [];
   const today = new Date();
-  const startPeriod = subMonths(startOfMonth(today), 3);
-  const endPeriod = addMonths(startOfMonth(today), 3);
+  // const startPeriod = subMonths(startOfMonth(today), 0);
+  const endPeriod = startOfMonth(today);
+  const startPeriod = subMonths(startOfMonth(today), 4);
+  console.log("startPeriod", startPeriod);
 
   for (let date = startPeriod; date <= endPeriod; date = addMonths(date, 2)) {
     const label = `${format(date, "yyyy/MM")} - ${format(
@@ -27,7 +28,7 @@ const generatePeriods = (): Period[] => {
     periods.push({ label, value });
   }
 
-  return periods;
+  return periods.reverse();
 };
 
 const TrainingChart: React.FC = () => {
@@ -54,7 +55,7 @@ const TrainingChart: React.FC = () => {
       {
         label: "週ごとのトレーニングボリューム",
         data: weeklyData.map((week) => week.totalWeight),
-        backgroundColor: "rgba(75, 192, 192, 0.2)",
+        backgroundColor: "rgba(75, 192, 192, 100.2)",
       },
     ],
   };
@@ -69,13 +70,15 @@ const TrainingChart: React.FC = () => {
         value={selectedPeriod}
         onChange={(e) => setSelectedPeriod(e.target.value)}
       >
-        {periods.map(period => (
+        {periods.map((period) => (
           <option key={period.value} value={period.value}>
             {period.label}
           </option>
         ))}
       </select>
-      <Bar data={chartData} />
+      <div className="h-96 w-full">
+        <Bar data={chartData} options={{ maintainAspectRatio: false }} />
+      </div>
     </>
   );
 };
