@@ -6,7 +6,7 @@ interface TrainingRecord {
   total_weight: number;
 }
 
-interface WeeklySummary {
+export interface WeeklySummary {
   weekStart: string;
   totalWeight: number;
   count: number;
