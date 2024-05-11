@@ -23,10 +23,10 @@ export default async function RootLayout({
 
   return (
     <html lang="ja">
-      <body className={`${inter.className} pt-20`}>
+      <body className={`${inter.className} pt-10`}>
         <NextAuthProvider>
           <Header session={session} />
-          <main>{children}</main>
+          <main className=" mt-0 bg-yellow-75"> {children}</main>
         </NextAuthProvider>
       </body>
     </html>
