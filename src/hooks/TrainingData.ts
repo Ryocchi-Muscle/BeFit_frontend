@@ -28,10 +28,7 @@ const useTrainingData = () => {
     return response.json();
   };
 
-  const { data, error } = useSWR<TrainingRecord[], Error>(url, fetcher, {
-
-
-  });
+  const { data, error } = useSWR<TrainingRecord[], Error>(url, fetcher);
 
   return {
     data,
