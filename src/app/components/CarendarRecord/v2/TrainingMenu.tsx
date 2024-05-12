@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
 import MyComboBox from "./Combobox";
 import TrainigSet from "./TrainigSet";
 import { TrainingSet } from "../../../../../types/types";
 import { bodyParts } from "@/data/bodyParts";
+import { validateTrainingMenuTitle } from "@/utils/validation";
 
 interface TrainingMenuProps {
   menuId: number;
@@ -15,7 +16,6 @@ interface TrainingMenuProps {
   removeMenu: (menuId: number) => void;
 }
 
-
 export default function TrainingMenuComponet({
   menuId,
   menuName,
@@ -27,6 +27,29 @@ export default function TrainingMenuComponet({
   removeMenu,
 }: TrainingMenuProps) {
   console.log("sets", sets);
+  const [menuNameError, setMenuNameError] = useState("");
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    // フォーカスを自動的に設定
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, []);
+
+  const handleMenuNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newName = e.target.value;
+    updateMenuName(menuId, newName);
+    setMenuNameError(validateTrainingMenuTitle(newName));
+  };
+
+  const handleBlur = () => {
+    const error = validateTrainingMenuTitle(menuName);
+    setMenuNameError(error);
+    if (!menuName) {
+      setMenuNameError("メニュー名を入力してください");
+    }
+  };
 
   const handleBodyPartChange = (newBodyPart: string) => {
     updateBodyPart(menuId, newBodyPart);
@@ -74,18 +97,25 @@ export default function TrainingMenuComponet({
           <span className="mr-3 text-lg font-bold text-white py-1 px-2 bg-gradient-to-r from-blue-500 to-teal-500 shadow-md flex-none">
             {menuId}
           </span>
-          <MyComboBox
-            bodyParts={bodyParts}
-            selectedBodyPart={bodyPart}
-            onBodyPartSelect={handleBodyPartChange}
-          />
-          <input
-            className="ml-2 p-1 border flex-grow"
-            type="text"
-            value={menuName}
-            onChange={(e) => updateMenuName(menuId, e.target.value)}
-            placeholder="メニュー名"
-          />
+          <div className="flex flex-col w-full">
+            <MyComboBox
+              bodyParts={bodyParts}
+              selectedBodyPart={bodyPart}
+              onBodyPartSelect={handleBodyPartChange}
+            />
+            <input
+              ref={inputRef}
+              className="ml-2 p-1 border flex-grow"
+              type="text"
+              value={menuName}
+              onChange={handleMenuNameChange}
+              onBlur={handleBlur}
+              placeholder="メニュー名"
+            />
+            {menuNameError && (
+              <div className="text-red-500 mt-1">{menuNameError}</div>
+            )}
+          </div>
         </div>
       </div>
       {sets.map((set, index) => (
