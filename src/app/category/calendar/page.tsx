@@ -10,7 +10,7 @@ export default function TaskPage({ params }: { params: { day: string } }) {
 
   return (
     <div className="flex flex-col h-screen">
-      <div className="flex-1 overflow-y-auto">
+      <div className="flex-1 pt-4 overflow-y-auto">
         <h1 className="text-2xl">カレンダー</h1>
         <Calendar
           mode="single"
