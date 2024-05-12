@@ -21,7 +21,7 @@ const Footer: React.FC<Props> = ({ children, className }) => {
               </a>
             </li>
             <li>
-              <a href="/category/task" className="hover:underline text-black">
+              <a href="/category/calendar" className="hover:underline text-black">
                 <FaRegCalendar />
               </a>
             </li>
