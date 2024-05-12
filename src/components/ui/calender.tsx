@@ -19,6 +19,8 @@ import {
 import TrainingMenuList from "@/app/components/CarendarRecord/v2/TrainingMenuList";
 import { MenuData } from "../../../types/types";
 import { useSession } from "next-auth/react";
+import { useToast } from "./use-toast";
+import { ToastAction } from "@radix-ui/react-toast";
 
 interface ApiResponse {
   id: number;
@@ -58,8 +60,8 @@ function Calendar({
   const [menuDataByDate, setMenuDataByDate] = useState<{
     [date: string]: MenuData[];
   }>({});
-  const [flashMessage, setFlashMessage] = useState<string | null>(null);
   const { data: session } = useSession();
+  const { toast } = useToast();
 
   // メニューデータを取得する関数
   const fetchMenuData = async (data: Date) => {
@@ -132,11 +134,6 @@ function Calendar({
     setDialogOpen(true);
   };
 
-  const handleFlashMessage = (message: string) => {
-    setFlashMessage(message);
-    setTimeout(() => setFlashMessage(null), 5000); // 5秒後にメッセージを消す
-  };
-
   // フォームが送信されたときに呼び出される関数
   const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -170,17 +167,27 @@ function Calendar({
         },
         body: body,
       });
-      console.log("body:", body);
-      if (!response.ok) {
+      if (response.ok) {
+        toast({
+          title: "保存成功",
+          description: "メニューが正常に保存されました。",
+          duration: 3000,
+          style: { backgroundColor: "green", color: "white" },
+        });
+        console.log("メニューの保存に成功しました。");
+        setDialogOpen(false); // ダイアログを閉じる
+      } else {
         throw new Error("Network response was not ok");
       }
-      handleFlashMessage("メニューの保存に成功しました。");
-      setDialogOpen(false); // ダイアログを閉じる
-      console.log("メニューの保存に成功しました。");
-      setDialogOpen(false);
     } catch (error) {
       console.error("メニューの保存に失敗しました: ", error);
-      handleFlashMessage("メニューの保存に失敗しました。");
+      toast({
+        variant: "destructive",
+        title: "保存失敗",
+        duration: 3000,
+        description: "メニューを入力してください。",
+        action: <ToastAction altText="Try again"></ToastAction>,
+      });
     }
   };
 
@@ -235,14 +242,6 @@ function Calendar({
         }}
         {...props}
       />
-      {flashMessage && (
-        <div
-          className="fixed bottom-0 left-0 right-0 bg-red-500 text-white text-center p-2"
-          role="alert"
-        >
-          {flashMessage}
-        </div>
-      )}
       {isDialogOpen && selectedDate && (
         <Dialog open={isDialogOpen} onOpenChange={setDialogOpen}>
           <DialogContent className="flex flex-col max-h-[90vh]">
