@@ -1,6 +1,6 @@
-export const validateTrainingMenuTitle = (tripTitle: string) => {
-  if (!/\S/.test(tripTitle)) {
-    return "トレーニングメニューを入力してください";
+export const validateTrainingMenuTitle = (menuName: string) => {
+  if (!menuName.trim()) {
+    return "メニューを入力してください";
   }
 
   return "";

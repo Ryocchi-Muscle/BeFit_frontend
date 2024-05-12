@@ -37,18 +37,17 @@ export default function TrainingMenuComponet({
     }
   }, []);
 
+  //メニュー名のフィールドが変更された時に呼び出される関数
   const handleMenuNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newName = e.target.value;
     updateMenuName(menuId, newName);
     setMenuNameError(validateTrainingMenuTitle(newName));
   };
 
+  // メニュー名のフィールドがフォーカスを失った時に呼び出される関数
   const handleBlur = () => {
     const error = validateTrainingMenuTitle(menuName);
     setMenuNameError(error);
-    if (!menuName) {
-      setMenuNameError("メニュー名を入力してください");
-    }
   };
 
   const handleBodyPartChange = (newBodyPart: string) => {
