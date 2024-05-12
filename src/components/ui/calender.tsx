@@ -58,6 +58,7 @@ function Calendar({
   const [menuDataByDate, setMenuDataByDate] = useState<{
     [date: string]: MenuData[];
   }>({});
+  const [flashMessage, setFlashMessage] = useState<string | null>(null);
   const { data: session } = useSession();
 
   // メニューデータを取得する関数
@@ -131,6 +132,11 @@ function Calendar({
     setDialogOpen(true);
   };
 
+  const handleFlashMessage = (message: string) => {
+    setFlashMessage(message);
+    setTimeout(() => setFlashMessage(null), 5000); // 5秒後にメッセージを消す
+  };
+
   // フォームが送信されたときに呼び出される関数
   const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -160,7 +166,6 @@ function Calendar({
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          // その他のヘッダー(認証が必要な場合)
           Authorization: `Bearer ${session?.accessToken}`,
         },
         body: body,
@@ -169,10 +174,13 @@ function Calendar({
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }
+      handleFlashMessage("メニューの保存に成功しました。");
+      setDialogOpen(false); // ダイアログを閉じる
       console.log("メニューの保存に成功しました。");
       setDialogOpen(false);
     } catch (error) {
       console.error("メニューの保存に失敗しました: ", error);
+      handleFlashMessage("メニューの保存に失敗しました。");
     }
   };
 
@@ -227,6 +235,14 @@ function Calendar({
         }}
         {...props}
       />
+      {flashMessage && (
+        <div
+          className="fixed bottom-0 left-0 right-0 bg-red-500 text-white text-center p-2"
+          role="alert"
+        >
+          {flashMessage}
+        </div>
+      )}
       {isDialogOpen && selectedDate && (
         <Dialog open={isDialogOpen} onOpenChange={setDialogOpen}>
           <DialogContent className="flex flex-col max-h-[90vh]">
