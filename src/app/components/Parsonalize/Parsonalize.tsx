@@ -101,16 +101,16 @@ const styles = {
     display: "flex",
     flexDirection: "column" as "column",
     alignItems: "center",
-    padding: "20px",
+    padding: "0px",
   },
   // 新しいスタイルを追加
   completeContainer: {
     display: "flex",
     flexDirection: "column" as "column",
     alignItems: "center",
-    justifyContent: "center",
+    justifyContent: "flex-start",
     height: "100vh",
-    // backgroundColor: "#f0f0f0",
+    paddingTop: "70px",
   },
   completeBox: {
     backgroundColor: "#ffffff",
@@ -120,6 +120,7 @@ const styles = {
     textAlign: "center" as "center",
     width: "80%",
     maxWidth: "400px",
+    marginTop: "0px",
   },
   completeTitle: {
     color: "#4a90e2",
