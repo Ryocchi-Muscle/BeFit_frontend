@@ -1,4 +1,3 @@
-// components/SelectionStep.tsx
 import Image from "next/image";
 import React from "react";
 
@@ -23,7 +22,13 @@ const SelectionStep: React.FC<SelectionStepProps> = ({
           style={styles.optionButton}
         >
           {option.icon && (
-            <Image src={option.icon} alt={option.label} style={styles.icon} />
+            <Image
+              src={option.icon}
+              alt={option.label}
+              style={styles.icon}
+              width={100}
+              height={100}
+            />
           )}
           {option.label}
         </button>
