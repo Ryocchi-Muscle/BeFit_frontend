@@ -28,7 +28,3 @@ export type TrainingMenu = {
 };
 
 export type TrainingMenus = TrainingMenu[];
-
-interface TrainingRecordProps {
-  // ここに必要なPropsがあれば定義
-}
