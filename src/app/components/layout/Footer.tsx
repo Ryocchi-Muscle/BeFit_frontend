@@ -34,7 +34,7 @@ const Footer: React.FC<Props> = ({ children, className }) => {
               </a>
             </li>
             <li>
-              <a href="/category/user_info" className="hover:underline text-black">
+              <a href="/category/parsonalize" className="hover:underline text-black">
                 <IoPerson />
               </a>
             </li>
