@@ -18,7 +18,13 @@ const PersonalizePage: React.FC = () => {
   const [loading, setLoading] = useState(false);
 
   const handleNextStep = () => setStep(step + 1);
-  const handlePrevStep = () => setStep(step - 1);
+  const handlePrevStep = () => {
+    if (step == 5) {
+      setStep(0);
+    } else {
+      setStep(step - 1);
+    }
+  };
 
   const handleSelect = (key: string, value: string) => {
     setFormData({ ...formData, [key]: value });
