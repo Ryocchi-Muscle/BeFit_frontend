@@ -16,6 +16,7 @@ const PersonalizePage: React.FC = () => {
     frequency: "",
   });
   const [loading, setLoading] = useState(false);
+  const [hoveredButton, setHoveredButton] = useState<string | null>(null);
 
   const handleNextStep = () => setStep(step + 1);
   const handlePrevStep = () => {
@@ -44,7 +45,34 @@ const PersonalizePage: React.FC = () => {
       {loading && <LoadingScreen />}
       {!loading && (
         <>
-          {step === 0 && <StartButton onClick={handleNextStep} />}
+          {step === 0 && (
+            <div style={styles.buttonContainer}>
+              <button
+                style={
+                  hoveredButton === "main"
+                    ? { ...styles.mainButton, ...styles.mainButtonHover }
+                    : styles.mainButton
+                }
+                onClick={handleNextStep}
+                onMouseEnter={() => setHoveredButton("main")}
+                onMouseLeave={() => setHoveredButton(null)}
+              >
+                パーソナライズプランを作成する
+              </button>
+              <button
+                style={
+                  hoveredButton === "sub"
+                    ? { ...styles.subButton, ...styles.subButtonHover }
+                    : styles.subButton
+                }
+                onClick={() => alert("過去のパーソナライズプランを確認する")}
+                onMouseEnter={() => setHoveredButton("sub")}
+                onMouseLeave={() => setHoveredButton(null)}
+              >
+                過去のパーソナライズプランを確認する
+              </button>
+            </div>
+          )}
           {step === 1 && (
             <SelectionStep
               title="性別を選択してください"
@@ -109,7 +137,51 @@ const styles = {
     alignItems: "center",
     padding: "0px",
   },
-  // 新しいスタイルを追加
+  buttonContainer: {
+    display: "flex",
+    flexDirection: "column" as "column",
+    alignItems: "center",
+    justifyContent: "flex-start",
+    height: "100vh",
+    gap: "20px",
+    paddingTop: "30vh",
+  },
+  mainButton: {
+    backgroundColor: "#4a90e2",
+    color: "#ffffff",
+    padding: "20px",
+    borderRadius: "10px",
+    fontSize: "20px",
+    border: "2px solid #4a90e2", // 枠線の追加
+    cursor: "pointer",
+    width: "80%",
+    maxWidth: "400px",
+    transition: "background-color 0.3s ease",
+    textAlign: "center" as "center",
+  },
+  mainButtonHover: {
+    backgroundColor: "#ffffff",
+    color: "#4a90e2",
+    border: "2px solid #4a90e2", // 枠線を維持
+  },
+  subButton: {
+    backgroundColor: "#8e44ad",
+    color: "#ffffff",
+    padding: "20px",
+    borderRadius: "10px",
+    fontSize: "20px",
+    border: "2px solid #8e44ad", // 枠線の追加
+    cursor: "pointer",
+    width: "80%",
+    maxWidth: "400px",
+    transition: "background-color 0.3s ease",
+    textAlign: "center" as "center",
+  },
+  subButtonHover: {
+    backgroundColor: "#ffffff",
+    color: "#8e44ad", // 背景色と文字色を反転
+    border: "2px solid #8e44ad", // 枠線を維持
+  },
   completeContainer: {
     display: "flex",
     flexDirection: "column" as "column",
