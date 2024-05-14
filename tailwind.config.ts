@@ -19,7 +19,7 @@ const config = {
     },
     extend: {
       colors: {
-        'background-color': "#F5F5F5", // 背景色
+        "background-color": "#F5F5F5", // 背景色
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
@@ -61,12 +61,12 @@ const config = {
       },
       keyframes: {
         "accordion-down": {
-          from: { height: "0" },
+          from: { height: "0", backgroundPosition: "0 0" },
           to: { height: "var(--radix-accordion-content-height)" },
         },
         "accordion-up": {
           from: { height: "var(--radix-accordion-content-height)" },
-          to: { height: "0" },
+          to: { height: "0", backgroundPosition: "-200% 0" },
         },
       },
       animation: {

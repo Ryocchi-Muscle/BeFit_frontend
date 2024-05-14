@@ -1,0 +1,71 @@
+@mixin baseButton($color) {
+  font-weight: 700;
+  background: $color;
+  text-align: center;
+  position: relative;
+  display: block;
+  overflow: hidden;
+  transition: 0.3s;
+  z-index: 10;
+  cursor: pointer;
+  border-color: $color;
+  border-style: solid;
+
+  &::before {
+    content: "";
+    width: 120%;
+    height: 200%;
+    position: absolute;
+    top: -50%;
+    right: 0;
+    z-index: -1;
+    background: var(--black);
+    border-radius: 0 100% 100% 0;
+    transform: translateX(-100%);
+    transition: transform ease 0.3s;
+  }
+
+  &:hover {
+    color: $color;
+  }
+
+  &:hover::before {
+    transform: translateX(10%);
+  }
+
+  span {
+    display: block;
+  }
+}
+
+/* Colors */
+.pink {
+  @include baseButton(var(--pink));
+}
+
+.light-blue {
+  @include baseButton(var(--light-blue));
+}
+
+.purple {
+  @include baseButton(var(--purple));
+}
+
+/* Sizes */
+.large {
+  font-size: 24px;
+  padding: 1rem 3rem;
+  border-width: 4px;
+  border-radius: 16px;
+  width: 320px;
+  height: auto;
+
+  @media screen and (min-width: 1024px) {
+    font-size: 32px;
+    padding: 2rem;
+    border-radius: 16px;
+    border-width: 6px;
+    border-radius: 20px;
+    width: 440px;
+  }
+}
