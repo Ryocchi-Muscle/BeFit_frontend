@@ -71,13 +71,17 @@ const PersonalizePage: React.FC = () => {
             />
           )}
           {step === 5 && (
-            <div>
-              <h2>プラン完了！</h2>
-              <p>性別: {formData.gender}</p>
-              <p>トレーニング経験: {formData.experience}</p>
-              <p>トレーニング時間: {formData.duration}</p>
-              <p>トレーニング頻度: {formData.frequency}</p>
-              {/* ここに作成されたメニューを表示 */}
+            <div style={styles.completeContainer}>
+              <div style={styles.completeBox}>
+                <h2 style={styles.completeTitle}>プラン作成完了！</h2>
+                <p>性別: {formData.gender}</p>
+                <p>トレーニング経験: {formData.experience}</p>
+                <p>トレーニング時間: {formData.duration}</p>
+                <p>トレーニング頻度: {formData.frequency}</p>
+                <button style={styles.backButton} onClick={handlePrevStep}>
+                  戻る
+                </button>
+              </div>
             </div>
           )}
           {step > 0 && step < 5 && (
@@ -98,6 +102,38 @@ const styles = {
     flexDirection: "column" as "column",
     alignItems: "center",
     padding: "20px",
+  },
+  // 新しいスタイルを追加
+  completeContainer: {
+    display: "flex",
+    flexDirection: "column" as "column",
+    alignItems: "center",
+    justifyContent: "center",
+    height: "100vh",
+    // backgroundColor: "#f0f0f0",
+  },
+  completeBox: {
+    backgroundColor: "#ffffff",
+    padding: "30px",
+    borderRadius: "10px",
+    boxShadow: "0 8px 16px rgba(0, 0, 0, 0.2)",
+    textAlign: "center" as "center",
+    width: "80%",
+    maxWidth: "400px",
+  },
+  completeTitle: {
+    color: "#4a90e2",
+    fontSize: "24px",
+    marginBottom: "20px",
+  },
+  backButton: {
+    marginTop: "20px",
+    padding: "10px 20px",
+    backgroundColor: "#4a90e2",
+    color: "#ffffff",
+    border: "none",
+    borderRadius: "5px",
+    cursor: "pointer",
   },
 };
 
