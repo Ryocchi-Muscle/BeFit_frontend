@@ -2,9 +2,21 @@
 
 import React, { useState } from "react";
 import SelectionStep from "./SelectionStep";
-import TimeSelection from "./TimeSelection";
-import FrequencySelection from "./FrequencySelection";
 import LoadingScreen from "./LoadingScreen";
+import { Program } from "../../../../types/types";
+
+const programs: Program = {
+  male: {
+    "1": ["プログラムA1", "プログラムA2"],
+    "2-3": ["プログラムB1", "プログラムB2"],
+    "4-6": ["プログラムC1", "プログラムC2"],
+  },
+  female: {
+    "1-2": ["プログラムD1", "プログラムD2"],
+    "3-4": ["プログラムE1", "プログラムE2"],
+    "5-6": ["プログラムF1", "プログラムF2"],
+  },
+};
 
 const PersonalizePage: React.FC = () => {
   const [step, setStep] = useState(0);
@@ -14,10 +26,11 @@ const PersonalizePage: React.FC = () => {
   });
   const [loading, setLoading] = useState(false);
   const [hoveredButton, setHoveredButton] = useState<string | null>(null);
+  const [program, setProgram] = useState<string[]>([]);
 
   const handleNextStep = () => setStep(step + 1);
   const handlePrevStep = () => {
-    if (step == 3) {
+    if (step == 4) {
       setStep(0);
     } else {
       setStep(step - 1);
@@ -34,6 +47,7 @@ const PersonalizePage: React.FC = () => {
     // プラン作成処理を実行（例：API呼び出し）
     await new Promise((resolve) => setTimeout(resolve, 2000)); // 模擬的な遅延
     setLoading(false);
+    setProgram(programs[formData.gender][formData.frequency]);
     handleNextStep();
   };
 
@@ -88,9 +102,9 @@ const PersonalizePage: React.FC = () => {
             <SelectionStep
               title="トレーニング頻度を選択してください"
               options={[
-                { label: "週1~2", value: "1-2" },
-                { label: "週3~4", value: "3-4" },
-                { label: "週5~6", value: "5-6" },
+                { label: "週1", value: "1" },
+                { label: "週2-3", value: "2-3" },
+                { label: "週4~6", value: "4-6" },
               ]}
               onSelect={(value) => handleSelect("frequency", value)}
             />
@@ -101,10 +115,29 @@ const PersonalizePage: React.FC = () => {
                 <h2 style={styles.completeTitle}>プラン作成完了！</h2>
                 <p>性別: {formData.gender}</p>
                 <p>トレーニング頻度: {formData.frequency}</p>
+                <button
+                  style={styles.viewPlanButton}
+                  onClick={() => setStep(4)}
+                >
+                  作成されたプランを確認する
+                </button>
                 <button style={styles.backButton} onClick={handlePrevStep}>
                   戻る
                 </button>
               </div>
+            </div>
+          )}
+          {step === 4 && (
+            <div style={styles.programContainer}>
+              <h2 style={styles.programTitle}>作成されたプログラム</h2>
+              <ul>
+                {program.map((item, index) => (
+                  <li key={index}>{item}</li>
+                ))}
+              </ul>
+              <button style={styles.backButton} onClick={handlePrevStep}>
+                戻る
+              </button>
             </div>
           )}
           {step > 0 && step < 3 && (
@@ -202,6 +235,28 @@ const styles = {
     border: "none",
     borderRadius: "5px",
     cursor: "pointer",
+  },
+  viewPlanButton: {
+    marginTop: "20px",
+    padding: "10px 20px",
+    backgroundColor: "#4a90e2",
+    color: "#ffffff",
+    border: "none",
+    borderRadius: "5px",
+    cursor: "pointer",
+  },
+  programContainer: {
+    display: "flex",
+    flexDirection: "column" as "column",
+    alignItems: "center",
+    justifyContent: "flex-start",
+    height: "100vh",
+    paddingTop: "70px",
+  },
+  programTitle: {
+    color: "#4a90e2",
+    fontSize: "24px",
+    marginBottom: "20px",
   },
 };
 
