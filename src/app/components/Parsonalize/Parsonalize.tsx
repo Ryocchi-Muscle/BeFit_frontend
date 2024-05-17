@@ -77,7 +77,11 @@ const PersonalizePage: React.FC = () => {
             <SelectionStep
               title="性別を選択してください"
               options={[
-                { label: "男", value: "male", icon: "/male-icon.png" },
+                {
+                  label: "男",
+                  value: "male",
+                  icon: "/Parsonalize/images.jpeg",
+                },
                 { label: "女", value: "female", icon: "/female-icon.png" },
               ]}
               onSelect={(value) => handleSelect("gender", value)}

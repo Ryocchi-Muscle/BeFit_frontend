@@ -181,6 +181,7 @@ function Calendar({
       }
     } catch (error) {
       console.error("メニューの保存に失敗しました: ", error);
+      console.error("endpoint ", endpoint);
       toast({
         variant: "destructive",
         title: "保存失敗",
