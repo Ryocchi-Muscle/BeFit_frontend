@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState } from "react";
-import StartButton from "./StartButton";
 import SelectionStep from "./SelectionStep";
 import TimeSelection from "./TimeSelection";
 import FrequencySelection from "./FrequencySelection";
@@ -11,8 +10,6 @@ const PersonalizePage: React.FC = () => {
   const [step, setStep] = useState(0);
   const [formData, setFormData] = useState({
     gender: "",
-    experience: "",
-    duration: "",
     frequency: "",
   });
   const [loading, setLoading] = useState(false);
@@ -20,7 +17,7 @@ const PersonalizePage: React.FC = () => {
 
   const handleNextStep = () => setStep(step + 1);
   const handlePrevStep = () => {
-    if (step == 5) {
+    if (step == 3) {
       setStep(0);
     } else {
       setStep(step - 1);
@@ -65,11 +62,11 @@ const PersonalizePage: React.FC = () => {
                     ? { ...styles.subButton, ...styles.subButtonHover }
                     : styles.subButton
                 }
-                onClick={() => alert("過去のパーソナライズプランを確認する")}
+                onClick={() => alert("記録")}
                 onMouseEnter={() => setHoveredButton("sub")}
                 onMouseLeave={() => setHoveredButton(null)}
               >
-                過去のパーソナライズプランを確認する
+                記録
               </button>
             </div>
           )}
@@ -89,32 +86,20 @@ const PersonalizePage: React.FC = () => {
           )}
           {step === 2 && (
             <SelectionStep
-              title="トレーニング経験を選択してください"
+              title="トレーニング頻度を選択してください"
               options={[
-                { label: "初心者", value: "beginner" },
-                { label: "中級者", value: "intermediate" },
-                { label: "上級者", value: "advanced" },
+                { label: "週1~2", value: "1-2" },
+                { label: "週3~4", value: "3-4" },
+                { label: "週5~6", value: "5-6" },
               ]}
-              onSelect={(value) => handleSelect("experience", value)}
-            />
-          )}
-          {step === 3 && (
-            <TimeSelection
-              onSelect={(value) => handleSelect("duration", value)}
-            />
-          )}
-          {step === 4 && (
-            <FrequencySelection
               onSelect={(value) => handleSelect("frequency", value)}
             />
           )}
-          {step === 5 && (
+          {step === 3 && (
             <div style={styles.completeContainer}>
               <div style={styles.completeBox}>
                 <h2 style={styles.completeTitle}>プラン作成完了！</h2>
                 <p>性別: {formData.gender}</p>
-                <p>トレーニング経験: {formData.experience}</p>
-                <p>トレーニング時間: {formData.duration}</p>
                 <p>トレーニング頻度: {formData.frequency}</p>
                 <button style={styles.backButton} onClick={handlePrevStep}>
                   戻る
@@ -122,10 +107,10 @@ const PersonalizePage: React.FC = () => {
               </div>
             </div>
           )}
-          {step > 0 && step < 5 && (
+          {step > 0 && step < 3 && (
             <button onClick={handlePrevStep}>戻る</button>
           )}
-          {step === 4 && (
+          {step === 2 && (
             <button onClick={handlePlanCreation}>プラン作成</button>
           )}
         </>
