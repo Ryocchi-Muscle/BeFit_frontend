@@ -3,21 +3,7 @@
 import React, { useState } from "react";
 import SelectionStep from "./SelectionStep";
 import LoadingScreen from "./LoadingScreen";
-import { Program } from "../../../../types/types";
 import { useSession } from "next-auth/react";
-
-const programs: Program = {
-  male: {
-    "1": ["プログラムA1", "プログラムA2"],
-    "2-3": ["プログラムB1", "プログラムB2"],
-    "4-6": ["プログラムC1", "プログラムC2"],
-  },
-  female: {
-    "1-2": ["プログラムD1", "プログラムD2"],
-    "3-4": ["プログラムE1", "プログラムE2"],
-    "5-6": ["プログラムF1", "プログラムF2"],
-  },
-};
 
 const PersonalizePage: React.FC = () => {
   const { data: session } = useSession();
@@ -32,13 +18,8 @@ const PersonalizePage: React.FC = () => {
 
   const handleNextStep = () => setStep(step + 1);
   console.log("step", step);
-  const handlePrevStep = () => {
-    if (step == 4) {
-      setStep(0);
-    } else {
-      setStep(step - 1);
-    }
-  };
+  const handlePrevStep = () =>
+    setStep((prevStep) => (prevStep === 4 ? 0 : prevStep - 1));
 
   const handleSelect = (key: string, value: string) => {
     setFormData({ ...formData, [key]: value });
