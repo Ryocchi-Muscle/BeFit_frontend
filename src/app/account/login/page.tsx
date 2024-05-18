@@ -44,7 +44,7 @@ const LoginPage = () => {
             alt="TechFinder Logo"
             className="mx-auto mb-4"
           /> */}
-          <h2 className="text-lg font-bold">TechFinder</h2>
+          <h2 className="text-lg font-bold">Beginner Fit</h2>
           <p className="text-sm text-gray-600">
             BeginnerFitはトレーニング初心者のためのトレーニングサポートアプリです。
           </p>
