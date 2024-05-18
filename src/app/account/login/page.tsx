@@ -37,15 +37,44 @@ const LoginPage = () => {
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-gray-100">
-      <form className="w-full max-w-xs space-y-6 rounded bg-white p-8 shadow-md">
+      <div className="w-full max-w-xs space-y-6 rounded bg-white p-8 shadow-md">
+        <div className="text-center">
+          {/* <img
+            src="/path/to/logo.png"
+            alt="TechFinder Logo"
+            className="mx-auto mb-4"
+          /> */}
+          <h2 className="text-lg font-bold">TechFinder</h2>
+          <p className="text-sm text-gray-600">
+            BeginnerFitはトレーニング初心者のためのトレーニングサポートアプリです。
+          </p>
+          <p className="text-sm text-gray-600">
+            あなたにあったプログラムで一緒にトレーニングを頑張りましょう！
+          </p>
+        </div>
         <button
           onClick={handleLogin("google")}
           type="button"
-          className="w-full bg-red-500 text-white rounded-lg px-4 py-2"
+          className="w-full bg-blue-500 text-white rounded-lg px-4 py-2 flex items-center justify-center"
         >
-          Googleでログイン
+          {/* <img
+            src="/path/to/google-icon.png"
+            alt="Google Icon"
+            className="mr-2"
+          /> */}
+          Login with Google
         </button>
-      </form>
+        <div className="text-center">
+          <a href="#" className="text-xs text-gray-600">
+            利用規約
+          </a>
+          、
+          <a href="#" className="text-xs text-gray-600">
+            プライバシーポリシー
+          </a>
+          に同意したうえでログインしてください。
+        </div>
+      </div>
     </div>
   );
 };
