@@ -186,7 +186,7 @@ function Calendar({
         variant: "destructive",
         title: "保存失敗",
         duration: 3000,
-        description: "メニューを入力してください。",
+        description: "部位とメニューを入力してください。",
         action: <ToastAction altText="Try again"></ToastAction>,
       });
     }
