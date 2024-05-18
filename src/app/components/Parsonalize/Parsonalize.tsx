@@ -45,10 +45,31 @@ const PersonalizePage: React.FC = () => {
   const handlePlanCreation = async () => {
     setLoading(true);
     // プラン作成処理を実行（例：API呼び出し）
-    await new Promise((resolve) => setTimeout(resolve, 2000)); // 模擬的な遅延
-    setLoading(false);
-    setProgram(programs[formData.gender][formData.frequency]);
-    handleNextStep();
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+    const endpoint = `${apiUrl}/api/v2/personalized_menus`;
+    try {
+      const response = await fetch(endpoint, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          gender: formData.gender,
+          frequency: formData.frequency,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error("APIエラーが発生しました");
+      }
+      const data = await response.json();
+      setProgram(data.program);
+    } catch (error) {
+      console.error("エラーが発生しました: ", error);
+    } finally {
+      setLoading(false);
+      handleNextStep();
+    }
   };
 
   return (
@@ -93,7 +114,11 @@ const PersonalizePage: React.FC = () => {
                   value: "male",
                   icon: "/Parsonalize/images.jpeg",
                 },
-                { label: "女", value: "female", icon: "/female-icon.png" },
+                {
+                  label: "女",
+                  value: "female",
+                  icon: "/Parsonalize/images.jpeg",
+                },
               ]}
               onSelect={(value) => handleSelect("gender", value)}
             />

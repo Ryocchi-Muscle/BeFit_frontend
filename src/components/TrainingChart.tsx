@@ -38,7 +38,7 @@ const TrainingChart: React.FC = () => {
     periods[0].value
   );
   const filteredData =
-    data?.filter((record) => {
+    data?.filter((record:any) => {
       const recordDate = parseISO(record.date);
       const startDate = parseISO(selectedPeriod);
       const endDate = addMonths(startDate, 2); // 2ヶ月後
