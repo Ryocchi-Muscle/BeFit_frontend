@@ -3,7 +3,14 @@
 import React, { useState } from "react";
 import SelectionStep from "./SelectionStep";
 import LoadingScreen from "./LoadingScreen";
+import ProgramCard from "./ProgramCard";
 import { useSession } from "next-auth/react";
+
+interface Program {
+  title: string;
+  image: string;
+  details: string[];
+}
 
 const PersonalizePage: React.FC = () => {
   const { data: session } = useSession();
@@ -14,7 +21,7 @@ const PersonalizePage: React.FC = () => {
   });
   const [loading, setLoading] = useState(false);
   const [hoveredButton, setHoveredButton] = useState<string | null>(null);
-  const [program, setProgram] = useState<string[]>([]);
+  const [program, setProgram] = useState<Program[]>([]);
 
   const handleNextStep = () => setStep(step + 1);
   console.log("step", step);
@@ -47,8 +54,9 @@ const PersonalizePage: React.FC = () => {
       if (!response.ok) {
         throw new Error("APIエラーが発生しました");
       }
+      console.log("response", response);
       const data = await response.json();
-      setProgram(data.program);
+      setProgram(data.program as Program[]);
     } catch (error) {
       console.error("エラーが発生しました: ", error);
     } finally {
@@ -147,11 +155,16 @@ const PersonalizePage: React.FC = () => {
           {step === 4 && (
             <div style={styles.programContainer}>
               <h2 style={styles.programTitle}>作成されたプログラム</h2>
-              <ul>
+              <div style={styles.programList}>
                 {program.map((item, index) => (
-                  <li key={index}>{item}</li>
+                  <ProgramCard
+                    key={index}
+                    title={item.title}
+                    image={item.image}
+                    details={item.details}
+                  />
                 ))}
-              </ul>
+              </div>
               <button style={styles.backButton} onClick={handlePrevStep}>
                 戻る
               </button>
@@ -271,6 +284,25 @@ const styles = {
     color: "#4a90e2",
     fontSize: "24px",
     marginBottom: "20px",
+  },
+  programCard: {
+    border: "1px solid #ddd",
+    borderRadius: "10px",
+    padding: "10px",
+    margin: "10px",
+    textAlign: "center",
+    width: "100%",
+    maxWidth: "400px",
+  },
+  programImage: {
+    width: "100%",
+    height: "auto",
+    borderRadius: "10px",
+  },
+  programList: {
+    display: "flex",
+    flexWrap: "wrap" as "wrap",
+    justifyContent: "center",
   },
 };
 
