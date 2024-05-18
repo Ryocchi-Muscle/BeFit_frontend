@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import SelectionStep from "./SelectionStep";
 import LoadingScreen from "./LoadingScreen";
 import { Program } from "../../../../types/types";
+import { useSession } from "next-auth/react";
 
 const programs: Program = {
   male: {
@@ -19,6 +20,7 @@ const programs: Program = {
 };
 
 const PersonalizePage: React.FC = () => {
+  const { data: session } = useSession();
   const [step, setStep] = useState(0);
   const [formData, setFormData] = useState({
     gender: "",
@@ -29,6 +31,7 @@ const PersonalizePage: React.FC = () => {
   const [program, setProgram] = useState<string[]>([]);
 
   const handleNextStep = () => setStep(step + 1);
+  console.log("step", step);
   const handlePrevStep = () => {
     if (step == 4) {
       setStep(0);
@@ -52,6 +55,7 @@ const PersonalizePage: React.FC = () => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${session?.accessToken}`,
         },
         body: JSON.stringify({
           gender: formData.gender,
@@ -70,6 +74,11 @@ const PersonalizePage: React.FC = () => {
       setLoading(false);
       handleNextStep();
     }
+  };
+
+  const handleCombinedClick = async () => {
+    setStep(4);
+    await handlePlanCreation();
   };
 
   return (
@@ -140,12 +149,14 @@ const PersonalizePage: React.FC = () => {
                 <h2 style={styles.completeTitle}>プラン作成完了！</h2>
                 <p>性別: {formData.gender}</p>
                 <p>トレーニング頻度: {formData.frequency}</p>
-                <button
-                  style={styles.viewPlanButton}
-                  onClick={() => setStep(4)}
-                >
-                  作成されたプランを確認する
-                </button>
+                {step === 3 && (
+                  <button
+                    style={styles.viewPlanButton}
+                    onClick={handleCombinedClick}
+                  >
+                    作成されたプランを確認する
+                  </button>
+                )}
                 <button style={styles.backButton} onClick={handlePrevStep}>
                   戻る
                 </button>
@@ -167,9 +178,6 @@ const PersonalizePage: React.FC = () => {
           )}
           {step > 0 && step < 3 && (
             <button onClick={handlePrevStep}>戻る</button>
-          )}
-          {step === 2 && (
-            <button onClick={handlePlanCreation}>プラン作成</button>
           )}
         </>
       )}
