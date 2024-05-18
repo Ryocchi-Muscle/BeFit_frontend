@@ -11,10 +11,15 @@ interface Period {
   value: string;
 }
 
+interface TrainingRecord {
+  id: number;
+  date: string;
+  totalWeight: number;
+}
+
 const generatePeriods = (): Period[] => {
   let periods: Period[] = [];
   const today = new Date();
-  // const startPeriod = subMonths(startOfMonth(today), 0);
   const endPeriod = startOfMonth(today);
   const startPeriod = subMonths(startOfMonth(today), 4);
   console.log("startPeriod", startPeriod);
@@ -38,7 +43,7 @@ const TrainingChart: React.FC = () => {
     periods[0].value
   );
   const filteredData =
-    data?.filter((record) => {
+    data?.filter((record: TrainingRecord) => {
       const recordDate = parseISO(record.date);
       const startDate = parseISO(selectedPeriod);
       const endDate = addMonths(startDate, 2); // 2ヶ月後

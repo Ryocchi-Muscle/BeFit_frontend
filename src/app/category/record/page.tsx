@@ -1,6 +1,6 @@
 "use client";
 import Footer from "@/app/components/layout/Footer";
-import React, { Suspense, useState } from "react";
+import React, { useState } from "react";
 import TrainingChart from "@/components/TrainingChart";
 
 // 初期値を現在日を含む週の開始日に設定するヘルパー関数

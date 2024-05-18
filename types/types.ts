@@ -16,3 +16,9 @@ export interface BodyPart {
   id: number;
   name: string;
 }
+
+export interface Program {
+  [key: string]: {
+    [key: string]: string[];
+  };
+}

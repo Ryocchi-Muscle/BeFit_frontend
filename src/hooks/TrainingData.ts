@@ -1,38 +1,36 @@
 import { useSession } from "next-auth/react";
 import useSWR from "swr";
+import axios from "axios";
 
-interface TrainingRecord {
-  id: number;
-  date: string;
-  total_weight: number;
-}
+const REFRESH_INTERVAL_MS = 3600000;
+
+const fetcher = async ([url, token]: [string, string | undefined]) => {
+  const headers = token ? { Authorization: `Bearer ${token}` } : {};
+  const response = await axios.get(url, { headers });
+  if (response.status !== 200) {
+    throw new Error("Failed to fetch data");
+  }
+  return response.data;
+};
 
 const useTrainingData = () => {
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
+  console.log("session", session);
   const apiUrl = process.env.NEXT_PUBLIC_API_URL;
   const url = `${apiUrl}/api/v2/training_records`;
+  const token = session?.accessToken;
+  console.log("Session status:", status);
+  console.log("Session data:", session);
 
-  const fetcher = async (url: string) => {
-    if (!session?.accessToken) {
-      throw new Error("Unauthorized");
-    }
-    const response = await fetch(url, {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${session?.accessToken}`,
-      },
-    });
-    if (!response.ok) {
-      throw new Error("Network response was not ok");
-    }
-    return response.json();
-  };
-
-  const { data, error } = useSWR<TrainingRecord[], Error>(url, fetcher);
+  const { data, error } = useSWR(session ? [url, token] : null, fetcher, {
+    refreshInterval: REFRESH_INTERVAL_MS,
+  });
+  console.log("Fetched data:", data);
+  console.log("Fetch error:", error);
 
   return {
     data,
-    isLoading: !error && !data && !session,
+    isLoading: status === "loading" || (!error && !data),
     isError: error,
   };
 };
