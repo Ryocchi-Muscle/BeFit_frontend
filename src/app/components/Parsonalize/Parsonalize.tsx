@@ -77,7 +77,7 @@ const PersonalizePage: React.FC = () => {
       {!loading && (
         <>
           {step === 0 && (
-            <div className="flex flex-col items-center justify-start h-screen gap-5 pt-[30vh]">
+            <div className="flex flex-col items-center justify-start h-screen gap-5 pt-[15vh]">
               <button
                 className={`bg-blue-500 text-white py-5 px-10 rounded-lg text-lg border-2 border-blue-500 cursor-pointer w-4/5 max-w-lg transition-all ${
                   hoveredButton === "main"
@@ -88,7 +88,12 @@ const PersonalizePage: React.FC = () => {
                 onMouseEnter={() => setHoveredButton("main")}
                 onMouseLeave={() => setHoveredButton(null)}
               >
-                パーソナライズプランを作成する
+                <h1 className="text-3xl font-bold">
+                  バルクUP
+                  <br />
+                  プラン作成
+                </h1>
+                <h3 className="text-base mt-2">効率的な筋肥大プログラム</h3>
               </button>
               <button
                 className={`bg-purple-700 text-white py-5 px-10 rounded-lg text-lg border-2 border-purple-700 cursor-pointer w-4/5 max-w-lg transition-all ${
@@ -100,7 +105,16 @@ const PersonalizePage: React.FC = () => {
                 onMouseEnter={() => setHoveredButton("sub")}
                 onMouseLeave={() => setHoveredButton(null)}
               >
-                記録
+                <div className="text-center">
+                  <h1 className="text-3xl font-bold">
+                    パーソナル
+                    <br />
+                    プラン作成
+                  </h1>
+                  <h3 className="text-base mt-2">
+                    自分に合ったプランでトレーニングを開始する
+                  </h3>
+                </div>
               </button>
             </div>
           )}
@@ -158,7 +172,9 @@ const PersonalizePage: React.FC = () => {
           )}
           {step === 4 && (
             <div className="flex flex-col items-center justify-start min-h-[calc(100vh-70px)] pt-18">
-              <h2 className="text-blue-500 text-xl mb-5">作成されたプログラム</h2>
+              <h2 className="text-blue-500 text-xl mb-5">
+                作成されたプログラム
+              </h2>
               <div className="flex flex-wrap justify-center">
                 {program.map((item, index) => (
                   <ProgramCard
