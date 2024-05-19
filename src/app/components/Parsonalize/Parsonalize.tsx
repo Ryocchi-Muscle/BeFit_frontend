@@ -77,7 +77,7 @@ const PersonalizePage: React.FC = () => {
       {!loading && (
         <>
           {step === 0 && (
-            <div className="flex flex-col items-center justify-start h-screen gap-5 pt-[30vh]">
+            <div className="flex flex-col items-center justify-start h-screen gap-5 pt-[15vh]">
               <button
                 className={`bg-blue-500 text-white py-5 px-10 rounded-lg text-lg border-2 border-blue-500 cursor-pointer w-4/5 max-w-lg transition-all ${
                   hoveredButton === "main"

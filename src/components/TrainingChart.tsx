@@ -5,6 +5,7 @@ import "chart.js/auto";
 import aggregateWeeklyData from "./aggregateWeeklyData";
 import { parseISO, addMonths, subMonths, startOfMonth, format } from "date-fns";
 import { WeeklySummary } from "./aggregateWeeklyData";
+import { ClipLoader } from "react-spinners";
 
 interface Period {
   label: string;
@@ -66,7 +67,13 @@ const TrainingChart: React.FC = () => {
   };
   console.log("chartData", chartData);
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading)
+    return (
+      <div className="flex flex-col items-center justify-center min-h h-screen">
+        <ClipLoader color="#4A90E2" size={150} />
+        <p>Loading...</p>
+      </div>
+    );
   // if (isError) return <div>Error</div>;
 
   return (
