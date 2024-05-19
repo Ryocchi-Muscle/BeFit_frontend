@@ -158,9 +158,7 @@ const PersonalizePage: React.FC = () => {
           )}
           {step === 4 && (
             <div className="flex flex-col items-center justify-start min-h-[calc(100vh-70px)] pt-18">
-              <h2 className="text-blue-500 text-xl mb-5">
-                作成されたプログラム
-              </h2>
+              <h2 className="text-blue-500 text-xl mb-5">作成されたプログラム</h2>
               <div className="flex flex-wrap justify-center">
                 {program.map((item, index) => (
                   <ProgramCard
