@@ -1,49 +1,33 @@
 import Image from "next/image";
 import React from "react";
 
+
 const ProgramCard: React.FC<{
   title: string;
   image: string;
   details?: string[];
 }> = ({ title, image, details }) => (
-  <div style={styles.programCard}>
+  <div className="border border-gray-300 rounded-lg p-4 m-4 text-center max-w-lg">
+    <h3 className="text-lg font-bold mb-2">{title}</h3>
     {/* <Image
       src={image}
       alt={title}
-      style={styles.programImage}
       width={400}
       height={300}
+      className="rounded-lg"
     /> */}
-    <h3>{title}</h3>
     {details && (
-      <ul style={styles.programDetails}>
-        {details.map((detail, index) => (
-          <li key={index}>{detail}</li>
-        ))}
-      </ul>
+      <table className="w-full mt-4 border-collapse">
+        <tbody>
+          {details.map((detail, index) => (
+            <tr key={index} className="border-t">
+              <td className="p-2 text-left">{detail}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     )}
   </div>
 );
-
-const styles = {
-  programCard: {
-    border: "1px solid #ddd",
-    borderRadius: "10px",
-    padding: "10px",
-    margin: "10px",
-    textAlign: "center" as "center",
-    width: "100%",
-    maxWidth: "400px",
-  },
-  programImage: {
-    width: "100%",
-    height: "auto",
-    borderRadius: "10px",
-  },
-  programDetails: {
-    textAlign: "left" as "left",
-    paddingLeft: "20px",
-  },
-};
 
 export default ProgramCard;
