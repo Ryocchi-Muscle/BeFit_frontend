@@ -1,11 +1,14 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import SelectionStep from "./SelectionStep";
 import LoadingScreen from "./LoadingScreen";
 import ProgramCard from "./ProgramCard";
 import { useSession } from "next-auth/react";
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 
 interface Program {
   title: string;
@@ -23,6 +26,7 @@ const PersonalizePage: React.FC = () => {
   });
   const [loading, setLoading] = useState(false);
   const [program, setProgram] = useState<Program[]>([]);
+  const sliderRef = useRef<Slider>(null);
 
   const handleNextStep = () => setStep(step + 1);
   console.log("step", step);
@@ -57,6 +61,7 @@ const PersonalizePage: React.FC = () => {
       }
       console.log("response", response);
       const data = await response.json();
+      console.log("APIレスポンスデータ:", data);
       setProgram(data.program as Program[]);
     } catch (error) {
       console.error("エラーが発生しました: ", error);
@@ -76,6 +81,18 @@ const PersonalizePage: React.FC = () => {
       program: JSON.stringify(program),
     }).toString();
     router.push(`/category/parsonalize/record_page?${query}`);
+  };
+
+  const sliderSettings = {
+    dots: true,
+    infinite: false,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    variableWidth: true,
+    centerMode: true,
+    centerPadding: "20px",
+    focusOnSelect: true,
   };
 
   return (
@@ -166,34 +183,35 @@ const PersonalizePage: React.FC = () => {
             </div>
           )}
           {step === 4 && (
-            <div className="flex flex-col items-center justify-start h-screen pt-18 overflow-y-auto pb-20">
-              <h2 className="text-blue-500 text-xl mb-5">
-                作成されたプログラム
-              </h2>
-              <div className="flex flex-wrap justify-center">
-                {program.map((item, index) => (
-                  <ProgramCard
-                    key={index}
-                    title={item.title}
-                    image={item.image}
-                    details={item.details}
-                  />
-                ))}
-                <button
-                  className="mt-5 py-3 px-5 bg-blue-500 text-white border-none rounded-lg cursor-pointer"
-                  onClick={handleRecordButtonClick}
-                >
-                  プログラムをスタートする
-                </button>
-                <button
-                  className="fixed top-20 left-5 py-3 px-5 bg-blue-500 text-white border-none rounded-full cursor-pointer shadow-lg"
-                  onClick={handlePrevStep}
-                >
-                  戻る
-                </button>
+            <div className="flex flex-col items-center justify-start pt-18 overflow-y-auto pb-20">
+              <div className="w-full max-w-md mx-auto pt-10">
+                <Slider {...sliderSettings} ref={sliderRef}>
+                  {program.map((item, index) => (
+                    <ProgramCard
+                      key={index}
+                      title={item.title}
+                      image={item.image}
+                      details={item.details}
+                    />
+                  ))}
+                </Slider>
               </div>
+              <button
+                className="mt-5 py-3 px-5 bg-blue-500 text-white border-none rounded-lg cursor-pointer"
+                onClick={handleRecordButtonClick}
+              >
+                プログラムをスタートする
+              </button>
+              <button
+                className="fixed top-20 left-5 py-3 px-5 bg-blue-500 text-white border-none rounded-full cursor-pointer shadow-lg"
+                onClick={handlePrevStep}
+              >
+                戻る
+              </button>
             </div>
           )}
+
+
           {step > 0 && step < 3 && (
             <button
               className="mt-5 py-3 px-5 bg-blue-500 text-white border-none rounded-lg cursor-pointer"
