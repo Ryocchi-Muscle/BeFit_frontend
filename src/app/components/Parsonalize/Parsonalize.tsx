@@ -6,6 +6,7 @@ import LoadingScreen from "./LoadingScreen";
 import ProgramCard from "./ProgramCard";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
+import { useRouter } from "next/router";
 
 interface Program {
   title: string;
@@ -15,6 +16,7 @@ interface Program {
 
 const PersonalizePage: React.FC = () => {
   const { data: session } = useSession();
+  const router = useRouter(); 
   const [step, setStep] = useState(0);
   const [formData, setFormData] = useState({
     gender: "",
@@ -72,7 +74,7 @@ const PersonalizePage: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col items-center p-0 overflow-y-auto h-screen">
+    <div className="flex flex-col items-center p-0 min-h-screen overflow-y-auto">
       {loading && <LoadingScreen />}
       {!loading && (
         <>
@@ -171,7 +173,7 @@ const PersonalizePage: React.FC = () => {
             </div>
           )}
           {step === 4 && (
-            <div className="flex flex-col items-center justify-start min-h-[calc(100vh-70px)] pt-18">
+            <div className="flex flex-col items-center justify-start h-screen pt-18 overflow-y-auto pb-20">
               <h2 className="text-blue-500 text-xl mb-5">
                 作成されたプログラム
               </h2>
@@ -184,15 +186,22 @@ const PersonalizePage: React.FC = () => {
                     details={item.details}
                   />
                 ))}
+                <button
+                  className="mt-5 py-3 px-5 bg-blue-500 text-white border-none rounded-lg cursor-pointer"
+                  onClick={() => router.push("/record-page")}
+                >
+                  記録する
+                </button>
+                <button
+                  className="mt-5 py-3 px-5 bg-blue-500 text-white border-none rounded-lg cursor-pointer"
+                  onClick={handlePrevStep}
+                >
+                  戻る
+                </button>
               </div>
-              <button
-                className="mt-5 py-3 px-5 bg-blue-500 text-white border-none rounded-lg cursor-pointer"
-                onClick={handlePrevStep}
-              >
-                戻る
-              </button>
             </div>
           )}
+
           {step > 0 && step < 3 && (
             <button
               className="mt-5 py-3 px-5 bg-blue-500 text-white border-none rounded-lg cursor-pointer"
