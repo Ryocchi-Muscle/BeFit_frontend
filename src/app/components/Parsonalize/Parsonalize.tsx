@@ -1,12 +1,11 @@
 "use client";
 
 import React, { useState } from "react";
+import { useRouter } from "next/navigation";
 import SelectionStep from "./SelectionStep";
 import LoadingScreen from "./LoadingScreen";
 import ProgramCard from "./ProgramCard";
 import { useSession } from "next-auth/react";
-import Image from "next/image";
-import { useRouter } from "next/router";
 
 interface Program {
   title: string;
@@ -16,7 +15,7 @@ interface Program {
 
 const PersonalizePage: React.FC = () => {
   const { data: session } = useSession();
-  const router = useRouter(); 
+  const router = useRouter();
   const [step, setStep] = useState(0);
   const [formData, setFormData] = useState({
     gender: "",
@@ -71,6 +70,13 @@ const PersonalizePage: React.FC = () => {
   const handleCombinedClick = async () => {
     setStep(4);
     await handlePlanCreation();
+  };
+
+  const handleRecordButtonClick = () => {
+    const query = new URLSearchParams({
+      program: JSON.stringify(program),
+    }).toString();
+    router.push(`/category/parsonalize/record_page?${query}`);
   };
 
   return (
@@ -188,7 +194,7 @@ const PersonalizePage: React.FC = () => {
                 ))}
                 <button
                   className="mt-5 py-3 px-5 bg-blue-500 text-white border-none rounded-lg cursor-pointer"
-                  onClick={() => router.push("/record-page")}
+                  onClick={handleRecordButtonClick}
                 >
                   記録する
                 </button>
