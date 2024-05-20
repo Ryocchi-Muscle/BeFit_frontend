@@ -183,10 +183,10 @@ const PersonalizePage: React.FC = () => {
                   className="mt-5 py-3 px-5 bg-blue-500 text-white border-none rounded-lg cursor-pointer"
                   onClick={handleRecordButtonClick}
                 >
-                  記録する
+                  プログラムをスタートする
                 </button>
                 <button
-                  className="mt-5 py-3 px-5 bg-blue-500 text-white border-none rounded-lg cursor-pointer"
+                  className="fixed top-20 left-5 py-3 px-5 bg-blue-500 text-white border-none rounded-full cursor-pointer shadow-lg"
                   onClick={handlePrevStep}
                 >
                   戻る
@@ -194,7 +194,6 @@ const PersonalizePage: React.FC = () => {
               </div>
             </div>
           )}
-
           {step > 0 && step < 3 && (
             <button
               className="mt-5 py-3 px-5 bg-blue-500 text-white border-none rounded-lg cursor-pointer"
