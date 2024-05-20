@@ -22,7 +22,6 @@ const PersonalizePage: React.FC = () => {
     frequency: "",
   });
   const [loading, setLoading] = useState(false);
-  const [hoveredButton, setHoveredButton] = useState<string | null>(null);
   const [program, setProgram] = useState<Program[]>([]);
 
   const handleNextStep = () => setStep(step + 1);
@@ -87,14 +86,8 @@ const PersonalizePage: React.FC = () => {
           {step === 0 && (
             <div className="flex flex-col items-center justify-start h-screen gap-5 pt-[15vh]">
               <button
-                className={`bg-blue-500 text-white py-5 px-10 rounded-lg text-lg border-2 border-blue-500 cursor-pointer w-4/5 max-w-lg transition-all ${
-                  hoveredButton === "main"
-                    ? "bg-white text-blue-500"
-                    : "bg-blue-500 text-white"
-                }`}
+                className="bg-blue-500 text-white py-5 px-10 rounded-lg text-lg border-2 border-blue-500 cursor-pointer w-4/5 max-w-lg transition-all"
                 onClick={handleNextStep}
-                onMouseEnter={() => setHoveredButton("main")}
-                onMouseLeave={() => setHoveredButton(null)}
               >
                 <h1 className="text-3xl font-bold">
                   バルクUP
@@ -104,14 +97,8 @@ const PersonalizePage: React.FC = () => {
                 <h3 className="text-base mt-2">効率的な筋肥大プログラム</h3>
               </button>
               <button
-                className={`bg-purple-700 text-white py-5 px-10 rounded-lg text-lg border-2 border-purple-700 cursor-pointer w-4/5 max-w-lg transition-all ${
-                  hoveredButton === "sub"
-                    ? "bg-white text-purple-700"
-                    : "bg-purple-700 text-white"
-                }`}
+                className="bg-purple-700 text-white py-5 px-10 rounded-lg text-lg border-2 border-purple-700 cursor-pointer w-4/5 max-w-lg transition-all"
                 onClick={() => alert("記録")}
-                onMouseEnter={() => setHoveredButton("sub")}
-                onMouseLeave={() => setHoveredButton(null)}
               >
                 <div className="text-center">
                   <h1 className="text-3xl font-bold">
@@ -196,10 +183,10 @@ const PersonalizePage: React.FC = () => {
                   className="mt-5 py-3 px-5 bg-blue-500 text-white border-none rounded-lg cursor-pointer"
                   onClick={handleRecordButtonClick}
                 >
-                  記録する
+                  プログラムをスタートする
                 </button>
                 <button
-                  className="mt-5 py-3 px-5 bg-blue-500 text-white border-none rounded-lg cursor-pointer"
+                  className="fixed top-20 left-5 py-3 px-5 bg-blue-500 text-white border-none rounded-full cursor-pointer shadow-lg"
                   onClick={handlePrevStep}
                 >
                   戻る
@@ -207,7 +194,6 @@ const PersonalizePage: React.FC = () => {
               </div>
             </div>
           )}
-
           {step > 0 && step < 3 && (
             <button
               className="mt-5 py-3 px-5 bg-blue-500 text-white border-none rounded-lg cursor-pointer"
