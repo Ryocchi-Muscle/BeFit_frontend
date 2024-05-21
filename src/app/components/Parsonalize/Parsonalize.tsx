@@ -63,6 +63,8 @@ const PersonalizePage: React.FC = () => {
       const data = await response.json();
       console.log("APIレスポンスデータ:", data);
       setProgram(data.program as Program[]);
+      console.log("data.program", data.program);
+      console.log("Program", program);
     } catch (error) {
       console.error("エラーが発生しました: ", error);
     } finally {
@@ -91,7 +93,7 @@ const PersonalizePage: React.FC = () => {
     slidesToScroll: 1,
     variableWidth: true,
     centerMode: true,
-    centerPadding: "20px",
+    centerPadding: "0px",
     focusOnSelect: true,
   };
 
@@ -183,7 +185,7 @@ const PersonalizePage: React.FC = () => {
             </div>
           )}
           {step === 4 && (
-            <div className="flex flex-col items-center justify-start pt-18 overflow-y-auto pb-20">
+            <div className="fixed flex flex-col items-center justify-start pt-18 overflow-y-auto pb-20 h-screen">
               <div className="w-full max-w-md mx-auto pt-10">
                 <Slider {...sliderSettings} ref={sliderRef}>
                   {program.map((item, index) => (
@@ -197,7 +199,7 @@ const PersonalizePage: React.FC = () => {
                 </Slider>
               </div>
               <button
-                className="mt-5 py-3 px-5 bg-blue-500 text-white border-none rounded-lg cursor-pointer"
+                className="mt-5 py-3 px-5 bg-blue-500 text-white border-none rounded-lg cursor-pointer "
                 onClick={handleRecordButtonClick}
               >
                 プログラムをスタートする
@@ -210,7 +212,6 @@ const PersonalizePage: React.FC = () => {
               </button>
             </div>
           )}
-
 
           {step > 0 && step < 3 && (
             <button
