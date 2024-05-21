@@ -211,7 +211,6 @@ const PersonalizePage: React.FC = () => {
             </div>
           )}
 
-
           {step > 0 && step < 3 && (
             <button
               className="mt-5 py-3 px-5 bg-blue-500 text-white border-none rounded-lg cursor-pointer"

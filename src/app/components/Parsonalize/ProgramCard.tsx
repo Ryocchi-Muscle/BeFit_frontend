@@ -7,7 +7,10 @@ const ProgramCard: React.FC<{
   details?: string[];
 }> = ({ title, image, details }) => {
   return (
-    <div className="border border-gray-300 rounded-lg p-6 mx-2 text-center shadow-lg bg-white w-[330px] overflow-hidden">
+    <div
+      className="border border-gray-300 rounded-lg p-6 mx-2 text-center shadow-lg bg-white"
+      style={{ width: "330px" }}
+    >
       <h3 className="text-lg font-bold mb-2">{title}</h3>
       {details && (
         <ul className="list-none p-0 m-0">
