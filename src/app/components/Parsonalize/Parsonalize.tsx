@@ -199,7 +199,7 @@ const PersonalizePage: React.FC = () => {
                 </Slider>
               </div>
               <button
-                className="mt-5 py-3 px-5 bg-blue-500 text-white border-none rounded-lg cursor-pointer "
+                className="mt-10 py-3 px-5 bg-blue-500 text-white border-none rounded-lg cursor-pointer "
                 onClick={handleRecordButtonClick}
               >
                 プログラムをスタートする
