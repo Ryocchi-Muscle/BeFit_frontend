@@ -1,4 +1,3 @@
-import Image from "next/image";
 import React from "react";
 
 const ProgramCard: React.FC<{
@@ -8,8 +7,13 @@ const ProgramCard: React.FC<{
 }> = ({ title, image, details }) => {
   return (
     <div
-      className="border border-gray-300 rounded-lg p-6 mx-2 text-center shadow-lg bg-white"
-      style={{ width: "330px" }}
+      className="border border-gray-300 rounded-lg p-6 mx-3 text-center shadow-lg bg-white "
+      style={{
+        width: "100%",
+        maxWidth: "330px",
+        height: "400px",
+        overflowY: "auto",
+      }}
     >
       <h3 className="text-lg font-bold mb-2">{title}</h3>
       {details && (
