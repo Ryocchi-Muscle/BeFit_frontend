@@ -22,3 +22,4 @@ export interface Program {
     [key: string]: string[];
   };
 }
+

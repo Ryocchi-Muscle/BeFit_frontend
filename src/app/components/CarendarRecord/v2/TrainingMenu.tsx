@@ -18,9 +18,9 @@ interface TrainingMenuProps {
 
 export default function TrainingMenuComponet({
   menuId,
-  menuName,
+  menuName = "",
   bodyPart,
-  sets,
+  sets = [],
   updateMenuName,
   updateBodyPart,
   updateSetInMenu,
