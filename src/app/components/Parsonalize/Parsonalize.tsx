@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useRef, useState } from "react";
-import { useRouter } from "next/navigation";
 import SelectionStep from "./SelectionStep";
 import LoadingScreen from "./LoadingScreen";
 import ProgramCard from "./ProgramCard";
@@ -9,6 +8,8 @@ import { useSession } from "next-auth/react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import ProgramTrainingMenuDialog from "./ProgramTrainingMenuDialog";
+import StartProgramDialog from "./StartProgramDialog";
 
 interface Program {
   title: string;
@@ -18,7 +19,6 @@ interface Program {
 
 const PersonalizePage: React.FC = () => {
   const { data: session } = useSession();
-  const router = useRouter();
   const [step, setStep] = useState(0);
   const [formData, setFormData] = useState({
     gender: "",
@@ -27,6 +27,11 @@ const PersonalizePage: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [program, setProgram] = useState<Program[]>([]);
   const sliderRef = useRef<Slider>(null);
+  const [isStartProgramDialogOpen, setIsStartProgramDialogOpen] =
+    useState(false);
+  const [isTrainingMenuDialogOpen, setIsTrainingMenuDialogOpen] =
+    useState(false);
+  const [selectedDate, setSelectedDate] = useState(new Date());
 
   const handleNextStep = () => setStep(step + 1);
   console.log("step", step);
@@ -79,10 +84,21 @@ const PersonalizePage: React.FC = () => {
   };
 
   const handleRecordButtonClick = () => {
-    const query = new URLSearchParams({
-      program: JSON.stringify(program),
-    }).toString();
-    router.push(`/category/parsonalize/record_page?${query}`);
+    setIsStartProgramDialogOpen(true);
+    console.log("プログラムをスタートするボタン押下");
+  };
+
+  const handleConfirmStartProgram = () => {
+    setIsStartProgramDialogOpen(false);
+    setIsTrainingMenuDialogOpen(true);
+  };
+
+  const handleCloseStartProgramDialog = () => {
+    setIsStartProgramDialogOpen(false);
+  };
+
+  const handleCloseTrainingMenuDialog = () => {
+    setIsTrainingMenuDialogOpen(false);
   };
 
   const sliderSettings = {
@@ -212,6 +228,19 @@ const PersonalizePage: React.FC = () => {
               </button>
             </div>
           )}
+          <StartProgramDialog
+            open={isStartProgramDialogOpen}
+            onClose={handleCloseStartProgramDialog}
+            onConfirm={handleConfirmStartProgram}
+          />
+          <ProgramTrainingMenuDialog
+            open={isTrainingMenuDialogOpen}
+            onClose={handleCloseTrainingMenuDialog}
+            date={selectedDate}
+            gender={formData.gender}
+            frequency={formData.frequency}
+            program={program} 
+          />
 
           {step > 0 && step < 3 && (
             <button
