@@ -17,7 +17,7 @@ import { MenuData } from "types/types";
 interface Program {
   title: string;
   image: string;
-  details: string[];
+  details: { menu: string; set_info: string; other: string }[];
 }
 
 interface ProgramTrainingMenuModalProps {
@@ -46,7 +46,8 @@ const ProgramTrainingMenuDialog: React.FC<ProgramTrainingMenuModalProps> = ({
       setMenuData(
         program.flatMap((p) =>
           p.details.map((detail) => {
-            const [menuName, set] = detail.split(": ");
+            const { menu, set_info } = detail;
+            const [menuName, set] = [menu, set_info];
             return {
               menuId: menuIdCounter++, // 一意の識別子として menuId を設定
               menuName,

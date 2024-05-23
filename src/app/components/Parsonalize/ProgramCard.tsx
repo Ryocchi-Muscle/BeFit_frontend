@@ -1,10 +1,24 @@
 import React from "react";
+import {
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+
 
 const ProgramCard: React.FC<{
   title: string;
   image: string;
-  details?: string[];
-}> = ({ title, image, details }) => {
+  details?: { menu: string; set_info: string; other: string }[];
+}> = ({ title, details }) => {
+  const parseDetail = (detail: string) => {
+    const [menu, setInfo] = detail.split(": ");
+    return { menu, setInfo };
+  };
   return (
     <div
       className="border border-gray-300 rounded-lg p-6 mx-3 text-center shadow-lg bg-white "
@@ -17,19 +31,35 @@ const ProgramCard: React.FC<{
     >
       <h3 className="text-lg font-bold mb-2">{title}</h3>
       {details && (
-        <ul className="list-none p-0 m-0">
-          {details.map((detail, index) => (
-            <li
-              key={index}
-              className="border-t py-2 text-left first:border-t-0 "
-            >
-              {detail}
-            </li>
-          ))}
-        </ul>
+        <Table>
+          <TableBody>
+            {details.map((detail, index) => (
+              <React.Fragment key={index}>
+                <TableRow>
+                  <TableCell colSpan={2} className="font-bold text-black">
+                    {detail.menu}
+                  </TableCell>
+                </TableRow>
+                {detail.set_info && (
+                  <TableRow>
+                    <TableCell colSpan={2} className="text-gray-500">
+                      {detail.set_info}
+                    </TableCell>
+                  </TableRow>
+                )}
+                {detail.other && (
+                  <TableRow>
+                    <TableCell colSpan={2} className="text-gray-500">
+                      {detail.other}
+                    </TableCell>
+                  </TableRow>
+                )}
+              </React.Fragment>
+            ))}
+          </TableBody>
+        </Table>
       )}
     </div>
   );
 };
-
 export default ProgramCard;
