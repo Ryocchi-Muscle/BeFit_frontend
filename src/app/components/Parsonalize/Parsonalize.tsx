@@ -14,7 +14,7 @@ import StartProgramDialog from "./StartProgramDialog";
 interface Program {
   title: string;
   image: string;
-  details: string[];
+  details: { menu: string; set_info: string; other: string }[];
 }
 
 const PersonalizePage: React.FC = () => {
@@ -239,7 +239,7 @@ const PersonalizePage: React.FC = () => {
             date={selectedDate}
             gender={formData.gender}
             frequency={formData.frequency}
-            program={program} 
+            program={program}
           />
 
           {step > 0 && step < 3 && (
