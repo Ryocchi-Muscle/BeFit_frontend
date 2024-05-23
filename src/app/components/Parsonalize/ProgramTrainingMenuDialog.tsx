@@ -49,9 +49,9 @@ const ProgramTrainingMenuDialog: React.FC<ProgramTrainingMenuModalProps> = ({
             const { menu, set_info } = detail;
             const [menuName, set] = [menu, set_info];
             return {
-              menuId: menuIdCounter++, // 一意の識別子として menuId を設定
+              menuId: menuIdCounter++,
               menuName,
-              body_part: "", // 適宜設定
+              body_part: "", // 後で設定
               sets: [
                 {
                   setId: 1,
@@ -70,7 +70,7 @@ const ProgramTrainingMenuDialog: React.FC<ProgramTrainingMenuModalProps> = ({
 
   return (
     <Dialog open={open} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-md max-h-[80vh] ">
+      <DialogContent className="sm:max-w-md max-h-[80vh] flex flex-col">
         <DialogHeader>
           <DialogTitle>トレーニングメニュー入力</DialogTitle>
           <DialogDescription>
@@ -79,14 +79,13 @@ const ProgramTrainingMenuDialog: React.FC<ProgramTrainingMenuModalProps> = ({
         </DialogHeader>
         <div className="max-h-[60vh] overflow-auto">
           <TrainingMenuList menus={menuData || []} setMenus={setMenuData} />
-
-          <DialogFooter>
-            <DialogClose asChild>
-              <Button variant="secondary">キャンセル</Button>
-            </DialogClose>
-            <Button variant="default">保存</Button>
-          </DialogFooter>
         </div>
+        <DialogFooter>
+          <DialogClose asChild>
+            <Button variant="secondary">キャンセル</Button>
+          </DialogClose>
+          <Button variant="default">保存</Button>
+        </DialogFooter>
       </DialogContent>
     </Dialog>
   );

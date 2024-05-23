@@ -15,10 +15,6 @@ const ProgramCard: React.FC<{
   image: string;
   details?: { menu: string; set_info: string; other: string }[];
 }> = ({ title, details }) => {
-  const parseDetail = (detail: string) => {
-    const [menu, setInfo] = detail.split(": ");
-    return { menu, setInfo };
-  };
   return (
     <div
       className="border border-gray-300 rounded-lg p-6 mx-3 text-center shadow-lg bg-white "
