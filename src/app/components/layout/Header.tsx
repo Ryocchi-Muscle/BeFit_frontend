@@ -3,10 +3,13 @@
 import Image from "next/image";
 import React from "react";
 import { type Session } from "next-auth";
-import Link from "next/link"; // Next.jsのLinkコンポーネントをインポート
+import Link from "next/link";
 import { signOut } from "next-auth/react";
+import { usePathname } from "next/navigation";
 
 const Header = ({ session }: { session: Session | null }) => {
+  const pathname = usePathname();
+  const isLoginPage = pathname === "/account/login";
   return (
     <header className="fixed top-0 left-0 right-0 flex items-center justify-between bg-blue-950 shadow-md p-2 lg:p-4">
       <div className="flex items-center">
@@ -35,7 +38,7 @@ const Header = ({ session }: { session: Session | null }) => {
               </button>
             </li>
           </>
-        ) : (
+        ) : !isLoginPage ? (
           <>
             <li>
               <Link href="account/login">
@@ -45,7 +48,7 @@ const Header = ({ session }: { session: Session | null }) => {
               </Link>
             </li>
           </>
-        )}
+        ) : null}
       </ul>
     </header>
   );
