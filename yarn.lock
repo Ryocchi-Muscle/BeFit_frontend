@@ -672,10 +672,10 @@
   resolved "https://registry.npmjs.org/@next/swc-darwin-arm64/-/swc-darwin-arm64-14.2.3.tgz"
   integrity sha512-3pEYo/RaGqPP0YzwnlmPN2puaF2WMLM3apt5jLW2fFdXD9+pqcoTzRk+iZsf8ta7+quAe4Q6Ms0nR0SFGFdS1A==
 
-"@next/third-parties@^14.2.3":
-  version "14.2.3"
-  resolved "https://registry.npmjs.org/@next/third-parties/-/third-parties-14.2.3.tgz"
-  integrity sha512-j4E2xBSsEZq4VX2pVm3LpGltSwCxETic6glJWfHyYQvpoMdplCAYrQKpF+E9Gg3jfsrfmRAIdTE11m+biBCx1Q==
+"@next/third-parties@^14.3.0-canary.81":
+  version "14.3.0-canary.81"
+  resolved "https://registry.npmjs.org/@next/third-parties/-/third-parties-14.3.0-canary.81.tgz"
+  integrity sha512-QCcAazuvsByZsFpduC5oHBIW/GQJ2fZbFck0Ysga7EKM4CnSb6X9sWNwpyIuu3xMvZvGKU62ASMyjwoOh+Xo6w==
   dependencies:
     third-party-capital "1.0.20"
 

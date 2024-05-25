@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import NextAuthProvider from "./provider/NextAuth";
 import { getServerSession } from "next-auth/next";
+import { GoogleTagManager } from "@next/third-parties/google";
 
 import Header from "./components/layout/Header";
 import { nextAuthOptions } from "./utils/next-auth-options";
@@ -24,6 +25,7 @@ export default async function RootLayout({
 
   return (
     <html lang="ja">
+      <GoogleTagManager gtmId={process.env.GA_ID ?? ""} />
       <body className={`${inter.className} pt-10`}>
         <NextAuthProvider>
           <Header session={session} />
