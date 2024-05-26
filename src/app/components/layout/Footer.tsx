@@ -58,7 +58,7 @@ const Footer: React.FC<Props> = ({ children, className }) => {
               <Link
                 href="/category/user_info"
                 className={`flex items-center justify-center hover:bg-gray-300 p-2 rounded-full ${isActive(
-                  "/category/parsonalize"
+                  "/category/user_info"
                 )}`}
               >
                 <IoPerson className="text-black" />
