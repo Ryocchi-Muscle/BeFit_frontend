@@ -7,6 +7,7 @@ import { signIn } from "next-auth/react";
 import { useSession } from "next-auth/react";
 import { useToast } from "@/components/ui/use-toast";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 const LoginPage = () => {
   const { data: session, status } = useSession();
@@ -55,14 +56,15 @@ const LoginPage = () => {
         <button
           onClick={handleLogin("google")}
           type="button"
-          className="w-full bg-blue-500 text-white rounded-lg px-4 py-2 flex items-center justify-center"
+          className="w-full bg-white text-black border border-gray-300 rounded-lg px-4 py-2 flex items-center justify-center hover:bg-blue-400"
         >
-          {/* <img
-            src="/path/to/google-icon.png"
-            alt="Google Icon"
-            className="mr-2"
-          /> */}
-          Login with Google
+          <Image
+            src="/images/google-logo.svg"
+            alt="Google logo"
+            width={40}
+            height={40}
+          />
+          Googleでログイン
         </button>
         <div className="text-center">
           <a href="#" className="text-xs text-gray-600">
