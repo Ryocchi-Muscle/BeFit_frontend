@@ -10,6 +10,15 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import ProgramTrainingMenuDialog from "./ProgramTrainingMenuDialog";
 import StartProgramDialog from "./StartProgramDialog";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 interface Program {
   title: string;
@@ -39,10 +48,13 @@ const PersonalizePage: React.FC = () => {
   const handlePrevStep = () =>
     setStep((prevStep) => (prevStep === 4 ? 0 : prevStep - 1));
 
-  const handleSelect = (key: string, value: string | number
-  ) => {
+  const handleSelect = (key: string, value: string | number) => {
     setFormData({ ...formData, [key]: value });
     handleNextStep();
+  };
+
+  const handleDurationSelect = (value: number) => {
+    setFormData({ ...formData, duration: value });
   };
 
   const handlePlanCreation = async () => {
@@ -115,22 +127,25 @@ const PersonalizePage: React.FC = () => {
     focusOnSelect: true,
   };
 
-    const generateProgramCards = () => {
-      const weeks = Array.from({ length: formData.duration }, (_, i) => i + 1);
-      const frequency = formData.frequency.split("-").map((f) => parseInt(f));
-      const workoutsPerWeek =
-        frequency.length > 1 ? (frequency[0] + frequency[1]) / 2 : frequency[0];
+  const generateProgramCards = () => {
+    const weeks = Array.from(
+      { length:  formData.duration},
+      (_, i) => i + 1
+    );
+    const frequency = formData.frequency.split("-").map((f) => parseInt(f));
+    const workoutsPerWeek =
+      frequency.length > 1 ? (frequency[0] + frequency[1]) / 2 : frequency[0];
 
-      return weeks.map((week) => ({
-        title: `Week ${week}`,
-        image: `/images/week${week}.jpg`,
-        details: Array.from({ length: workoutsPerWeek }, (_, i) => ({
-          menu: `Workout ${i + 1}`,
-          set_info: `${Math.floor(Math.random() * 10 + 1)} sets`,
-          other: `${Math.floor(Math.random() * 10 + 1)} reps`,
-        })),
-      }));
-    };
+    return weeks.map((week) => ({
+      title: `Week ${week}`,
+      image: `/images/week${week}.jpg`,
+      details: Array.from({ length: workoutsPerWeek }, (_, i) => ({
+        menu: `Workout ${i + 1}`,
+        set_info: `${Math.floor(Math.random() * 10 + 1)} sets`,
+        other: `${Math.floor(Math.random() * 10 + 1)} reps`,
+      })),
+    }));
+  };
 
   return (
     <div className="flex flex-col items-center p-0 min-h-screen overflow-y-auto">
@@ -202,19 +217,27 @@ const PersonalizePage: React.FC = () => {
                 <h2 className="text-blue-500 text-xl mb-5">
                   プログラム期間を選択してください
                 </h2>
-                <select
-                  className="form-select mt-1 block w-full p-2 border border-gray-300 rounded-md"
-                  value={formData.duration}
-                  onChange={(e) =>
-                    handleSelect("duration", parseInt(e.target.value))
+                <Select
+                  value={formData.duration.toString()}
+                  onValueChange={(value) =>
+                    handleDurationSelect(parseInt(value))
                   }
                 >
-                  {Array.from({ length: 9 }, (_, i) => i + 4).map((week) => (
-                    <option key={week} value={week}>
-                      {week} 週
-                    </option>
-                  ))}
-                </select>
+                  <SelectTrigger className="w-[180px]">
+                    <SelectValue placeholder="プログラム期間" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectGroup>
+                      {Array.from({ length: 9 }, (_, i) => i + 4).map(
+                        (week) => (
+                          <SelectItem key={week} value={week.toString()}>
+                            {week} 週間
+                          </SelectItem>
+                        )
+                      )}
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>
                 <button
                   className="mt-5 py-3 px-5 bg-blue-500 text-white border-none rounded-lg cursor-pointer"
                   onClick={handleNextStep}
@@ -236,6 +259,7 @@ const PersonalizePage: React.FC = () => {
                 <h2 className="text-blue-500 text-xl mb-5">プラン作成完了！</h2>
                 <p>性別: {formData.gender}</p>
                 <p>トレーニング頻度: {formData.frequency}</p>
+                <p>プログラム期間: {formData.duration}</p>
                 {step === 4 && (
                   <button
                     className="mt-5 py-3 px-5 bg-blue-500 text-white border-none rounded-lg cursor-pointer"
