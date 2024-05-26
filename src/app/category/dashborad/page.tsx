@@ -3,6 +3,7 @@ import Footer from "@/app/components/layout/Footer";
 import React, { useState } from "react";
 import TrainingChart from "@/components/TrainingChart";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useRouter } from "next/navigation";
 
 interface Program {
   name: string;
@@ -11,19 +12,29 @@ interface Program {
 }
 
 // ダミーデータ: 実際のアプリケーションではこのデータはAPIや状態管理から取得します
-const dummyProgramData = null; // プログラムが作成されていない場合はnull、作成されている場合はオブジェクト
+const dummyProgramData: Program | null = null; // プログラムが作成されていない場合はnull、作成されている場合はオブジェクト
 
 // プログラム未作成コンポーネント
-const NoProgramComponent = () => (
-  <div className="flex flex-col items-center justify-center h-full">
-    <h2 className="text-xl font-semibold mb-4">
-      プログラムが作成されていません
-    </h2>
-    <button className="px-4 py-2 bg-blue-500 text-white rounded-md">
-      プログラムを作成する
-    </button>
-  </div>
-);
+const NoProgramComponent = () => {
+  const router = useRouter();
+
+  const handleCreateProgram = () => {
+    router.push("/category/parsonalize");
+  };
+  return (
+    <div className="flex flex-col items-center justify-center h-full">
+      <h2 className="text-xl font-semibold mb-4">
+        プログラムが作成されていません
+      </h2>
+      <button
+        className="px-4 py-2 bg-blue-500 text-white rounded-md"
+        onClick={handleCreateProgram}
+      >
+        プログラムを作成する
+      </button>
+    </div>
+  );
+};
 
 // プログラム情報表示コンポーネント
 const ProgramInfoComponent: React.FC<{ program: Program }> = ({ program }) => (
