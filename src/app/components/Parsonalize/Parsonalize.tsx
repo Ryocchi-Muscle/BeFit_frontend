@@ -43,7 +43,7 @@ const PersonalizePage: React.FC = () => {
   const [formData, setFormData] = useState({
     gender: "",
     frequency: "",
-    duration: 12,
+    duration: "",
   });
   const [loading, setLoading] = useState(false);
   const [program, setProgram] = useState<Program[]>([]);
@@ -71,18 +71,8 @@ const PersonalizePage: React.FC = () => {
 
   const [selectedDate, setSelectedDate] = useState(new Date());
 
-  const handleNextStep = () => setStep(step + 1);
-  console.log("step", step);
-  const handlePrevStep = () =>
-    setStep((prevStep) => (prevStep === 4 ? 0 : prevStep - 1));
-
   const handleSelect = (key: string, value: string | number) => {
     setFormData({ ...formData, [key]: value });
-    handleNextStep();
-  };
-
-  const handleDurationSelect = (value: number) => {
-    setFormData({ ...formData, duration: value });
   };
 
   const handlePlanCreation = async () => {
@@ -105,9 +95,7 @@ const PersonalizePage: React.FC = () => {
       if (!response.ok) {
         throw new Error("APIエラーが発生しました");
       }
-      console.log("response", response);
       const data = await response.json();
-      console.log("APIレスポンスデータ:", data);
       setProgram(
         data.program.map((item: any) => ({
           title: item.title,
@@ -115,23 +103,16 @@ const PersonalizePage: React.FC = () => {
           details: item.details,
         }))
       );
-      console.log("data.program", data.program);
     } catch (error) {
       console.error("エラーが発生しました: ", error);
     } finally {
       setLoading(false);
-      handleNextStep();
+      setStep(4);
     }
-  };
-
-  const handleCombinedClick = async () => {
-    setStep(4);
-    await handlePlanCreation();
   };
 
   const handleRecordButtonClick = () => {
     setIsStartProgramDialogOpen(true);
-    console.log("プログラムをスタートするボタン押下");
   };
 
   const handleConfirmStartProgram = () => {
@@ -180,97 +161,79 @@ const PersonalizePage: React.FC = () => {
       {loading && <LoadingScreen />}
       {!loading && (
         <>
-          {step === 0 && (
-            <SelectionStep
-              title="性別を選択してください"
-              options={[
-                {
-                  label: "男",
-                  value: "male",
-                  icon: "/Parsonalize/images.jpeg",
-                },
-                {
-                  label: "女",
-                  value: "female",
-                  icon: "/Parsonalize/images.jpeg",
-                },
-              ]}
-              onSelect={(value) => handleSelect("gender", value)}
-            />
-          )}
-          {step === 1 && (
-            <SelectionStep
-              title="トレーニング頻度を選択してください"
-              options={[
-                { label: "週1", value: "1" },
-                { label: "週2-3", value: "2-3" },
-                { label: "週4~6", value: "4-6" },
-              ]}
-              onSelect={(value) => handleSelect("frequency", value)}
-            />
-          )}
-          {step === 2 && (
+          {step < 4 && (
             <div className="flex flex-col items-center justify-start min-h-[calc(100vh-70px)] pt-18">
-              <div className="bg-white p-8 rounded-lg shadow-lg text-center w-4/5 max-w-lg mt-0">
-                <h2 className="text-blue-500 text-xl mb-5">
-                  プログラム期間を選択してください
-                </h2>
-                <Select
-                  value={formData.duration.toString()}
-                  onValueChange={(value) =>
-                    handleDurationSelect(parseInt(value))
-                  }
-                >
-                  <SelectTrigger className="w-[180px]">
-                    <SelectValue placeholder="プログラム期間" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectGroup>
-                      {Array.from({ length: 9 }, (_, i) => i + 4).map(
-                        (week) => (
-                          <SelectItem key={week} value={week.toString()}>
-                            {week} 週間
-                          </SelectItem>
-                        )
-                      )}
-                    </SelectGroup>
-                  </SelectContent>
-                </Select>
-                <button
-                  className="mt-5 py-3 px-5 bg-blue-500 text-white border-none rounded-lg cursor-pointer"
-                  onClick={handleNextStep}
-                >
-                  完了
-                </button>
-                <button
-                  className="mt-5 py-3 px-5 bg-blue-500 text-white border-none rounded-lg cursor-pointer"
-                  onClick={handlePrevStep}
-                >
-                  戻る
-                </button>
-              </div>
-            </div>
-          )}
-          {step === 3 && (
-            <div className="flex flex-col items-center justify-start min-h-[calc(100vh-70px)] pt-18">
-              <div className="bg-white p-8 rounded-lg shadow-lg text-center w-4/5 max-w-lg mt-0">
-                <h2 className="text-blue-500 text-xl mb-5">プラン作成完了！</h2>
-                <p>性別: {formData.gender}</p>
-                <p>トレーニング頻度: {formData.frequency}</p>
-                <p>プログラム期間: {formData.duration}</p>
-                {step === 3 && (
-                  <button
-                    className="mt-5 py-3 px-5 bg-blue-500 text-white border-none rounded-lg cursor-pointer"
-                    onClick={handleCombinedClick}
+              <div className="bg-white p-8 rounded-lg shadow-lg text-center w-4/5 max-w-lg mt-0 space-y-6">
+                <div>
+                  <h2 className="text-blue-500 text-xl mb-2">性別</h2>
+                  <Select
+                    value={formData.gender}
+                    onValueChange={(value) => handleSelect("gender", value)}
                   >
-                    作成されたプランを確認する
-                  </button>
-                )}
+                    <SelectTrigger className="w-[180px]">
+                      <SelectValue placeholder="性別" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectGroup>
+                        <SelectItem value="male">男</SelectItem>
+                        <SelectItem value="female">女</SelectItem>
+                      </SelectGroup>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div>
+                  <h2 className="text-blue-500 text-xl mb-2">
+                    トレーニング頻度（週）
+                  </h2>
+                  <Select
+                    value={formData.frequency}
+                    onValueChange={(value) => handleSelect("frequency", value)}
+                  >
+                    <SelectTrigger className="w-[180px]">
+                      <SelectValue placeholder="トレーニング頻度" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectGroup>
+                        <SelectItem value="1">週1</SelectItem>
+                        <SelectItem value="2-3">週2-3</SelectItem>
+                        <SelectItem value="4-6">週4-6</SelectItem>
+                      </SelectGroup>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div>
+                  <h2 className="text-blue-500 text-xl mb-2">プログラム期間</h2>
+                  <Select
+                    value={formData.duration.toString()}
+                    onValueChange={(value) =>
+                      handleSelect("duration", parseInt(value))
+                    }
+                  >
+                    <SelectTrigger className="w-[180px]">
+                      <SelectValue placeholder="プログラム期間">
+                        {formData.duration
+                          ? `${formData.duration} 週間`
+                          : "プログラム期間"}
+                      </SelectValue>
+                    </SelectTrigger>
+                    <SelectContent className="top-auto bottom-full mt-2 max-h-60 overflow-y-auto">
+                      <SelectGroup>
+                        {Array.from({ length: 9 }, (_, i) => i + 4).map(
+                          (week) => (
+                            <SelectItem key={week} value={week.toString()}>
+                              {week} 週間
+                            </SelectItem>
+                          )
+                        )}
+                      </SelectGroup>
+                    </SelectContent>
+                  </Select>
+                </div>
                 <button
                   className="mt-5 py-3 px-5 bg-blue-500 text-white border-none rounded-lg cursor-pointer"
-                  onClick={handlePrevStep}
+                  onClick={handlePlanCreation}
                 >
-                  戻る
+                  プラン作成
                 </button>
               </div>
             </div>
@@ -280,7 +243,7 @@ const PersonalizePage: React.FC = () => {
               <Tabs defaultValue="week1" className="w-full">
                 <TabsList className="flex overflow-x-auto whitespace-nowrap space-x-4 px-4 pl-4">
                   <SimpleBar className="w-full" autoHide={false}>
-                    {Array.from({ length: formData.duration }, (_, i) => (
+                    {Array.from({ length: 9 }, (_, i) => (
                       <TabsTrigger
                         key={i}
                         value={`week${i + 1}`}
@@ -291,7 +254,7 @@ const PersonalizePage: React.FC = () => {
                     ))}
                   </SimpleBar>
                 </TabsList>
-                {Array.from({ length: formData.duration }, (_, i) => (
+                {Array.from({ length: 9 }, (_, i) => (
                   <TabsContent key={i} value={`week${i + 1}`}>
                     <div className="grid grid-cols-1 gap-4">
                       {generateProgramCards(i + 1)}
@@ -301,7 +264,7 @@ const PersonalizePage: React.FC = () => {
               </Tabs>
               <button
                 className="absolute top-16 left-2 flex items-center justify-center w-8 h-8 bg-white border border-gray-300 rounded-full shadow-lg"
-                onClick={handlePrevStep}
+                onClick={() => setStep(0)}
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -338,15 +301,6 @@ const PersonalizePage: React.FC = () => {
             frequency={formData.frequency}
             program={program}
           />
-
-          {step > 0 && step < 4 && (
-            <button
-              className="mt-5 py-3 px-5 bg-blue-500 text-white border-none rounded-lg cursor-pointer"
-              onClick={handlePrevStep}
-            >
-              戻る
-            </button>
-          )}
         </>
       )}
     </div>
