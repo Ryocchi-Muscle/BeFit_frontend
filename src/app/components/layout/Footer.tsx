@@ -26,7 +26,7 @@ const Footer: React.FC<Props> = ({ children, className }) => {
           <ul className="flex flex-grow justify-evenly">
             <li>
               <Link
-                href="/category/dashborad"
+                href="/category/dashboard"
                 className={`flex items-center justify-center hover:bg-gray-300 p-2 rounded-full ${isActive(
                   "/category/record"
                 )}`}

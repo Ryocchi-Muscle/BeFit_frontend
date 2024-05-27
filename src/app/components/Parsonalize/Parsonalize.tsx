@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import SelectionStep from "./SelectionStep";
 import LoadingScreen from "./LoadingScreen";
 import ProgramCard from "./ProgramCard";
@@ -10,6 +10,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import ProgramTrainingMenuDialog from "./ProgramTrainingMenuDialog";
 import StartProgramDialog from "./StartProgramDialog";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import {
   Select,
   SelectContent,
@@ -19,6 +20,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+  type CarouselApi,
+} from "@/components/ui/carousel";
 
 interface Program {
   title: string;
@@ -37,10 +46,27 @@ const PersonalizePage: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [program, setProgram] = useState<Program[]>([]);
   const sliderRef = useRef<Slider>(null);
+  const [api, setApi] = useState<CarouselApi | null>(null);
+  const [current, setCurrent] = useState(0);
+  const [count, setCount] = useState(0);
+
+  useEffect(() => {
+    if (!api) return;
+
+    setCount(api.scrollSnapList().length);
+    setCurrent(api.selectedScrollSnap() + 1);
+
+    api.on("select", () => {
+      setCurrent(api.selectedScrollSnap() + 1);
+    });
+  }, [api]);
+
   const [isStartProgramDialogOpen, setIsStartProgramDialogOpen] =
     useState(false);
+
   const [isTrainingMenuDialogOpen, setIsTrainingMenuDialogOpen] =
     useState(false);
+
   const [selectedDate, setSelectedDate] = useState(new Date());
 
   const handleNextStep = () => setStep(step + 1);
@@ -128,10 +154,7 @@ const PersonalizePage: React.FC = () => {
   };
 
   const generateProgramCards = () => {
-    const weeks = Array.from(
-      { length:  formData.duration},
-      (_, i) => i + 1
-    );
+    const weeks = Array.from({ length: formData.duration }, (_, i) => i + 1);
     const frequency = formData.frequency.split("-").map((f) => parseInt(f));
     const workoutsPerWeek =
       frequency.length > 1 ? (frequency[0] + frequency[1]) / 2 : frequency[0];
@@ -139,6 +162,7 @@ const PersonalizePage: React.FC = () => {
     return weeks.map((week) => ({
       title: `Week ${week}`,
       image: `/images/week${week}.jpg`,
+      week,
       details: Array.from({ length: workoutsPerWeek }, (_, i) => ({
         menu: `Workout ${i + 1}`,
         set_info: `${Math.floor(Math.random() * 10 + 1)} sets`,
@@ -278,21 +302,32 @@ const PersonalizePage: React.FC = () => {
             </div>
           )}
           {step === 5 && (
-            <div className="fixed flex flex-col items-center justify-start pt-18 overflow-y-auto pb-20 h-screen">
+            <div className="fixed flex flex-col items-center justify-center pt-0 overflow-y-auto pb-20">
               <div className="w-full max-w-md mx-auto pt-10">
-                <Slider {...sliderSettings} ref={sliderRef}>
-                  {generateProgramCards().map((item, index) => (
-                    <ProgramCard
-                      key={index}
-                      title={item.title}
-                      image={item.image}
-                      details={item.details}
-                    />
-                  ))}
-                </Slider>
+                <Carousel setApi={setApi} className="w-full max-w-xs">
+                  <CarouselContent>
+                    {generateProgramCards().map((item, index) => (
+                      <CarouselItem key={index}>
+                        <div className="p-1">
+                          <ProgramCard
+                            key={index}
+                            title={item.title}
+                            image={item.image}
+                            details={item.details}
+                          />
+                        </div>
+                      </CarouselItem>
+                    ))}
+                  </CarouselContent>
+                  <CarouselPrevious />
+                  <CarouselNext />
+                </Carousel>
+                <div className="py-2 text-center text-sm text-muted-foreground">
+                  Slide {current} of {count}
+                </div>
               </div>
               <button
-                className="mt-10 py-3 px-5 bg-blue-500 text-white border-none rounded-lg cursor-pointer "
+                className="fixed bottom-20 py-3 px-5 bg-blue-500 text-white border-none rounded-lg cursor-pointer z-10"
                 onClick={handleRecordButtonClick}
               >
                 プログラムをスタートする
@@ -305,6 +340,7 @@ const PersonalizePage: React.FC = () => {
               </button>
             </div>
           )}
+
           <StartProgramDialog
             open={isStartProgramDialogOpen}
             onClose={handleCloseStartProgramDialog}
