@@ -43,7 +43,7 @@ const PersonalizePage: React.FC = () => {
   const [formData, setFormData] = useState({
     gender: "",
     frequency: "",
-    duration: 12,
+    duration: "",
   });
   const [loading, setLoading] = useState(false);
   const [program, setProgram] = useState<Program[]>([]);
@@ -165,9 +165,7 @@ const PersonalizePage: React.FC = () => {
             <div className="flex flex-col items-center justify-start min-h-[calc(100vh-70px)] pt-18">
               <div className="bg-white p-8 rounded-lg shadow-lg text-center w-4/5 max-w-lg mt-0 space-y-6">
                 <div>
-                  <h2 className="text-blue-500 text-xl mb-2">
-                    性別を選択してください
-                  </h2>
+                  <h2 className="text-blue-500 text-xl mb-2">性別</h2>
                   <Select
                     value={formData.gender}
                     onValueChange={(value) => handleSelect("gender", value)}
@@ -185,7 +183,7 @@ const PersonalizePage: React.FC = () => {
                 </div>
                 <div>
                   <h2 className="text-blue-500 text-xl mb-2">
-                    トレーニング頻度を選択してください
+                    トレーニング頻度（週）
                   </h2>
                   <Select
                     value={formData.frequency}
@@ -204,9 +202,7 @@ const PersonalizePage: React.FC = () => {
                   </Select>
                 </div>
                 <div>
-                  <h2 className="text-blue-500 text-xl mb-2">
-                    プログラム期間を選択してください
-                  </h2>
+                  <h2 className="text-blue-500 text-xl mb-2">プログラム期間</h2>
                   <Select
                     value={formData.duration.toString()}
                     onValueChange={(value) =>
@@ -214,9 +210,13 @@ const PersonalizePage: React.FC = () => {
                     }
                   >
                     <SelectTrigger className="w-[180px]">
-                      <SelectValue placeholder="プログラム期間" />
+                      <SelectValue placeholder="プログラム期間">
+                        {formData.duration
+                          ? `${formData.duration} 週間`
+                          : "プログラム期間"}
+                      </SelectValue>
                     </SelectTrigger>
-                    <SelectContent>
+                    <SelectContent className="top-auto bottom-full mt-2 max-h-60 overflow-y-auto">
                       <SelectGroup>
                         {Array.from({ length: 9 }, (_, i) => i + 4).map(
                           (week) => (
@@ -233,7 +233,7 @@ const PersonalizePage: React.FC = () => {
                   className="mt-5 py-3 px-5 bg-blue-500 text-white border-none rounded-lg cursor-pointer"
                   onClick={handlePlanCreation}
                 >
-                  プランを作成する
+                  プラン作成
                 </button>
               </div>
             </div>
@@ -243,7 +243,7 @@ const PersonalizePage: React.FC = () => {
               <Tabs defaultValue="week1" className="w-full">
                 <TabsList className="flex overflow-x-auto whitespace-nowrap space-x-4 px-4 pl-4">
                   <SimpleBar className="w-full" autoHide={false}>
-                    {Array.from({ length: formData.duration }, (_, i) => (
+                    {Array.from({ length: 9 }, (_, i) => (
                       <TabsTrigger
                         key={i}
                         value={`week${i + 1}`}
@@ -254,7 +254,7 @@ const PersonalizePage: React.FC = () => {
                     ))}
                   </SimpleBar>
                 </TabsList>
-                {Array.from({ length: formData.duration }, (_, i) => (
+                {Array.from({ length: 9 }, (_, i) => (
                   <TabsContent key={i} value={`week${i + 1}`}>
                     <div className="grid grid-cols-1 gap-4">
                       {generateProgramCards(i + 1)}
