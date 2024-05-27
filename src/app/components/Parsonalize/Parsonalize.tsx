@@ -28,6 +28,8 @@ import {
   CarouselPrevious,
   type CarouselApi,
 } from "@/components/ui/carousel";
+import SimpleBar from "simplebar-react";
+import "simplebar/dist/simplebar.min.css";
 
 interface Program {
   title: string;
@@ -41,7 +43,7 @@ const PersonalizePage: React.FC = () => {
   const [formData, setFormData] = useState({
     gender: "",
     frequency: "",
-    duration: 4,
+    duration: 12,
   });
   const [loading, setLoading] = useState(false);
   const [program, setProgram] = useState<Program[]>([]);
@@ -157,12 +159,20 @@ const PersonalizePage: React.FC = () => {
     focusOnSelect: true,
   };
 
-  const generateProgramCards = () => {
-    return program.map((item, index) => ({
-      title: item.title,
-      image: item.image,
-      details: item.details,
-    }));
+  const generateProgramCards = (week: number) => {
+    // 週ごとにプログラムカードを生成
+    const startIndex = (week - 1) * parseInt(formData.frequency);
+    const endIndex = startIndex + parseInt(formData.frequency);
+    return program
+      .slice(startIndex, endIndex)
+      .map((item, index) => (
+        <ProgramCard
+          key={index}
+          title={item.title}
+          image={item.image}
+          details={item.details}
+        />
+      ));
   };
 
   return (
@@ -266,41 +276,51 @@ const PersonalizePage: React.FC = () => {
             </div>
           )}
           {step === 4 && (
-            <div className="fixed flex flex-col items-center justify-center pt-0 overflow-y-auto pb-20">
-              <div className="w-full max-w-md mx-auto pt-10">
-                <Carousel setApi={setApi} className="w-full max-w-xs">
-                  <CarouselContent>
-                    {generateProgramCards().map((item, index) => (
-                      <CarouselItem key={index}>
-                        <div className="p-1">
-                          <ProgramCard
-                            key={index}
-                            title={item.title}
-                            image={item.image}
-                            details={item.details}
-                          />
-                        </div>
-                      </CarouselItem>
+            <div className="fixed flex flex-col items-center justify-center pt-0 overflow-y-auto pb-20 w-full">
+              <Tabs defaultValue="week1" className="w-full">
+                <TabsList className="flex overflow-x-auto whitespace-nowrap space-x-4 px-4 pl-4">
+                  <SimpleBar className="w-full" autoHide={false}>
+                    {Array.from({ length: formData.duration }, (_, i) => (
+                      <TabsTrigger
+                        key={i}
+                        value={`week${i + 1}`}
+                        className="flex-shrink-0 min-w-[80px] px-4 py-2"
+                      >
+                        {`Week ${i + 1}`}
+                      </TabsTrigger>
                     ))}
-                  </CarouselContent>
-                  <CarouselPrevious />
-                  <CarouselNext />
-                </Carousel>
-                <div className="py-2 text-center text-sm text-muted-foreground">
-                  Slide {current} of {count}
-                </div>
-              </div>
+                  </SimpleBar>
+                </TabsList>
+                {Array.from({ length: formData.duration }, (_, i) => (
+                  <TabsContent key={i} value={`week${i + 1}`}>
+                    <div className="grid grid-cols-1 gap-4">
+                      {generateProgramCards(i + 1)}
+                    </div>
+                  </TabsContent>
+                ))}
+              </Tabs>
+              <button
+                className="absolute top-16 left-2 flex items-center justify-center w-8 h-8 bg-white border border-gray-300 rounded-full shadow-lg"
+                onClick={handlePrevStep}
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-5 w-5 text-gray-600"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M12.707 14.707a1 1 0 01-1.414 0L6.293 9.707a1 1 0 010-1.414l5-5a1 1 0 011.414 1.414L8.414 9l4.293 4.293a1 1 0 010 1.414z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+              </button>
               <button
                 className="fixed bottom-20 py-3 px-5 bg-blue-500 text-white border-none rounded-lg cursor-pointer z-10"
                 onClick={handleRecordButtonClick}
               >
                 プログラムをスタートする
-              </button>
-              <button
-                className="fixed top-20 left-5 py-3 px-5 bg-blue-500 text-white border-none rounded-full cursor-pointer shadow-lg"
-                onClick={handlePrevStep}
-              >
-                戻る
               </button>
             </div>
           )}

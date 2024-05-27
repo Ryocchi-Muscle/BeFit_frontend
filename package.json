@@ -58,6 +58,8 @@
     "react-toastify": "^10.0.5",
     "react-youtube": "^10.1.0",
     "sass": "^1.77.1",
+    "simplebar": "^6.2.6",
+    "simplebar-react": "^3.2.5",
     "slick-carousel": "^1.8.1",
     "sonner": "^1.4.41",
     "swiper": "^11.1.3",
