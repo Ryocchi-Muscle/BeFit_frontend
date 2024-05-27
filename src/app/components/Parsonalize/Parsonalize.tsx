@@ -1,13 +1,9 @@
 "use client";
 
 import React, { useRef, useState, useEffect } from "react";
-import SelectionStep from "./SelectionStep";
 import LoadingScreen from "./LoadingScreen";
 import ProgramCard from "./ProgramCard";
 import { useSession } from "next-auth/react";
-import Slider from "react-slick";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
 import ProgramTrainingMenuDialog from "./ProgramTrainingMenuDialog";
 import StartProgramDialog from "./StartProgramDialog";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
@@ -20,16 +16,20 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
-  type CarouselApi,
-} from "@/components/ui/carousel";
+import { type CarouselApi } from "@/components/ui/carousel";
 import SimpleBar from "simplebar-react";
 import "simplebar/dist/simplebar.min.css";
+
+import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/css";
+import "swiper/css/effect-coverflow";
+import "swiper/css/pagination";
+import "swiper/css/navigation";
+import SwiperCore, {
+  EffectCoverflow,
+  Pagination,
+  Navigation,
+} from "swiper/modules";
 
 interface Program {
   title: string;
@@ -47,7 +47,7 @@ const PersonalizePage: React.FC = () => {
   });
   const [loading, setLoading] = useState(false);
   const [program, setProgram] = useState<Program[]>([]);
-  const sliderRef = useRef<Slider>(null);
+  // const sliderRef = useRef<Slider>(null);
   const [api, setApi] = useState<CarouselApi | null>(null);
   const [current, setCurrent] = useState(0);
   const [count, setCount] = useState(0);
@@ -140,21 +140,45 @@ const PersonalizePage: React.FC = () => {
     focusOnSelect: true,
   };
 
+  // const generateProgramCards = (week: number) => {
+  //   // 週ごとにプログラムカードを生成
+  //   const startIndex = (week - 1) * parseInt(formData.frequency);
+  //   const endIndex = startIndex + parseInt(formData.frequency);
+  //   return program
+  //     .slice(startIndex, endIndex)
+  //     .map((item, index) => (
+  //       <ProgramCard
+  //         key={index}
+  //         title={item.title}
+  //         image={item.image}
+  //         details={item.details}
+  //       />
+  //     ));
+  // };
   const generateProgramCards = (week: number) => {
-    // 週ごとにプログラムカードを生成
-    const startIndex = (week - 1) * parseInt(formData.frequency);
-    const endIndex = startIndex + parseInt(formData.frequency);
-    return program
-      .slice(startIndex, endIndex)
-      .map((item, index) => (
-        <ProgramCard
-          key={index}
-          title={item.title}
-          image={item.image}
-          details={item.details}
-        />
-      ));
+    const programCards = [];
+    const frequency = parseInt(formData.frequency.split("-")[1]) || 1;
+
+    for (let day = 1; day <= frequency; day++) {
+      programCards.push(
+        <SwiperSlide key={`W${week}D${day}`}>
+          <ProgramCard
+            title={`Week ${week} Day ${day}`}
+            image="" // 必要に応じて画像パスを設定
+            details={[
+              {
+                menu: "メニュー例",
+                set_info: "セット情報",
+                other: "その他情報",
+              },
+            ]}
+          />
+        </SwiperSlide>
+      );
+    }
+    return programCards;
   };
+
 
   return (
     <div className="flex flex-col items-center p-0 min-h-screen overflow-y-auto">
@@ -256,9 +280,27 @@ const PersonalizePage: React.FC = () => {
                 </TabsList>
                 {Array.from({ length: 9 }, (_, i) => (
                   <TabsContent key={i} value={`week${i + 1}`}>
-                    <div className="grid grid-cols-1 gap-4">
+                    <Swiper
+                      effect="coverflow"
+                      grabCursor={true}
+                      centeredSlides={true}
+                      slidesPerView="auto"
+                      coverflowEffect={{
+                        rotate: 50,
+                        stretch: 0,
+                        depth: 100,
+                        modifier: 1,
+                        slideShadows: true,
+                      }}
+                      pagination={{ clickable: true }}
+                      navigation
+                      modules={[EffectCoverflow, Pagination, Navigation]}
+                    >
                       {generateProgramCards(i + 1)}
-                    </div>
+                    </Swiper>
+                    {/* <div className="grid grid-cols-1 gap-4">
+                      {generateProgramCards(i + 1)}
+                    </div> */}
                   </TabsContent>
                 ))}
               </Tabs>
