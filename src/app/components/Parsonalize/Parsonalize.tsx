@@ -47,22 +47,6 @@ const PersonalizePage: React.FC = () => {
   });
   const [loading, setLoading] = useState(false);
   const [program, setProgram] = useState<Program[]>([]);
-  // const sliderRef = useRef<Slider>(null);
-  const [api, setApi] = useState<CarouselApi | null>(null);
-  const [current, setCurrent] = useState(0);
-  const [count, setCount] = useState(0);
-
-  useEffect(() => {
-    if (!api) return;
-
-    setCount(api.scrollSnapList().length);
-    setCurrent(api.selectedScrollSnap() + 1);
-
-    api.on("select", () => {
-      setCurrent(api.selectedScrollSnap() + 1);
-    });
-  }, [api]);
-
   const [isStartProgramDialogOpen, setIsStartProgramDialogOpen] =
     useState(false);
 
@@ -72,7 +56,12 @@ const PersonalizePage: React.FC = () => {
   const [selectedDate, setSelectedDate] = useState(new Date());
 
   const handleSelect = (key: string, value: string | number) => {
-    setFormData({ ...formData, [key]: value });
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      [key]: value,
+    }));
+    console.log("value", value);
+    console.log("formData", { ...formData, [key]: value });
   };
 
   const handlePlanCreation = async () => {
@@ -89,20 +78,25 @@ const PersonalizePage: React.FC = () => {
         body: JSON.stringify({
           gender: formData.gender,
           frequency: formData.frequency,
+          duration: formData.duration,
         }),
       });
-
+      
       if (!response.ok) {
         throw new Error("APIエラーが発生しました");
       }
       const data = await response.json();
-      setProgram(
-        data.program.map((item: any) => ({
-          title: item.title,
-          image: item.image,
-          details: item.details,
-        }))
-      );
+      if (data && data.program) {
+        setProgram(
+          data.program.map((item: any) => ({
+            title: item.title,
+            image: item.image,
+            details: item.details,
+          }))
+        );
+      } else {
+        setProgram([]); // データが存在しない場合は空の配列を設定
+      }
     } catch (error) {
       console.error("エラーが発生しました: ", error);
     } finally {
@@ -140,38 +134,21 @@ const PersonalizePage: React.FC = () => {
     focusOnSelect: true,
   };
 
-  // const generateProgramCards = (week: number) => {
-  //   // 週ごとにプログラムカードを生成
-  //   const startIndex = (week - 1) * parseInt(formData.frequency);
-  //   const endIndex = startIndex + parseInt(formData.frequency);
-  //   return program
-  //     .slice(startIndex, endIndex)
-  //     .map((item, index) => (
-  //       <ProgramCard
-  //         key={index}
-  //         title={item.title}
-  //         image={item.image}
-  //         details={item.details}
-  //       />
-  //     ));
-  // };
   const generateProgramCards = (week: number) => {
     const programCards = [];
-    const frequency = parseInt(formData.frequency.split("-")[1]) || 1;
+    const frequency = parseInt(formData.frequency); // トレーニング頻度を数値として取得
+    console.log("frequency", frequency);
+    const startIndex = (week - 1) * frequency;
+    const endIndex = startIndex + frequency;
 
-    for (let day = 1; day <= frequency; day++) {
+    for (let day = startIndex; day < endIndex; day++) {
+      const programDetails = program[day] ? program[day].details : [];
       programCards.push(
         <SwiperSlide key={`W${week}D${day}`}>
           <ProgramCard
-            title={`Week ${week} Day ${day}`}
-            image="" // 必要に応じて画像パスを設定
-            details={[
-              {
-                menu: "メニュー例",
-                set_info: "セット情報",
-                other: "その他情報",
-              },
-            ]}
+            title={`Week ${week} Day ${day + 1}`}
+            image={program[day]?.image || ""}
+            details={programDetails}
           />
         </SwiperSlide>
       );
@@ -218,8 +195,11 @@ const PersonalizePage: React.FC = () => {
                     <SelectContent>
                       <SelectGroup>
                         <SelectItem value="1">週1</SelectItem>
-                        <SelectItem value="2-3">週2-3</SelectItem>
-                        <SelectItem value="4-6">週4-6</SelectItem>
+                        <SelectItem value="2">週2</SelectItem>
+                        <SelectItem value="3">週3</SelectItem>
+                        <SelectItem value="4">週4</SelectItem>
+                        <SelectItem value="5">週5</SelectItem>
+                        <SelectItem value="6">週6</SelectItem>
                       </SelectGroup>
                     </SelectContent>
                   </Select>
@@ -266,15 +246,22 @@ const PersonalizePage: React.FC = () => {
               <Tabs defaultValue="week1" className="w-full">
                 <TabsList className="flex overflow-x-auto whitespace-nowrap space-x-4 px-4 pl-4">
                   <SimpleBar className="w-full" autoHide={false}>
-                    {Array.from({ length: 9 }, (_, i) => (
-                      <TabsTrigger
-                        key={i}
-                        value={`week${i + 1}`}
-                        className="flex-shrink-0 min-w-[80px] px-4 py-2"
-                      >
-                        {`Week ${i + 1}`}
-                      </TabsTrigger>
-                    ))}
+                    {Array.from(
+                      {
+                        length: formData.duration
+                          ? parseInt(formData.duration)
+                          : 9,
+                      },
+                      (_, i) => (
+                        <TabsTrigger
+                          key={i}
+                          value={`week${i + 1}`}
+                          className="flex-shrink-0 min-w-[80px] px-4 py-2"
+                        >
+                          {`Week ${i + 1}`}
+                        </TabsTrigger>
+                      )
+                    )}
                   </SimpleBar>
                 </TabsList>
                 <div className="relative">
@@ -316,9 +303,6 @@ const PersonalizePage: React.FC = () => {
                     >
                       {generateProgramCards(i + 1)}
                     </Swiper>
-                    {/* <div className="grid grid-cols-1 gap-4">
-                      {generateProgramCards(i + 1)}
-                    </div> */}
                   </TabsContent>
                 ))}
               </Tabs>
