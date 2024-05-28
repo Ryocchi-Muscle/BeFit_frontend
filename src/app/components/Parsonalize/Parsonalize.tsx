@@ -179,7 +179,6 @@ const PersonalizePage: React.FC = () => {
     return programCards;
   };
 
-
   return (
     <div className="flex flex-col items-center p-0 min-h-screen overflow-y-auto">
       {loading && <LoadingScreen />}
@@ -278,6 +277,25 @@ const PersonalizePage: React.FC = () => {
                     ))}
                   </SimpleBar>
                 </TabsList>
+                <div className="relative">
+                  <button
+                    className="absolute top-4 left-4 flex items-center justify-center w-8 h-8 bg-white border border-gray-300 rounded-full shadow-lg z-10"
+                    onClick={() => setStep(0)}
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-5 w-5 text-gray-600"
+                      viewBox="0 0 20 20"
+                      fill="currentColor"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        d="M12.707 14.707a1 1 0 01-1.414 0L6.293 9.707a1 1 0 010-1.414l5-5a1 1 0 011.414 1.414L8.414 9l4.293 4.293a1 1 0 010 1.414z"
+                        clipRule="evenodd"
+                      />
+                    </svg>
+                  </button>
+                </div>
                 {Array.from({ length: 9 }, (_, i) => (
                   <TabsContent key={i} value={`week${i + 1}`}>
                     <Swiper
@@ -304,23 +322,6 @@ const PersonalizePage: React.FC = () => {
                   </TabsContent>
                 ))}
               </Tabs>
-              <button
-                className="absolute top-16 left-2 flex items-center justify-center w-8 h-8 bg-white border border-gray-300 rounded-full shadow-lg"
-                onClick={() => setStep(0)}
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-5 w-5 text-gray-600"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M12.707 14.707a1 1 0 01-1.414 0L6.293 9.707a1 1 0 010-1.414l5-5a1 1 0 011.414 1.414L8.414 9l4.293 4.293a1 1 0 010 1.414z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-              </button>
               <button
                 className="fixed bottom-20 py-3 px-5 bg-blue-500 text-white border-none rounded-lg cursor-pointer z-10"
                 onClick={handleRecordButtonClick}
