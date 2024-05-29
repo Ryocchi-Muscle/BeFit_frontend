@@ -41,13 +41,6 @@ const ProgramCard: React.FC<ProgramCardProps> = ({ week, day, details }) => {
                     </TableCell>
                   </TableRow>
                 )}
-                {/* {detail.other && (
-                  <TableRow>
-                    <TableCell colSpan={2} className="text-gray-500">
-                      {detail.other}
-                    </TableCell>
-                  </TableRow>
-                )} */}
               </React.Fragment>
             ))}
           </TableBody>
@@ -57,3 +50,4 @@ const ProgramCard: React.FC<ProgramCardProps> = ({ week, day, details }) => {
   );
 };
 export default ProgramCard;
+
