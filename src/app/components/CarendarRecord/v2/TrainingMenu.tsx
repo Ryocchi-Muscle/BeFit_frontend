@@ -60,8 +60,8 @@ export default function TrainingMenuComponet({
       {
         setId: newSetId,
         setNumber: newSetId,
-        weight: 0,
-        reps: 0,
+        weight: "",
+        reps: "",
         completed: false,
       },
     ];
@@ -81,7 +81,7 @@ export default function TrainingMenuComponet({
   const handleSetChange = (
     setId: number,
     field: keyof TrainingSet,
-    value: string | boolean
+    value: string | number | boolean
   ) => {
     const updatedSets = sets.map((set) =>
       set.setId === setId ? { ...set, [field]: value } : set
