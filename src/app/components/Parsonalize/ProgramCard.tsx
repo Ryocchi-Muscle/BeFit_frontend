@@ -1,20 +1,18 @@
 import React from "react";
-import {
-  Table,
-  TableBody,
-  TableCaption,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
+import { Table, TableBody, TableCell, TableRow } from "@/components/ui/table";
 
+interface ProgramDetails {
+  menu: string;
+  set_info: string;
+}
 
-const ProgramCard: React.FC<{
-  title: string;
-  image: string;
-  details?: { menu: string; set_info: string; other: string }[];
-}> = ({ title, details }) => {
+interface ProgramCardProps {
+  week: number;
+  day: number;
+  details?: ProgramDetails[];
+}
+
+const ProgramCard: React.FC<ProgramCardProps> = ({ week, day, details }) => {
   return (
     <div
       className="border border-gray-300 rounded-lg p-6 mx-3 text-center shadow-lg bg-white "
@@ -25,7 +23,7 @@ const ProgramCard: React.FC<{
         overflowY: "auto",
       }}
     >
-      <h3 className="text-lg font-bold mb-2">{title}</h3>
+      <h3 className="text-lg font-bold mb-2">{`Week ${week} Day ${day}`}</h3>
       {details && (
         <Table>
           <TableBody>
@@ -43,13 +41,13 @@ const ProgramCard: React.FC<{
                     </TableCell>
                   </TableRow>
                 )}
-                {detail.other && (
+                {/* {detail.other && (
                   <TableRow>
                     <TableCell colSpan={2} className="text-gray-500">
                       {detail.other}
                     </TableCell>
                   </TableRow>
-                )}
+                )} */}
               </React.Fragment>
             ))}
           </TableBody>

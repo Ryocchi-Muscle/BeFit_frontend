@@ -1,7 +1,7 @@
 export interface TrainingSet {
   setId: number;
-  weight: number;
-  reps: number;
+  weight: number | string;
+  reps: number | string;
   completed: boolean;
 }
 
@@ -22,4 +22,3 @@ export interface Program {
     [key: string]: string[];
   };
 }
-

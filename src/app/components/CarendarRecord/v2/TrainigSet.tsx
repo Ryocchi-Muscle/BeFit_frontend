@@ -2,8 +2,8 @@ import React from "react";
 
 interface TrainigSetProps {
   setId: number;
-  weight: number;
-  reps: number;
+  weight: number | string;
+  reps: number | string;
   completed: boolean;
   updateSet: (
     setId: number,

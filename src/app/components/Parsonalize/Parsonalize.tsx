@@ -81,19 +81,17 @@ const PersonalizePage: React.FC = () => {
           duration: formData.duration,
         }),
       });
-      
+      console.log("response", response);
       if (!response.ok) {
         throw new Error("APIエラーが発生しました");
       }
       const data = await response.json();
+      console.log("data", data);
       if (data && data.program) {
         setProgram(
-          data.program.map((item: any) => ({
-            title: item.title,
-            image: item.image,
-            details: item.details,
-          }))
+          data.program.filter((item: Program) => item.details.length > 0)
         );
+        console.log("program", program);
       } else {
         setProgram([]); // データが存在しない場合は空の配列を設定
       }
@@ -134,22 +132,40 @@ const PersonalizePage: React.FC = () => {
     focusOnSelect: true,
   };
 
+  // const generateProgramCards = (week: number) => {
+  //   const programCards = [];
+  //   const frequency = parseInt(formData.frequency); // トレーニング頻度を数値として取得
+  //   console.log("frequency", frequency);
+  //   const startIndex = (week - 1) * frequency;
+  //   const endIndex = startIndex + frequency;
+
+  //   for (let day = start; day < endIndex; day++) {
+  //     const programDetails = program[day] ? program[day].details : [];
+  //     programCards.push(
+  //       <SwiperSlide key={`W${week}D${day}`}>
+  //         <ProgramCard
+  //           title={`Week ${week} Day ${day + 1}`}
+  //           image={program[day]?.image || ""}
+  //           details={programDetails}
+  //         />
+  //       </SwiperSlide>
+  //     );
+  //   }
+  //   return programCards;
+  // };
+
   const generateProgramCards = (week: number) => {
     const programCards = [];
     const frequency = parseInt(formData.frequency); // トレーニング頻度を数値として取得
-    console.log("frequency", frequency);
-    const startIndex = (week - 1) * frequency;
-    const endIndex = startIndex + frequency;
+    const duration = parseInt(formData.duration);
 
-    for (let day = startIndex; day < endIndex; day++) {
-      const programDetails = program[day] ? program[day].details : [];
+    for (let day = 0; day < frequency; day++) {
+      const programDetails = program[(week - 1) * frequency + day]
+        ? program[(week - 1) * frequency + day].details
+        : [];
       programCards.push(
-        <SwiperSlide key={`W${week}D${day}`}>
-          <ProgramCard
-            title={`Week ${week} Day ${day + 1}`}
-            image={program[day]?.image || ""}
-            details={programDetails}
-          />
+        <SwiperSlide key={`W${week}D${day + 1}`}>
+          <ProgramCard week={week} day={day + 1} details={programDetails} />
         </SwiperSlide>
       );
     }
@@ -206,6 +222,7 @@ const PersonalizePage: React.FC = () => {
                 </div>
                 <div>
                   <h2 className="text-blue-500 text-xl mb-2">プログラム期間</h2>
+
                   <Select
                     value={formData.duration.toString()}
                     onValueChange={(value) =>
@@ -219,7 +236,7 @@ const PersonalizePage: React.FC = () => {
                           : "プログラム期間"}
                       </SelectValue>
                     </SelectTrigger>
-                    <SelectContent className="top-auto bottom-full mt-2 max-h-60 overflow-y-auto">
+                    <SelectContent style={{ top: "auto", bottom: "100%" }}>
                       <SelectGroup>
                         {Array.from({ length: 9 }, (_, i) => i + 4).map(
                           (week) => (
@@ -232,6 +249,8 @@ const PersonalizePage: React.FC = () => {
                     </SelectContent>
                   </Select>
                 </div>
+              </div>
+              <div>
                 <button
                   className="mt-5 py-3 px-5 bg-blue-500 text-white border-none rounded-lg cursor-pointer"
                   onClick={handlePlanCreation}
