@@ -214,8 +214,6 @@ const PersonalizePage: React.FC = () => {
                         <SelectItem value="2">週2</SelectItem>
                         <SelectItem value="3">週3</SelectItem>
                         <SelectItem value="4">週4</SelectItem>
-                        <SelectItem value="5">週5</SelectItem>
-                        <SelectItem value="6">週6</SelectItem>
                       </SelectGroup>
                     </SelectContent>
                   </Select>
