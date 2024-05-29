@@ -64,6 +64,7 @@ const PersonalizePage: React.FC = () => {
     console.log("formData", { ...formData, [key]: value });
   };
 
+  //APIを呼び出してプランを作成する
   const handlePlanCreation = async () => {
     setLoading(true);
     const apiUrl = process.env.NEXT_PUBLIC_API_URL;
@@ -87,11 +88,11 @@ const PersonalizePage: React.FC = () => {
       }
       const data = await response.json();
       console.log("data", data);
+      console.log("data.program", data.program);
       if (data && data.program) {
         setProgram(
           data.program.filter((item: Program) => item.details.length > 0)
         );
-        console.log("program", program);
       } else {
         setProgram([]); // データが存在しない場合は空の配列を設定
       }
@@ -132,45 +133,110 @@ const PersonalizePage: React.FC = () => {
     focusOnSelect: true,
   };
 
-  // const generateProgramCards = (week: number) => {
-  //   const programCards = [];
-  //   const frequency = parseInt(formData.frequency); // トレーニング頻度を数値として取得
-  //   console.log("frequency", frequency);
-  //   const startIndex = (week - 1) * frequency;
-  //   const endIndex = startIndex + frequency;
+  // 週ごとのプログラムカードを生成する
+  //  const generateProgramCards = (week: number) => {
+  //    const programCards = [];
+  //    const frequency = parseInt(formData.frequency, 10); // トレーニング頻度を数値として取得
+  //    const duration = parseInt(formData.duration, 10); // プログラム期間を数値として取得
+  //    const totalProgramsNeeded = frequency * duration; // 必要なプログラムの総数
 
-  //   for (let day = start; day < endIndex; day++) {
-  //     const programDetails = program[day] ? program[day].details : [];
-  //     programCards.push(
-  //       <SwiperSlide key={`W${week}D${day}`}>
-  //         <ProgramCard
-  //           title={`Week ${week} Day ${day + 1}`}
-  //           image={program[day]?.image || ""}
-  //           details={programDetails}
-  //         />
-  //       </SwiperSlide>
-  //     );
-  //   }
-  //   return programCards;
-  // };
+  //    // プログラムデータを補完する
+  //    let extendedProgram = [...program];
+  //    while (extendedProgram.length < totalProgramsNeeded) {
+  //      extendedProgram = [...extendedProgram, ...program];
+  //    }
+  //    extendedProgram = extendedProgram.slice(0, totalProgramsNeeded);
 
-  const generateProgramCards = (week: number) => {
-    const programCards = [];
-    const frequency = parseInt(formData.frequency); // トレーニング頻度を数値として取得
-    const duration = parseInt(formData.duration);
+  //    console.log("extendedProgram.length:", extendedProgram.length);
 
-    for (let day = 0; day < frequency; day++) {
-      const programDetails = program[(week - 1) * frequency + day]
-        ? program[(week - 1) * frequency + day].details
-        : [];
-      programCards.push(
-        <SwiperSlide key={`W${week}D${day + 1}`}>
-          <ProgramCard week={week} day={day + 1} details={programDetails} />
-        </SwiperSlide>
-      );
-    }
-    return programCards;
-  };
+  //    const startIndex = (week - 1) * frequency; // 現在の週の開始インデックス
+  //    const endIndex = startIndex + frequency; // 現在の週の終了インデックス
+
+  //    console.log("startIndex:", startIndex);
+  //    console.log("endIndex:", endIndex);
+
+  //    for (let day = startIndex; day < endIndex; day++) {
+  //      console.log("day:", day);
+  //      console.log("extendedProgram.length:", extendedProgram.length);
+
+  //      // program 配列の day 番目の要素を直接使用
+  //      const programDetails = extendedProgram[day].details || [];
+  //      console.log("programDetails:", programDetails);
+
+  //      programCards.push(
+  //        <SwiperSlide key={`W${week}D${day - startIndex + 1}`}>
+  //          <ProgramCard
+  //            week={week}
+  //            day={day - startIndex + 1}
+  //            details={programDetails}
+  //          />
+  //        </SwiperSlide>
+  //      );
+  //    }
+
+  //    return programCards;
+  //  };
+
+ const generateProgramCards = (week: number) => {
+   const programCards = [];
+   const frequency = parseInt(formData.frequency, 10); // トレーニング頻度を数値として取得
+   const duration = parseInt(formData.duration, 10); // プログラム期間を数値として取得
+   const totalProgramsNeeded = frequency * duration; // 必要なプログラムの総数
+
+   console.log("totalProgramsNeeded:", totalProgramsNeeded);
+   console.log("program.length:", program.length);
+
+   // 必要なプログラムデータの数を満たすためにプログラムデータを補完
+   const extendedProgram = Array.from(
+     { length: totalProgramsNeeded },
+     (_, i) => {
+       const programIndex = i % program.length;
+       return {
+         ...program[programIndex],
+         uniqueId: `${programIndex}-${i}`, // 各プログラムに一意のIDを追加
+       };
+     }
+   );
+
+   console.log("extendedProgram.length:", extendedProgram.length);
+   console.log("extendedProgram:", extendedProgram);
+
+   // ユニーク性の確認
+   const uniqueIds = new Set(extendedProgram.map((p) => p.uniqueId));
+   if (uniqueIds.size !== extendedProgram.length) {
+     console.error("プログラムデータに重複があります");
+   } else {
+     console.log("プログラムデータはユニークです");
+   }
+
+   const startIndex = (week - 1) * frequency; // 現在の週の開始インデックス
+   const endIndex = startIndex + frequency; // 現在の週の終了インデックス
+
+   console.log("startIndex:", startIndex);
+   console.log("endIndex:", endIndex);
+
+   for (let day = startIndex; day < endIndex; day++) {
+     console.log("day:", day);
+     console.log("extendedProgram.length:", extendedProgram.length);
+
+     // program 配列の day 番目の要素を直接使用
+     const programDetails = extendedProgram[day].details || [];
+     console.log("programDetails:", programDetails);
+
+     programCards.push(
+       <SwiperSlide key={`W${week}D${day - startIndex + 1}`}>
+         <ProgramCard
+           week={week}
+           day={day - startIndex + 1}
+           details={programDetails}
+         />
+       </SwiperSlide>
+     );
+   }
+
+   return programCards;
+ };
+
 
   return (
     <div className="flex flex-col items-center p-0 min-h-screen overflow-y-auto">
@@ -267,7 +333,7 @@ const PersonalizePage: React.FC = () => {
                       {
                         length: formData.duration
                           ? parseInt(formData.duration)
-                          : 9,
+                          : 0,
                       },
                       (_, i) => (
                         <TabsTrigger
@@ -300,28 +366,33 @@ const PersonalizePage: React.FC = () => {
                     </svg>
                   </button>
                 </div>
-                {Array.from({ length: 9 }, (_, i) => (
-                  <TabsContent key={i} value={`week${i + 1}`}>
-                    <Swiper
-                      effect="coverflow"
-                      grabCursor={true}
-                      centeredSlides={true}
-                      slidesPerView="auto"
-                      coverflowEffect={{
-                        rotate: 50,
-                        stretch: 0,
-                        depth: 100,
-                        modifier: 1,
-                        slideShadows: true,
-                      }}
-                      pagination={{ clickable: true }}
-                      navigation
-                      modules={[EffectCoverflow, Pagination, Navigation]}
-                    >
-                      {generateProgramCards(i + 1)}
-                    </Swiper>
-                  </TabsContent>
-                ))}
+                {Array.from(
+                  {
+                    length: formData.duration ? parseInt(formData.duration) : 0,
+                  },
+                  (_, i) => (
+                    <TabsContent key={i} value={`week${i + 1}`}>
+                      <Swiper
+                        effect="coverflow"
+                        grabCursor={true}
+                        centeredSlides={true}
+                        slidesPerView="auto"
+                        coverflowEffect={{
+                          rotate: 50,
+                          stretch: 0,
+                          depth: 100,
+                          modifier: 1,
+                          slideShadows: true,
+                        }}
+                        pagination={{ clickable: true }}
+                        navigation
+                        modules={[EffectCoverflow, Pagination, Navigation]}
+                      >
+                        {generateProgramCards(i + 1)}
+                      </Swiper>
+                    </TabsContent>
+                  )
+                )}
               </Tabs>
               <button
                 className="fixed bottom-20 py-3 px-5 bg-blue-500 text-white border-none rounded-lg cursor-pointer z-10"
