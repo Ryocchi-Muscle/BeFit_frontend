@@ -35,6 +35,7 @@ interface Program {
   title: string;
   image: string;
   details: { menu: string; set_info: string; other: string }[];
+  uniqueId: string;
 }
 
 const PersonalizePage: React.FC = () => {
@@ -47,13 +48,15 @@ const PersonalizePage: React.FC = () => {
   });
   const [loading, setLoading] = useState(false);
   const [program, setProgram] = useState<Program[]>([]);
+  const [extendedProgram, setExtendedProgram] = useState<Program[]>([]);
   const [isStartProgramDialogOpen, setIsStartProgramDialogOpen] =
     useState(false);
-
   const [isTrainingMenuDialogOpen, setIsTrainingMenuDialogOpen] =
     useState(false);
-
   const [selectedDate, setSelectedDate] = useState(new Date());
+  const [selectedProgramDetails, setSelectedProgramDetails] = useState<
+    Program["details"]
+  >([]);
 
   const handleSelect = (key: string, value: string | number) => {
     setFormData((prevFormData) => ({
@@ -132,111 +135,104 @@ const PersonalizePage: React.FC = () => {
     centerPadding: "0px",
     focusOnSelect: true,
   };
+  // useEffect フックを追加
+  useEffect(() => {
+    if (program.length > 0) {
+      const frequency = parseInt(formData.frequency, 10); // トレーニング頻度を数値として取得
+      const duration = parseInt(formData.duration, 10); // プログラム期間を数値として取得
+      const totalProgramsNeeded = frequency * duration; // 必要なプログラムの総数
+
+      // 必要なプログラムデータの数を満たすためにプログラムデータを補完
+      const extendedProgramArray = Array.from(
+        { length: totalProgramsNeeded },
+        (_, i) => {
+          const programIndex = i % program.length;
+          return {
+            ...program[programIndex],
+            uniqueId: `${programIndex}-${i}`, // 各プログラムに一意のIDを追加
+          };
+        }
+      );
+
+      setExtendedProgram(extendedProgramArray); // ここで状態に設定
+    }
+  }, [program, formData.frequency, formData.duration]);
 
   // 週ごとのプログラムカードを生成する
-  //  const generateProgramCards = (week: number) => {
-  //    const programCards = [];
-  //    const frequency = parseInt(formData.frequency, 10); // トレーニング頻度を数値として取得
-  //    const duration = parseInt(formData.duration, 10); // プログラム期間を数値として取得
-  //    const totalProgramsNeeded = frequency * duration; // 必要なプログラムの総数
+  const generateProgramCards = (week: number) => {
+    const programCards = [];
+    const frequency = parseInt(formData.frequency, 10); // トレーニング頻度を数値として取得
+    const startIndex = (week - 1) * frequency; // 現在の週の開始インデックス
+    const endIndex = startIndex + frequency; // 現在の週の終了インデックス
+    const duration = parseInt(formData.duration, 10); // プログラム期間を数値として取得
+    const totalProgramsNeeded = frequency * duration; // 必要なプログラムの総数
 
-  //    // プログラムデータを補完する
-  //    let extendedProgram = [...program];
-  //    while (extendedProgram.length < totalProgramsNeeded) {
-  //      extendedProgram = [...extendedProgram, ...program];
-  //    }
-  //    extendedProgram = extendedProgram.slice(0, totalProgramsNeeded);
+    console.log("totalProgramsNeeded:", totalProgramsNeeded);
+    console.log("program.length:", program.length);
 
-  //    console.log("extendedProgram.length:", extendedProgram.length);
+    if (program.length === 0) {
+      console.error("Program array is empty");
+      return []; // 何も表示しない
+    }
 
-  //    const startIndex = (week - 1) * frequency; // 現在の週の開始インデックス
-  //    const endIndex = startIndex + frequency; // 現在の週の終了インデックス
+    // 必要なプログラムデータの数を満たすためにプログラムデータを補完
+    const extendedProgramArray = Array.from(
+      { length: totalProgramsNeeded },
+      (_, i) => {
+        const programIndex = i % program.length;
+        return {
+          ...program[programIndex],
+          uniqueId: `${programIndex}-${i}`, // 各プログラムに一意のIDを追加
+        };
+      }
+    );
 
-  //    console.log("startIndex:", startIndex);
-  //    console.log("endIndex:", endIndex);
+    console.log("extendedProgram.length:", extendedProgram.length);
+    console.log("extendedProgram:", extendedProgram);
 
-  //    for (let day = startIndex; day < endIndex; day++) {
-  //      console.log("day:", day);
-  //      console.log("extendedProgram.length:", extendedProgram.length);
+    // ユニーク性の確認
+    const uniqueIds = new Set(extendedProgramArray.map((p) => p.uniqueId));
+    if (uniqueIds.size !== extendedProgramArray.length) {
+      console.error("プログラムデータに重複があります");
+    } else {
+      console.log("プログラムデータはユニークです");
+    }
 
-  //      // program 配列の day 番目の要素を直接使用
-  //      const programDetails = extendedProgram[day].details || [];
-  //      console.log("programDetails:", programDetails);
+    console.log("startIndex:", startIndex);
+    console.log("endIndex:", endIndex);
 
-  //      programCards.push(
-  //        <SwiperSlide key={`W${week}D${day - startIndex + 1}`}>
-  //          <ProgramCard
-  //            week={week}
-  //            day={day - startIndex + 1}
-  //            details={programDetails}
-  //          />
-  //        </SwiperSlide>
-  //      );
-  //    }
+    for (let day = startIndex; day < endIndex; day++) {
+      console.log("day:", day);
+      console.log("extendedProgram.length:", extendedProgramArray.length);
 
-  //    return programCards;
-  //  };
+      // program 配列の day 番目の要素を直接使用
+      const programDetails = extendedProgramArray[day]?.details || [];
+      console.log("programDetails:", programDetails);
 
- const generateProgramCards = (week: number) => {
-   const programCards = [];
-   const frequency = parseInt(formData.frequency, 10); // トレーニング頻度を数値として取得
-   const duration = parseInt(formData.duration, 10); // プログラム期間を数値として取得
-   const totalProgramsNeeded = frequency * duration; // 必要なプログラムの総数
+      programCards.push(
+        <SwiperSlide key={`W${week}D${day - startIndex + 1}`}>
+          <ProgramCard
+            week={week}
+            day={day - startIndex + 1}
+            details={programDetails}
+            onStart={() => handleStartProgram(week, day - startIndex + 1)}
+          />
+        </SwiperSlide>
+      );
+    }
 
-   console.log("totalProgramsNeeded:", totalProgramsNeeded);
-   console.log("program.length:", program.length);
+    return programCards;
+  };
 
-   // 必要なプログラムデータの数を満たすためにプログラムデータを補完
-   const extendedProgram = Array.from(
-     { length: totalProgramsNeeded },
-     (_, i) => {
-       const programIndex = i % program.length;
-       return {
-         ...program[programIndex],
-         uniqueId: `${programIndex}-${i}`, // 各プログラムに一意のIDを追加
-       };
-     }
-   );
-
-   console.log("extendedProgram.length:", extendedProgram.length);
-   console.log("extendedProgram:", extendedProgram);
-
-   // ユニーク性の確認
-   const uniqueIds = new Set(extendedProgram.map((p) => p.uniqueId));
-   if (uniqueIds.size !== extendedProgram.length) {
-     console.error("プログラムデータに重複があります");
-   } else {
-     console.log("プログラムデータはユニークです");
-   }
-
-   const startIndex = (week - 1) * frequency; // 現在の週の開始インデックス
-   const endIndex = startIndex + frequency; // 現在の週の終了インデックス
-
-   console.log("startIndex:", startIndex);
-   console.log("endIndex:", endIndex);
-
-   for (let day = startIndex; day < endIndex; day++) {
-     console.log("day:", day);
-     console.log("extendedProgram.length:", extendedProgram.length);
-
-     // program 配列の day 番目の要素を直接使用
-     const programDetails = extendedProgram[day].details || [];
-     console.log("programDetails:", programDetails);
-
-     programCards.push(
-       <SwiperSlide key={`W${week}D${day - startIndex + 1}`}>
-         <ProgramCard
-           week={week}
-           day={day - startIndex + 1}
-           details={programDetails}
-         />
-       </SwiperSlide>
-     );
-   }
-
-   return programCards;
- };
-
+  //特定の週と日のプログラムデータを設定し、記録用のダイアログを開く。
+  const handleStartProgram = (week: number, day: number) => {
+    // 特定のプログラムデータを設定
+    const frequency = parseInt(formData.frequency, 10);
+    const startIndex = (week - 1) * frequency + (day - 1);
+    const programDetails = extendedProgram[startIndex].details;
+    setSelectedProgramDetails(programDetails);
+    setIsStartProgramDialogOpen(true);
+  };
 
   return (
     <div className="flex flex-col items-center p-0 min-h-screen overflow-y-auto">
@@ -414,7 +410,7 @@ const PersonalizePage: React.FC = () => {
             date={selectedDate}
             gender={formData.gender}
             frequency={formData.frequency}
-            program={program}
+            program={selectedProgramDetails}
           />
         </>
       )}
