@@ -30,6 +30,7 @@ import SwiperCore, {
   Pagination,
   Navigation,
 } from "swiper/modules";
+import { MenuData } from "types/types";
 
 interface Program {
   title: string;
@@ -57,6 +58,7 @@ const PersonalizePage: React.FC = () => {
   const [selectedProgramDetails, setSelectedProgramDetails] = useState<
     Program["details"]
   >([]);
+  const [menuData, setMenuData] = useState<MenuData[]>([]);
 
   const handleSelect = (key: string, value: string | number) => {
     setFormData((prevFormData) => ({
@@ -158,6 +160,37 @@ const PersonalizePage: React.FC = () => {
     }
   }, [program, formData.frequency, formData.duration]);
 
+  const updateMenuData = (
+    programDetails: { menu: string; set_info: string; other: string }[]
+  ) => {
+    const newMenuData = programDetails.map((details, index) => ({
+      menuId: index + 1,
+      menuName: details.menu,
+      body_part: "", // 後で設定
+      sets: [
+        {
+          setId: 1,
+          setContent: details.set_info,
+          weight: 0,
+          reps: 0,
+          completed: false,
+        },
+      ],
+    }));
+    setMenuData(newMenuData);
+  };
+
+  //特定の週と日のプログラムデータを設定し、記録用のダイアログを開く。
+  const handleStartProgram = (week: number, day: number) => {
+    // 特定のプログラムデータを設定
+    const frequency = parseInt(formData.frequency, 10);
+    const startIndex = (week - 1) * frequency + (day - 1);
+    const programDetails = extendedProgram[startIndex].details;
+    updateMenuData(programDetails);
+    setSelectedProgramDetails(programDetails);
+    setIsStartProgramDialogOpen(true);
+  };
+
   // 週ごとのプログラムカードを生成する
   const generateProgramCards = (week: number) => {
     const programCards = [];
@@ -222,16 +255,6 @@ const PersonalizePage: React.FC = () => {
     }
 
     return programCards;
-  };
-
-  //特定の週と日のプログラムデータを設定し、記録用のダイアログを開く。
-  const handleStartProgram = (week: number, day: number) => {
-    // 特定のプログラムデータを設定
-    const frequency = parseInt(formData.frequency, 10);
-    const startIndex = (week - 1) * frequency + (day - 1);
-    const programDetails = extendedProgram[startIndex].details;
-    setSelectedProgramDetails(programDetails);
-    setIsStartProgramDialogOpen(true);
   };
 
   return (
@@ -390,12 +413,12 @@ const PersonalizePage: React.FC = () => {
                   )
                 )}
               </Tabs>
-              <button
+              {/* <button
                 className="fixed bottom-20 py-3 px-5 bg-blue-500 text-white border-none rounded-lg cursor-pointer z-10"
                 onClick={handleRecordButtonClick}
               >
                 プログラムをスタートする
-              </button>
+              </button> */}
             </div>
           )}
 
