@@ -14,12 +14,6 @@ import {
 import TrainingMenuList from "../CarendarRecord/v2/TrainingMenuList";
 import { MenuData } from "types/types";
 
-interface Program {
-  title: string;
-  image: string;
-  details: { menu: string; set_info: string; other: string }[];
-}
-
 interface ProgramTrainingMenuModalProps {
   open: boolean;
   onClose: () => void;
@@ -39,33 +33,32 @@ const ProgramTrainingMenuDialog: React.FC<ProgramTrainingMenuModalProps> = ({
 }) => {
   const [menuData, setMenuData] = useState<MenuData[]>([]);
 
-useEffect(() => {
-  if (open) {
-    let menuIdCounter =
-      menuData.length > 0 ? menuData[menuData.length - 1].menuId + 1 : 1;
-    setMenuData(
-      program.flatMap((detail) => {
-        const { menu, set_info } = detail;
-        const [menuName, set] = [menu, set_info];
-        return {
-          menuId: menuIdCounter++,
-          menuName,
-          body_part: "", // 後で設定
-          sets: [
-            {
-              setId: 1,
-              setContent: set,
-              weight: 0,
-              reps: 0,
-              completed: false,
-            },
-          ],
-        };
-      })
-    );
-  }
-}, [open, program]);
-
+  useEffect(() => {
+    if (open) {
+      let menuIdCounter =
+        menuData.length > 0 ? menuData[menuData.length - 1].menuId + 1 : 1;
+      setMenuData(
+        program.flatMap((detail) => {
+          const { menu, set_info } = detail;
+          const [menuName, set] = [menu, set_info];
+          return {
+            menuId: menuIdCounter++,
+            menuName,
+            body_part: "", // 後で設定
+            sets: [
+              {
+                setId: 1,
+                setContent: set,
+                weight: 0,
+                reps: 0,
+                completed: false,
+              },
+            ],
+          };
+        })
+      );
+    }
+  }, [open, program]);
 
   return (
     <Dialog open={open} onOpenChange={onClose}>
