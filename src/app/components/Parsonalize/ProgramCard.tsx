@@ -10,9 +10,15 @@ interface ProgramCardProps {
   week: number;
   day: number;
   details?: ProgramDetails[];
+  onStart: () => void;
 }
 
-const ProgramCard: React.FC<ProgramCardProps> = ({ week, day, details }) => {
+const ProgramCard: React.FC<ProgramCardProps> = ({
+  week,
+  day,
+  details,
+  onStart,
+}) => {
   return (
     <div
       className="border border-gray-300 rounded-lg p-6 mx-3 text-center shadow-lg bg-white "
@@ -46,8 +52,13 @@ const ProgramCard: React.FC<ProgramCardProps> = ({ week, day, details }) => {
           </TableBody>
         </Table>
       )}
+      <button
+        onClick={onStart}
+        className="mt-4 py-2 px-4 bg-blue-500 text-white rounded-lg"
+      >
+        プログラムをスタートする
+      </button>
     </div>
   );
 };
 export default ProgramCard;
-

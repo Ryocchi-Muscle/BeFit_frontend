@@ -26,7 +26,7 @@ interface ProgramTrainingMenuModalProps {
   date: Date;
   gender: string;
   frequency: string;
-  program: Program[];
+  program: { menu: string; set_info: string; other: string }[];
 }
 
 const ProgramTrainingMenuDialog: React.FC<ProgramTrainingMenuModalProps> = ({
@@ -39,34 +39,33 @@ const ProgramTrainingMenuDialog: React.FC<ProgramTrainingMenuModalProps> = ({
 }) => {
   const [menuData, setMenuData] = useState<MenuData[]>([]);
 
-  useEffect(() => {
-    if (open) {
-      let menuIdCounter =
-        menuData.length > 0 ? menuData[menuData.length - 1].menuId + 1 : 1;
-      setMenuData(
-        program.flatMap((p) =>
-          p.details.map((detail) => {
-            const { menu, set_info } = detail;
-            const [menuName, set] = [menu, set_info];
-            return {
-              menuId: menuIdCounter++,
-              menuName,
-              body_part: "", // 後で設定
-              sets: [
-                {
-                  setId: 1,
-                  setContent: set,
-                  weight: 0,
-                  reps: 0,
-                  completed: false,
-                },
-              ],
-            };
-          })
-        )
-      );
-    }
-  }, [open, program]);
+useEffect(() => {
+  if (open) {
+    let menuIdCounter =
+      menuData.length > 0 ? menuData[menuData.length - 1].menuId + 1 : 1;
+    setMenuData(
+      program.flatMap((detail) => {
+        const { menu, set_info } = detail;
+        const [menuName, set] = [menu, set_info];
+        return {
+          menuId: menuIdCounter++,
+          menuName,
+          body_part: "", // 後で設定
+          sets: [
+            {
+              setId: 1,
+              setContent: set,
+              weight: 0,
+              reps: 0,
+              completed: false,
+            },
+          ],
+        };
+      })
+    );
+  }
+}, [open, program]);
+
 
   return (
     <Dialog open={open} onOpenChange={onClose}>
