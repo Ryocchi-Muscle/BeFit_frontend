@@ -163,20 +163,28 @@ const PersonalizePage: React.FC = () => {
   const updateMenuData = (
     programDetails: { menu: string; set_info: string; other: string }[]
   ) => {
-    const newMenuData = programDetails.map((details, index) => ({
-      menuId: index + 1,
-      menuName: details.menu,
-      body_part: "", // 後で設定
-      sets: [
-        {
-          setId: 1,
-          setContent: details.set_info,
-          weight: 0,
-          reps: 0,
-          completed: false,
-        },
-      ],
-    }));
+    const newMenuData = programDetails.map((detail, index) => {
+      //set_info からセット数を抽出
+      const setCountMatch = detail.set_info.match(/(\d+)セット/);
+      console.log("setCountMatch", setCountMatch);
+      const setCount = setCountMatch ? parseInt(setCountMatch[1], 10) : 1;
+      console.log("setCount", setCount)
+
+      const sets = Array.from({ length: setCount }, (_, i) => ({
+        setId: i + 1,
+        setContent: detail.set_info,
+        weight: "",
+        reps: "",
+        completed: false,
+      }));
+
+      return {
+        menuId: index + 1,
+        menuName: detail.menu,
+        body_part: "", // 後で設定
+        sets: sets,
+      };
+    });
     setMenuData(newMenuData);
   };
 

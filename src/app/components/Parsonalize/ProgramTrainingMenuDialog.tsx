@@ -27,8 +27,6 @@ const ProgramTrainingMenuDialog: React.FC<ProgramTrainingMenuModalProps> = ({
   open,
   onClose,
   date,
-  gender,
-  frequency,
   program,
 }) => {
   const [menuData, setMenuData] = useState<MenuData[]>([]);
@@ -37,26 +35,31 @@ const ProgramTrainingMenuDialog: React.FC<ProgramTrainingMenuModalProps> = ({
     if (open) {
       let menuIdCounter =
         menuData.length > 0 ? menuData[menuData.length - 1].menuId + 1 : 1;
-      setMenuData(
-        program.flatMap((detail) => {
-          const { menu, set_info } = detail;
-          const [menuName, set] = [menu, set_info];
-          return {
-            menuId: menuIdCounter++,
-            menuName,
-            body_part: "", // 後で設定
-            sets: [
-              {
-                setId: 1,
-                setContent: set,
-                weight: 0,
-                reps: 0,
-                completed: false,
-              },
-            ],
-          };
-        })
-      );
+      const newMenuData = program.flatMap((detail) => {
+        const { menu, set_info } = detail;
+
+        // set_info からセット数を抽出
+        const setCountMatch = set_info.match(/(\d+)セット/);
+        const setCount = setCountMatch ? parseInt(setCountMatch[1], 10) : 1;
+
+        // sets 配列を生成
+        const sets = Array.from({ length: setCount }, (_, i) => ({
+          setId: i + 1,
+          setContent: set_info,
+          weight: "",
+          reps: "",
+          completed: false,
+        }));
+
+        return {
+          menuId: menuIdCounter++,
+          menuName: menu,
+          body_part: "", // 後で設定
+          sets: sets,
+        };
+      });
+
+      setMenuData(newMenuData);
     }
   }, [open, program]);
 
