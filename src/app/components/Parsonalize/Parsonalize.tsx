@@ -39,6 +39,12 @@ interface Program {
   uniqueId: string;
 }
 
+interface ProgramDetail {
+  menu: string;
+  set_info: string;
+  other: string;
+}
+
 const PersonalizePage: React.FC = () => {
   const { data: session } = useSession();
   const [step, setStep] = useState(0);
@@ -55,9 +61,8 @@ const PersonalizePage: React.FC = () => {
   const [isTrainingMenuDialogOpen, setIsTrainingMenuDialogOpen] =
     useState(false);
   const [selectedDate, setSelectedDate] = useState(new Date());
-  const [selectedProgramDetails, setSelectedProgramDetails] = useState<
-    Program["details"]
-  >([]);
+  const [selectedProgramDetails, setSelectedProgramDetails] = useState<ProgramDetail[]>([]);
+
   const [menuData, setMenuData] = useState<MenuData[]>([]);
 
   const handleSelect = (key: string, value: string | number) => {
@@ -107,10 +112,6 @@ const PersonalizePage: React.FC = () => {
       setLoading(false);
       setStep(4);
     }
-  };
-
-  const handleRecordButtonClick = () => {
-    setIsStartProgramDialogOpen(true);
   };
 
   const handleConfirmStartProgram = () => {
@@ -168,7 +169,7 @@ const PersonalizePage: React.FC = () => {
       const setCountMatch = detail.set_info.match(/(\d+)セット/);
       console.log("setCountMatch", setCountMatch);
       const setCount = setCountMatch ? parseInt(setCountMatch[1], 10) : 1;
-      console.log("setCount", setCount)
+      console.log("setCount", setCount);
 
       const sets = Array.from({ length: setCount }, (_, i) => ({
         setId: i + 1,
@@ -421,12 +422,6 @@ const PersonalizePage: React.FC = () => {
                   )
                 )}
               </Tabs>
-              {/* <button
-                className="fixed bottom-20 py-3 px-5 bg-blue-500 text-white border-none rounded-lg cursor-pointer z-10"
-                onClick={handleRecordButtonClick}
-              >
-                プログラムをスタートする
-              </button> */}
             </div>
           )}
 

@@ -14,13 +14,19 @@ import {
 import TrainingMenuList from "../CarendarRecord/v2/TrainingMenuList";
 import { MenuData } from "types/types";
 
+interface ProgramDetail {
+  menu: string;
+  set_info: string;
+  other: string;
+}
+
 interface ProgramTrainingMenuModalProps {
   open: boolean;
   onClose: () => void;
   date: Date;
   gender: string;
   frequency: string;
-  program: { menu: string; set_info: string; other: string }[];
+  program: ProgramDetail[];
 }
 
 const ProgramTrainingMenuDialog: React.FC<ProgramTrainingMenuModalProps> = ({
@@ -31,37 +37,36 @@ const ProgramTrainingMenuDialog: React.FC<ProgramTrainingMenuModalProps> = ({
 }) => {
   const [menuData, setMenuData] = useState<MenuData[]>([]);
 
-  useEffect(() => {
-    if (open) {
-      let menuIdCounter =
-        menuData.length > 0 ? menuData[menuData.length - 1].menuId + 1 : 1;
-      const newMenuData = program.flatMap((detail) => {
-        const { menu, set_info } = detail;
+ useEffect(() => {
+   if (open) {
+     let menuIdCounter = 1; // 各 day の最初に menuIdCounter をリセット
+     const newMenuData: MenuData[] = program.map((detail) => {
+       const { menu, set_info } = detail;
 
-        // set_info からセット数を抽出
-        const setCountMatch = set_info.match(/(\d+)セット/);
-        const setCount = setCountMatch ? parseInt(setCountMatch[1], 10) : 1;
+       // set_info からセット数を抽出
+       const setCountMatch = set_info.match(/(\d+)セット/);
+       const setCount = setCountMatch ? parseInt(setCountMatch[1], 10) : 1;
 
-        // sets 配列を生成
-        const sets = Array.from({ length: setCount }, (_, i) => ({
-          setId: i + 1,
-          setContent: set_info,
-          weight: "",
-          reps: "",
-          completed: false,
-        }));
+       // sets 配列を生成
+       const sets = Array.from({ length: setCount }, (_, i) => ({
+         setId: i + 1,
+         setContent: set_info,
+         weight: "",
+         reps: "",
+         completed: false,
+       }));
 
-        return {
-          menuId: menuIdCounter++,
-          menuName: menu,
-          body_part: "", // 後で設定
-          sets: sets,
-        };
-      });
+       return {
+         menuId: menuIdCounter++,
+         menuName: menu,
+         body_part: "", // 後で設定
+         sets: sets,
+       };
+     });
 
-      setMenuData(newMenuData);
-    }
-  }, [open, program]);
+     setMenuData(newMenuData);
+   }
+ }, [open, program]);
 
   return (
     <Dialog open={open} onOpenChange={onClose}>
