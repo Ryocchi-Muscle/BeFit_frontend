@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef, useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import LoadingScreen from "./LoadingScreen";
 import ProgramCard from "./ProgramCard";
 import { useSession } from "next-auth/react";
@@ -16,7 +16,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { type CarouselApi } from "@/components/ui/carousel";
 import SimpleBar from "simplebar-react";
 import "simplebar/dist/simplebar.min.css";
 
@@ -47,6 +46,7 @@ interface ProgramDetail {
 
 const PersonalizePage: React.FC = () => {
   const { data: session } = useSession();
+  const [hasProgram, setHasProgram] = useState(false);
   const [step, setStep] = useState(0);
   const [formData, setFormData] = useState({
     gender: "",
@@ -61,7 +61,9 @@ const PersonalizePage: React.FC = () => {
   const [isTrainingMenuDialogOpen, setIsTrainingMenuDialogOpen] =
     useState(false);
   const [selectedDate, setSelectedDate] = useState(new Date());
-  const [selectedProgramDetails, setSelectedProgramDetails] = useState<ProgramDetail[]>([]);
+  const [selectedProgramDetails, setSelectedProgramDetails] = useState<
+    ProgramDetail[]
+  >([]);
 
   const [menuData, setMenuData] = useState<MenuData[]>([]);
 
@@ -74,8 +76,39 @@ const PersonalizePage: React.FC = () => {
     console.log("formData", { ...formData, [key]: value });
   };
 
+  const saveProgram = async (program: Program[]) => {
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+    const endpoint = `${apiUrl}/api/v2/programs`;
+    try {
+      const response = await fetch(endpoint, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${session?.accessToken}`,
+        },
+        body: JSON.stringify({ program }),
+      });
+      if (!response.ok) {
+        throw new Error("プログラムの保存に失敗しました");
+      }
+      const data = await response.json();
+      if (data.success) {
+        console.log("プログラムが保存されました", data.program);
+        setHasProgram(true); // ここでプログラムが保存されたことを確認
+      } else {
+        console.error("プログラムの保存に失敗しました", data.errors);
+      }
+    } catch (error) {
+      console.error("エラーが発生しました: ", error);
+    }
+  };
+
   //APIを呼び出してプランを作成する
   const handlePlanCreation = async () => {
+    if (hasProgram) {
+      alert("既にプランが存在します。既存のプランを削除してください。");
+      return;
+    }
     setLoading(true);
     const apiUrl = process.env.NEXT_PUBLIC_API_URL;
     const endpoint = `${apiUrl}/api/v2/personalized_menus`;
@@ -100,9 +133,13 @@ const PersonalizePage: React.FC = () => {
       console.log("data", data);
       console.log("data.program", data.program);
       if (data && data.program) {
-        setProgram(
-          data.program.filter((item: Program) => item.details.length > 0)
+        const filterProgram = data.program.filter(
+          (item: Program) => item.details.length > 0
         );
+        console.log("filterProgram", filterProgram);
+        setProgram(filterProgram);
+        // プログラムをAPI経由で保存
+        await saveProgram(filterProgram);
       } else {
         setProgram([]); // データが存在しない場合は空の配列を設定
       }
@@ -138,7 +175,33 @@ const PersonalizePage: React.FC = () => {
     centerPadding: "0px",
     focusOnSelect: true,
   };
-  // useEffect フックを追加
+
+  useEffect(() => {
+    const checkProgramExists = async () => {
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+      const endpoint = `${apiUrl}/api/v2/programs`;
+      try {
+        const response = await fetch(endpoint, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${session?.accessToken}`,
+          },
+        });
+        if (response.ok) {
+          const data = await response.json();
+          setHasProgram(data.programs && data.programs.length > 0);
+        } else {
+          console.error("プログラムの存在確認に失敗しました");
+        }
+      } catch (error) {
+        console.error("エラーが発生しました: ", error);
+      }
+    };
+
+    checkProgramExists();
+  }, [session]);
+
   useEffect(() => {
     if (program.length > 0) {
       const frequency = parseInt(formData.frequency, 10); // トレーニング頻度を数値として取得
@@ -343,12 +406,19 @@ const PersonalizePage: React.FC = () => {
                 </div>
               </div>
               <div>
-                <button
-                  className="mt-5 py-3 px-5 bg-blue-500 text-white border-none rounded-lg cursor-pointer"
-                  onClick={handlePlanCreation}
-                >
-                  プラン作成
-                </button>
+                {!hasProgram && (
+                  <button
+                    className="mt-5 py-3 px-5 bg-blue-500 text-white border-none rounded-lg cursor-pointer"
+                    onClick={handlePlanCreation}
+                  >
+                    プラン作成
+                  </button>
+                )}
+                {hasProgram && (
+                  <p>
+                    既にプランが存在します。既存のプランを削除してください。
+                  </p>
+                )}
               </div>
             </div>
           )}

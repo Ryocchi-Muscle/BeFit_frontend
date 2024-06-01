@@ -1,18 +1,22 @@
 "use client";
 import Footer from "@/app/components/layout/Footer";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import TrainingChart from "@/components/TrainingChart";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 
-interface Program {
+type Program = {
+  id: string;
   name: string;
   progress: string;
   description: string;
-}
+};
 
-// ダミーデータ: 実際のアプリケーションではこのデータはAPIや状態管理から取得します
-const dummyProgramData: Program | null = null; // プログラムが作成されていない場合はnull、作成されている場合はオブジェクト
+type MyComponentProps = {
+  program: Program;
+  onDelete: () => void; // onDelete プロパティを追加
+};
 
 // プログラム未作成コンポーネント
 const NoProgramComponent = () => {
@@ -37,14 +41,20 @@ const NoProgramComponent = () => {
 };
 
 // プログラム情報表示コンポーネント
-const ProgramInfoComponent: React.FC<{ program: Program }> = ({ program }) => (
+const ProgramInfoComponent: React.FC<{
+  program: Program;
+  onDelete: () => void;
+}> = ({ program, onDelete }) => (
   <div className="flex flex-col items-center justify-center h-full">
     <h2 className="text-xl font-semibold mb-4">現在のプログラム</h2>
     <div className="p-4 bg-gray-100 rounded-md shadow-md w-full">
       <p>プログラム名: {program.name}</p>
       <p>進行状況: {program.progress}</p>
       <p>概要: {program.description}</p>
-      <button className="mt-4 px-4 py-2 bg-green-500 text-white rounded-md">
+      <button
+        className="mt-4 px-4 py-2 bg-green-500 text-white rounded-md"
+        onClick={onDelete}
+      >
         プログラムをスタートする
       </button>
     </div>
@@ -64,12 +74,39 @@ function getWeekStartDate(date: Date) {
   return startDate.toISOString().split("T")[0]; // YYYY-MM-DD形式で返す
 }
 
-function RecordPage() {
-  const [selectedDate, setSelectedDate] = useState(
-    getWeekStartDate(new Date())
-  );
+const RecordPage: React.FC = () => {
+  const { data: session } = useSession();
+  const [programData, setProgramData] = useState<Program | null>(null);
 
-  console.log("selectedDate", selectedDate);
+  useEffect(() => {
+    const fetchProgramData = async () => {
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+      const endpoint = `${apiUrl}/api/v2/programs`;
+      try {
+        const response = await fetch(endpoint, {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${session?.accessToken}`,
+          },
+        });
+        if (response.ok) {
+          const data = await response.json();
+          setProgramData(data.program);
+        } else {
+          console.error("プログラムデータの取得に失敗しました");
+        }
+      } catch (error) {
+        console.error("エラーが発生しました: ", error);
+      }
+    };
+
+    fetchProgramData();
+  }, [session]);
+
+  const handleDelete = () => {
+    setProgramData(null);
+  };
+
   return (
     <div className="flex flex-col min-h-screen">
       <div className="flex-grow">
@@ -98,8 +135,11 @@ function RecordPage() {
             <h1 className="text-3xl font-bold text-blue-950 ">
               プログラム管理
             </h1>
-            {dummyProgramData ? (
-              <ProgramInfoComponent program={dummyProgramData} />
+            {programData ? (
+              <ProgramInfoComponent
+                program={programData}
+                onDelete={handleDelete}
+              />
             ) : (
               <NoProgramComponent />
             )}
@@ -109,5 +149,6 @@ function RecordPage() {
       <Footer />
     </div>
   );
-}
+};
+
 export default RecordPage;
