@@ -5,6 +5,7 @@ import TrainingChart from "@/components/TrainingChart";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
+import ProgramInfoComponent from "@/app/components/Parsonalize/ProgramInfo";
 
 type Program = {
   id: string;
@@ -13,14 +14,10 @@ type Program = {
   description: string;
 };
 
-type MyComponentProps = {
-  program: Program;
-  onDelete: () => void; // onDelete プロパティを追加
-};
-
 // プログラム未作成コンポーネント
 const NoProgramComponent = () => {
   const router = useRouter();
+  console.log("ああ");
 
   const handleCreateProgram = () => {
     router.push("/category/parsonalize");
@@ -39,27 +36,6 @@ const NoProgramComponent = () => {
     </div>
   );
 };
-
-// プログラム情報表示コンポーネント
-const ProgramInfoComponent: React.FC<{
-  program: Program;
-  onDelete: () => void;
-}> = ({ program, onDelete }) => (
-  <div className="flex flex-col items-center justify-center h-full">
-    <h2 className="text-xl font-semibold mb-4">現在のプログラム</h2>
-    <div className="p-4 bg-gray-100 rounded-md shadow-md w-full">
-      <p>プログラム名: {program.name}</p>
-      <p>進行状況: {program.progress}</p>
-      <p>概要: {program.description}</p>
-      <button
-        className="mt-4 px-4 py-2 bg-green-500 text-white rounded-md"
-        onClick={onDelete}
-      >
-        プログラムをスタートする
-      </button>
-    </div>
-  </div>
-);
 
 // 初期値を現在日を含む週の開始日に設定するヘルパー関数
 function getWeekStartDate(date: Date) {
@@ -82,25 +58,40 @@ const RecordPage: React.FC = () => {
     const fetchProgramData = async () => {
       const apiUrl = process.env.NEXT_PUBLIC_API_URL;
       const endpoint = `${apiUrl}/api/v2/programs`;
+      console.log("API endpoint:", endpoint);
       try {
         const response = await fetch(endpoint, {
           method: "GET",
           headers: {
+            "Content-Type": "application/json",
             Authorization: `Bearer ${session?.accessToken}`,
           },
         });
         if (response.ok) {
           const data = await response.json();
-          setProgramData(data.program);
+          console.log("Fetched program data:", data);
+          if (data && data.program && data.program.length > 0) {
+            console.log("Setting program data:", data.program[0]);
+            setProgramData(data.program[0]);
+          } else {
+            console.error("プログラムデータが見つかりません");
+            setProgramData(null); // ここでNoProgramComponentが発火する
+          }
         } else {
           console.error("プログラムデータの取得に失敗しました");
+          setProgramData(null); // ここでNoProgramComponentが発火する
         }
       } catch (error) {
         console.error("エラーが発生しました: ", error);
+        setProgramData(null); // ここでNoProgramComponentが発火する
       }
     };
 
-    fetchProgramData();
+    if (session) {
+      fetchProgramData();
+    } else {
+      console.log("セッションがありません");
+    }
   }, [session]);
 
   const handleDelete = () => {

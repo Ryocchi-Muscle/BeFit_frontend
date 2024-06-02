@@ -79,6 +79,16 @@ const PersonalizePage: React.FC = () => {
   const saveProgram = async (program: Program[]) => {
     const apiUrl = process.env.NEXT_PUBLIC_API_URL;
     const endpoint = `${apiUrl}/api/v2/programs`;
+    const program_bundle = {
+      week: formData.duration, // プログラム期間を週単位で設定
+      details: program.flatMap((p) =>
+        p.details.map((detail) => ({
+          menu: detail.menu,
+          set_info: detail.set_info,
+          other: detail.other,
+        }))
+      ),
+    };
     try {
       const response = await fetch(endpoint, {
         method: "POST",
@@ -86,7 +96,7 @@ const PersonalizePage: React.FC = () => {
           "Content-Type": "application/json",
           Authorization: `Bearer ${session?.accessToken}`,
         },
-        body: JSON.stringify({ program }),
+        body: JSON.stringify({ program_bundle }),
       });
       if (!response.ok) {
         throw new Error("プログラムの保存に失敗しました");
