@@ -1,4 +1,4 @@
-import Parsonalize from "@/app/components/Parsonalize/Parsonalize";
+import Parsonalize from "@/app/components/Program/Parsonalize";
 import React from "react";
 
 function Parsonalizepage() {

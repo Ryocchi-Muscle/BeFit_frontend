@@ -34,7 +34,8 @@ import { MenuData } from "types/types";
 interface Program {
   title: string;
   image: string;
-  details: { menu: string; set_info: string; other: string }[];
+  week: number;
+  details: { menu: string; set_info: string; other: string; day: number }[];
   uniqueId: string;
 }
 
@@ -80,15 +81,23 @@ const PersonalizePage: React.FC = () => {
     const apiUrl = process.env.NEXT_PUBLIC_API_URL;
     const endpoint = `${apiUrl}/api/v2/programs`;
     const program_bundle = {
-      week: formData.duration, // プログラム期間を週単位で設定
-      details: program.flatMap((p) =>
-        p.details.map((detail) => ({
-          menu: detail.menu,
-          set_info: detail.set_info,
-          other: detail.other,
-        }))
-      ),
+      gender: formData.gender,
+      frequency: formData.frequency,
+      week: formData.duration,
     };
+    const details = program.flatMap((p) =>
+      p.details.map((detail) => ({
+        menu: detail.menu,
+        set_info: detail.set_info,
+        other: detail.other,
+        week: p.week,
+        day: detail.day,
+      }))
+    );
+
+    console.log("program_bundle1", program_bundle);
+    console.log("details", details);
+
     try {
       const response = await fetch(endpoint, {
         method: "POST",
@@ -96,8 +105,9 @@ const PersonalizePage: React.FC = () => {
           "Content-Type": "application/json",
           Authorization: `Bearer ${session?.accessToken}`,
         },
-        body: JSON.stringify({ program_bundle }),
+        body: JSON.stringify({ program_bundle, details }),
       });
+      console.log("program_bundle2", program_bundle);
       if (!response.ok) {
         throw new Error("プログラムの保存に失敗しました");
       }

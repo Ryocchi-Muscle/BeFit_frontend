@@ -17,8 +17,15 @@ export interface BodyPart {
   name: string;
 }
 
+export interface ProgramDetail {
+  menu: string;
+  set_info: string;
+  other: string;
+}
+
 export interface Program {
-  [key: string]: {
-    [key: string]: string[];
-  };
+  title: string;
+  image: string;
+  details: ProgramDetail[];
+  uniqueId: string;
 }
