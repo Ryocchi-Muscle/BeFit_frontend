@@ -245,7 +245,7 @@ function Calendar({
       />
       {isDialogOpen && selectedDate && (
         <Dialog open={isDialogOpen} onOpenChange={setDialogOpen}>
-          <DialogContent className="flex flex-col max-h-[90vh]">
+          <DialogContent className="flex flex-col max-h-[90vh] max-w-xs">
             <DialogTitle>トレーニングメニュー入力</DialogTitle>
             <DialogDescription>
               {selectedDate.toLocaleDateString()}{" "}
