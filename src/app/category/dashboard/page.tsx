@@ -56,46 +56,38 @@ const RecordPage: React.FC = () => {
     }
   }, [session]);
 
-  // const handleDelete = async () => {
-  //   setProgramData(null);
-  //   const apiUrl = process.env.NEXT_PUBLIC_API_URL;
-  //   const endpoint = `${apiUrl}/api/v2/programs`;
-  //   console.log("API endpoint:", endpoint);
+  const handleDelete = async () => {
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+    const endpoint = `${apiUrl}/api/v2/programs/${programData?.id}`;
+    console.log("API endpoint:", endpoint);
 
-  // };
+    if (!session?.accessToken) {
+      console.error("セッションのアクセストークンがありません");
+      return;
+    }
 
-   const handleDelete = async () => {
-     const apiUrl = process.env.NEXT_PUBLIC_API_URL;
-     const endpoint = `${apiUrl}/api/v2/programs/${programData?.id}`;
-     console.log("API endpoint:", endpoint);
-
-     if (!session?.accessToken) {
-       console.error("セッションのアクセストークンがありません");
-       return;
-     }
-
-     try {
-       const response = await fetch(endpoint, {
-         method: "DELETE",
-         headers: {
-           "Content-Type": "application/json",
-           Authorization: `Bearer ${session?.accessToken}`,
-         },
-       });
-       const data = await response.json();
-       console.log("Fetched program data:", data);
-       if (response.ok && data && data.program) {
-         console.log("Setting program data:", data.program);
-         setProgramData(data.program);
-       } else {
-         console.error("プログラムデータが見つかりません");
-         setProgramData(null); // ここでNoProgramComponentが発火する
-       }
-     } catch (error) {
-       console.error("エラーが発生しました: ", error);
-       setProgramData(null); // ここでNoProgramComponentが発火する
-     }
-   };
+    try {
+      const response = await fetch(endpoint, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${session?.accessToken}`,
+        },
+      });
+      const data = await response.json();
+      console.log("Fetched program data:", data);
+      if (response.ok && data && data.program) {
+        console.log("Setting program data:", data.program);
+        setProgramData(data.program);
+      } else {
+        console.error("プログラムデータが見つかりません");
+        setProgramData(null); // ここでNoProgramComponentが発火する
+      }
+    } catch (error) {
+      console.error("エラーが発生しました: ", error);
+      setProgramData(null); // ここでNoProgramComponentが発火する
+    }
+  };
 
   return (
     <div className="flex flex-col min-h-screen">
