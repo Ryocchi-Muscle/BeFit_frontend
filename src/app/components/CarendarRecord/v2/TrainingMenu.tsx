@@ -133,14 +133,14 @@ export default function TrainingMenuComponet({
         className="mt-2 py-1 px-2 bg-blue-500 text-white rounded"
         onClick={handleAddSet}
       >
-        + セットを追加
+        セット追加
       </button>
       <button
         className="mt-2 py-1 px-2 bg-red-500 text-white rounded"
         type="button"
         onClick={() => removeMenu(menuId)}
       >
-        メニューを削除
+        メニュー削除
       </button>
     </div>
   );
