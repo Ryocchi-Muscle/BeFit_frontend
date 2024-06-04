@@ -84,7 +84,7 @@ export default function TrainingMenuList({
           onClick={addMenu}
           className="my-4 p-2 bg-blue-500 text-white rounded"
         >
-          新しいメニューを追加
+          メニュー追加
         </button>
       </div>
     </div>
