@@ -1,4 +1,5 @@
 import React from "react";
+import { FaTrashAlt } from "react-icons/fa";
 
 interface TrainigSetProps {
   setId: number;
@@ -67,7 +68,7 @@ export default function TrainigSet({
         onClick={removeSet}
         type="button"
       >
-        削除
+        <FaTrashAlt />
       </button>
     </div>
   );
