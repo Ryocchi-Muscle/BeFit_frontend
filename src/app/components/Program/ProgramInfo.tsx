@@ -14,7 +14,6 @@ const ProgramInfoComponent: React.FC<ProgramInfoComponentProps> = ({
     <div className="program-info">
       <h2 className="text-xl font-semibold mb-4">プログラム情報</h2>
       <p>{program.title}</p>
-
       <ul>
         {program.details &&
           program.details.map((detail, index) => (

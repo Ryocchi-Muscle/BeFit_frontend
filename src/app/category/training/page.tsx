@@ -1,4 +1,3 @@
-// app/mission.page.tsx
 import React from "react";
 import Link from "next/link";
 import Footer from "@/app/components/layout/Footer";
