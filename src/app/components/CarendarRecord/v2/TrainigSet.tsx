@@ -24,19 +24,15 @@ export default function TrainigSet({
 }: TrainigSetProps) {
   const handleWeightChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
-    if (/^[1-9]\d*$/.test(value)) {
-      updateSet(setId, "weight", parseInt(value, 10));
-    } else if (value === "") {
-      updateSet(setId, "weight", "");
+    if (/^\d*$/.test(value)) {
+      updateSet(setId, "weight", value === "" ? "" : parseInt(value, 10));
     }
   };
   const handleRepsChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-       const value = e.target.value;
-       if (/^[1-9]\d*$/.test(value)) {
-         updateSet(setId, "reps", parseInt(value, 10));
-       } else if (value === "") {
-         updateSet(setId, "reps", "");
-       }
+    const value = e.target.value;
+    if (/^\d*$/.test(value)) {
+      updateSet(setId, "reps", value === "" ? "" : parseInt(value, 10));
+    }
   };
   const handleCompletedChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     updateSet(setId, "completed", e.target.checked);
@@ -46,17 +42,21 @@ export default function TrainigSet({
       <span className="mr-3">{setId}</span>
       <input
         className="border p-1 mr-2 w-16"
-        type="number"
+        type="tel"
         value={weight}
         placeholder="重量"
         onChange={handleWeightChange}
+        pattern="[0-9]*"
+        inputMode="numeric"
       />
       <input
         className="border p-1 mr-2 w-16"
-        type="number"
+        type="tel"
         value={reps}
         placeholder="回数"
         onChange={handleRepsChange}
+        pattern="[0-9]*"
+        inputMode="numeric"
       />
       <input
         type="checkbox"
