@@ -16,11 +16,12 @@ const ProgramInfoComponent: React.FC<ProgramInfoComponentProps> = ({
       <p>{program.title}</p>
 
       <ul>
-        {program.details.map((detail, index) => (
-          <li key={index}>
-            {detail.menu}: {detail.set_info}
-          </li>
-        ))}
+        {program.details &&
+          program.details.map((detail, index) => (
+            <li key={index}>
+              {detail.menu}: {detail.set_info}
+            </li>
+          ))}
       </ul>
       <button
         onClick={onDelete}
