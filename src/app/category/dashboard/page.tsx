@@ -8,32 +8,24 @@ import ProgramInfoComponent from "@/app/components/Program/ProgramInfo";
 import NoProgramComponent from "@/app/components/Program/NoProgramComponent";
 import { Program } from "types/types";
 
-// 初期値を現在日を含む週の開始日に設定するヘルパー関数
-function getWeekStartDate(date: Date) {
-  const currentDate = new Date(date);
-  console.log("currentDate", currentDate);
-  const weekDay = currentDate.getDay();
-  console.log("weekDay", weekDay);
-  const startDate = new Date(
-    currentDate.setDate(currentDate.getDate() - weekDay)
-  );
-  console.log("startDate", startDate);
-  return startDate.toISOString().split("T")[0]; // YYYY-MM-DD形式で返す
-}
-
 const RecordPage: React.FC = () => {
   const { data: session } = useSession();
   const [programData, setProgramData] = useState<Program | null>(null);
-  const [loading, setLoading] = useState<boolean>(true);
 
+  console.log("セッションデータ", session);
   console.log("プログラムデータ", programData);
 
   useEffect(() => {
     const fetchProgramData = async () => {
-      setLoading(true);
       const apiUrl = process.env.NEXT_PUBLIC_API_URL;
       const endpoint = `${apiUrl}/api/v2/programs`;
       console.log("API endpoint:", endpoint);
+
+      if (!session?.accessToken) {
+        console.error("セッションのアクセストークンがありません");
+        return;
+      }
+
       try {
         const response = await fetch(endpoint, {
           method: "GET",
@@ -44,9 +36,9 @@ const RecordPage: React.FC = () => {
         });
         const data = await response.json();
         console.log("Fetched program data:", data);
-        if (response.ok && data && data.program && data.program.length > 0) {
-          console.log("Setting program data:", data.program[0]);
-          setProgramData(data.program[0]);
+        if (response.ok && data && data.program) {
+          console.log("Setting program data:", data.program);
+          setProgramData(data.program);
         } else {
           console.error("プログラムデータが見つかりません");
           setProgramData(null); // ここでNoProgramComponentが発火する
@@ -54,17 +46,15 @@ const RecordPage: React.FC = () => {
       } catch (error) {
         console.error("エラーが発生しました: ", error);
         setProgramData(null); // ここでNoProgramComponentが発火する
-      } finally {
-        setLoading(false);
       }
     };
 
-    if (session && loading) {
+    if (session) {
       fetchProgramData();
     } else {
       console.log("セッションがありません");
     }
-  }, [session, loading]);
+  }, [session]);
 
   const handleDelete = () => {
     setProgramData(null);

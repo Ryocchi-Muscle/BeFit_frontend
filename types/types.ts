@@ -25,7 +25,6 @@ export interface ProgramDetail {
 
 export interface Program {
   title: string;
-  image: string;
   details: ProgramDetail[];
   uniqueId: string;
 }
