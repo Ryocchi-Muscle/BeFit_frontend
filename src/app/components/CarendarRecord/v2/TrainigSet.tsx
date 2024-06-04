@@ -42,7 +42,7 @@ export default function TrainigSet({
       <span className="mr-3">{setId}</span>
       <input
         className="border p-1 mr-2 w-16"
-        type="tel"
+        type="number"
         value={weight}
         placeholder="重量"
         onChange={handleWeightChange}
@@ -51,7 +51,7 @@ export default function TrainigSet({
       />
       <input
         className="border p-1 mr-2 w-16"
-        type="tel"
+        type="number"
         value={reps}
         placeholder="回数"
         onChange={handleRepsChange}
