@@ -23,9 +23,19 @@ export interface ProgramDetail {
   other: string;
 }
 
+export interface DailyProgram {
+  week: number;
+  day: number;
+  details: {
+    menu: string;
+    set_info: string;
+  }[];
+}
+
 export interface Program {
   id: number;
   title: string;
   details: ProgramDetail[];
   uniqueId: string;
+  daily_programs: DailyProgram[]; // 追加
 }
