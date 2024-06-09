@@ -19,6 +19,7 @@ const ProgramCard: React.FC<ProgramCardProps> = ({
   details,
   onStart,
 }) => {
+  
   return (
     <div onClick={onStart} className="program-card">
       <div
