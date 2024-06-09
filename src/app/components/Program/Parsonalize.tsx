@@ -102,15 +102,17 @@ const PersonalizePage: React.FC = () => {
       });
       console.log("response", response);
       if (!response.ok) {
+        const errorData = await response.json();
+        console.error("APIエラーの詳細: ", errorData);
         throw new Error("APIエラーが発生しました");
       }
       const data = await response.json(); // データが存在する場合はJSONを取得
       console.log("data", data);
       console.log("data.program", data.program);
-      if (data && data.daily_programs) {
-        setProgram(data.daily_programs); // 保存されたプログラムを設定
+      if (data && data.program && data.program.daily_programs) {
+        setProgram(data.program.daily_programs); // 保存されたプログラムを設定
         setHasProgram(true);
-        console.log("data.daily_programs", data.daily_programs);
+        console.log("data.program.daily_programs", data.program.daily_programs);
       } else {
         setProgram([]); // データが存在しない場合は空の配列を設定
         console.error("APIレスポンスに`daily_programs`が含まれていません");
