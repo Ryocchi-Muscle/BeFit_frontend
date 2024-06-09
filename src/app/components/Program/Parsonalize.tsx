@@ -30,13 +30,14 @@ import SwiperCore, {
   Navigation,
 } from "swiper/modules";
 import { MenuData } from "types/types";
+import { FaCommentsDollar } from "react-icons/fa";
 
 interface Program {
   title: string;
   image: string;
   week: number;
   details: { menu: string; set_info: string; other: string; day: number }[];
-  uniqueId: string;
+  day: number;
 }
 
 interface ProgramDetail {
@@ -77,52 +78,6 @@ const PersonalizePage: React.FC = () => {
     console.log("formData", { ...formData, [key]: value });
   };
 
-  const saveProgram = async (program: Program[]) => {
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL;
-    const endpoint = `${apiUrl}/api/v2/programs`;
-    const program_bundle = {
-      gender: formData.gender,
-      frequency: formData.frequency,
-      week: formData.duration,
-    };
-    const details = program.flatMap((p) =>
-      p.details.map((detail) => ({
-        menu: detail.menu,
-        set_info: detail.set_info,
-        other: detail.other,
-        week: p.week,
-        day: detail.day,
-      }))
-    );
-
-    console.log("program_bundle1", program_bundle);
-    console.log("details", details);
-
-    try {
-      const response = await fetch(endpoint, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${session?.accessToken}`,
-        },
-        body: JSON.stringify({ program_bundle, details }),
-      });
-      console.log("program_bundle2", program_bundle);
-      if (!response.ok) {
-        throw new Error("プログラムの保存に失敗しました");
-      }
-      const data = await response.json();
-      if (data.success) {
-        console.log("プログラムが保存されました", data.program);
-        setHasProgram(true); // ここでプログラムが保存されたことを確認
-      } else {
-        console.error("プログラムの保存に失敗しました", data.errors);
-      }
-    } catch (error) {
-      console.error("エラーが発生しました: ", error);
-    }
-  };
-
   //APIを呼び出してプランを作成する
   const handlePlanCreation = async () => {
     if (hasProgram) {
@@ -131,7 +86,7 @@ const PersonalizePage: React.FC = () => {
     }
     setLoading(true);
     const apiUrl = process.env.NEXT_PUBLIC_API_URL;
-    const endpoint = `${apiUrl}/api/v2/personalized_menus`;
+    const endpoint = `${apiUrl}/api/v2/personalized_menus/create_and_save`;
     try {
       const response = await fetch(endpoint, {
         method: "POST",
@@ -149,19 +104,16 @@ const PersonalizePage: React.FC = () => {
       if (!response.ok) {
         throw new Error("APIエラーが発生しました");
       }
-      const data = await response.json();
+      const data = await response.json(); // データが存在する場合はJSONを取得
       console.log("data", data);
       console.log("data.program", data.program);
-      if (data && data.program) {
-        const filterProgram = data.program.filter(
-          (item: Program) => item.details.length > 0
-        );
-        console.log("filterProgram", filterProgram);
-        setProgram(filterProgram);
-        // プログラムをAPI経由で保存
-        await saveProgram(filterProgram);
+      if (data && data.daily_programs) {
+        setProgram(data.daily_programs); // 保存されたプログラムを設定
+        setHasProgram(true);
+        console.log("data.daily_programs", data.daily_programs);
       } else {
         setProgram([]); // データが存在しない場合は空の配列を設定
+        console.error("APIレスポンスに`daily_programs`が含まれていません");
       }
     } catch (error) {
       console.error("エラーが発生しました: ", error);
@@ -211,6 +163,7 @@ const PersonalizePage: React.FC = () => {
         if (response.ok) {
           const data = await response.json();
           setHasProgram(data.programs && data.programs.length > 0);
+          console.log("あるよん", data.programs);
         } else {
           console.error("プログラムの存在確認に失敗しました");
         }
@@ -229,17 +182,20 @@ const PersonalizePage: React.FC = () => {
       const totalProgramsNeeded = frequency * duration; // 必要なプログラムの総数
 
       // 必要なプログラムデータの数を満たすためにプログラムデータを補完
-      const extendedProgramArray = Array.from(
-        { length: totalProgramsNeeded },
-        (_, i) => {
-          const programIndex = i % program.length;
-          return {
-            ...program[programIndex],
-            uniqueId: `${programIndex}-${i}`, // 各プログラムに一意のIDを追加
+      const extendedProgramArray = new Array(totalProgramsNeeded);
+      for (let i = 0; i < duration; i++) {
+        for (let j = 0; j < frequency; j++) {
+          const programIndex = i * frequency + j;
+          const programData = program[programIndex % program.length];
+          extendedProgramArray[programIndex] = {
+            ...programData,
+            week: i + 1,
+            day: j + 1,
           };
         }
-      );
+      }
 
+      console.log("extendedProgramArray", extendedProgramArray);
       setExtendedProgram(extendedProgramArray); // ここで状態に設定
     }
   }, [program, formData.frequency, formData.duration]);
@@ -307,7 +263,7 @@ const PersonalizePage: React.FC = () => {
         const programIndex = i % program.length;
         return {
           ...program[programIndex],
-          uniqueId: `${programIndex}-${i}`, // 各プログラムに一意のIDを追加
+          day: `${programIndex}-${i}`, // 各プログラムに一意のIDを追加
         };
       }
     );
@@ -316,8 +272,8 @@ const PersonalizePage: React.FC = () => {
     console.log("extendedProgram:", extendedProgram);
 
     // ユニーク性の確認
-    const uniqueIds = new Set(extendedProgramArray.map((p) => p.uniqueId));
-    if (uniqueIds.size !== extendedProgramArray.length) {
+    const days = new Set(extendedProgramArray.map((p) => p.day));
+    if (days.size !== extendedProgramArray.length) {
       console.error("プログラムデータに重複があります");
     } else {
       console.log("プログラムデータはユニークです");
