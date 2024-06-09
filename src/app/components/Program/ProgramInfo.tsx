@@ -15,10 +15,19 @@ const ProgramInfoComponent: React.FC<ProgramInfoComponentProps> = ({
       <h2 className="text-xl font-semibold mb-4">プログラム情報</h2>
       <p>{program.title}</p>
       <ul>
-        {program.details &&
-          program.details.map((detail, index) => (
+        {program.daily_programs &&
+          program.daily_programs.map((dailyProgram, index) => (
             <li key={index}>
-              {detail.menu}: {detail.set_info}
+              <h3 className="font-bold">
+                Week {dailyProgram.week}, Day {dailyProgram.day}
+              </h3>
+              <ul>
+                {dailyProgram.details.map((detail, detailIndex) => (
+                  <li key={detailIndex}>
+                    {detail.menu}: {detail.set_info}
+                  </li>
+                ))}
+              </ul>
             </li>
           ))}
       </ul>
