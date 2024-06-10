@@ -38,7 +38,7 @@ const generatePeriods = (): Period[] => {
 };
 
 const TrainingChart: React.FC = () => {
-  const { data, isLoading, isError } = useTrainingData();
+  const { data, isLoading } = useTrainingData();
   const [periods, setPeriods] = useState<Period[]>(generatePeriods());
   const [selectedPeriod, setSelectedPeriod] = useState<string>(
     periods[0].value
@@ -74,7 +74,6 @@ const TrainingChart: React.FC = () => {
         <p>Loading...</p>
       </div>
     );
-  // if (isError) return <div>Error</div>;
 
   return (
     <>
