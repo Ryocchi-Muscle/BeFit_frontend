@@ -20,7 +20,6 @@ export interface BodyPart {
 export interface ProgramDetail {
   menu: string;
   set_info: string;
-  other: string;
 }
 
 export interface DailyProgram {
@@ -37,5 +36,5 @@ export interface Program {
   title: string;
   details: ProgramDetail[];
   uniqueId: string;
-  daily_programs: DailyProgram[]; // 追加
+  daily_programs: DailyProgram[];
 }

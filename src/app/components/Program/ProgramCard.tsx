@@ -1,25 +1,13 @@
 import React from "react";
 import { Table, TableBody, TableCell, TableRow } from "@/components/ui/table";
-
-interface ProgramDetails {
-  menu: string;
-  set_info: string;
-}
+import { DailyProgram } from "types/types";
 
 interface ProgramCardProps {
-  week: number;
-  day: number;
-  details?: ProgramDetails[];
+  dailyProgram: DailyProgram;
   onStart: () => void;
 }
 
-const ProgramCard: React.FC<ProgramCardProps> = ({
-  week,
-  day,
-  details,
-  onStart,
-}) => {
-  
+const ProgramCard: React.FC<ProgramCardProps> = ({ dailyProgram, onStart }) => {
   return (
     <div onClick={onStart} className="program-card">
       <div
@@ -31,11 +19,10 @@ const ProgramCard: React.FC<ProgramCardProps> = ({
           overflowY: "auto",
         }}
       >
-        <h3 className="text-lg font-bold mb-2">{`Week ${week} Day ${day}`}</h3>
-        {details && (
+        {dailyProgram && dailyProgram.details && (
           <Table>
             <TableBody>
-              {details.map((detail, index) => (
+              {dailyProgram.details.map((detail, index) => (
                 <React.Fragment key={index}>
                   <TableRow>
                     <TableCell colSpan={2} className="font-bold text-black">
@@ -64,4 +51,5 @@ const ProgramCard: React.FC<ProgramCardProps> = ({
     </div>
   );
 };
+
 export default ProgramCard;

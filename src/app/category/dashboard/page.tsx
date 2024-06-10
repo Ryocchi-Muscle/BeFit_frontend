@@ -1,93 +1,74 @@
 "use client";
 import Footer from "@/app/components/layout/Footer";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import TrainingChart from "@/components/TrainingChart";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useSession } from "next-auth/react";
 import ProgramInfoComponent from "@/app/components/Program/ProgramInfo";
 import NoProgramComponent from "@/app/components/Program/NoProgramComponent";
-import { Program } from "types/types";
+import { fetcher } from "@/utils/fetcher";
+import { FetchError } from "@/utils/errors";
+import useSWR from "swr";
+import axios from "axios";
 
 const RecordPage: React.FC = () => {
   const { data: session } = useSession();
-  const [programData, setProgramData] = useState<Program | null>(null);
 
-  console.log("セッションデータ", session);
-  console.log("プログラムデータ", programData);
+  // Custom fetcher that includes the token in the header
+  const fetchWithToken = (url: string) =>
+    fetcher(url, session?.accessToken as string);
 
-  useEffect(() => {
-    const fetchProgramData = async () => {
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL;
-      const endpoint = `${apiUrl}/api/v2/programs`;
-      console.log("API endpoint:", endpoint);
-
-      if (!session?.accessToken) {
-        console.error("セッションのアクセストークンがありません");
-        return;
-      }
-
-      try {
-        const response = await fetch(endpoint, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${session?.accessToken}`,
-          },
-        });
-        const data = await response.json();
-        console.log("Fetched program data:", data);
-        if (response.ok && data && data.program) {
-          console.log("Setting program data:", data.program);
-          setProgramData(data.program);
-        } else {
-          console.error("プログラムデータが見つかりません");
-          setProgramData(null); // ここでNoProgramComponentが発火する
-        }
-      } catch (error) {
-        console.error("エラーが発生しました: ", error);
-        setProgramData(null); // ここでNoProgramComponentが発火する
-      }
-    };
-
-    if (session) {
-      fetchProgramData();
-    } else {
-      console.log("セッションがありません");
-    }
-  }, [session]);
+  const {
+    data: programData,
+    error,
+    mutate,
+  } = useSWR(
+    session?.accessToken
+      ? `${process.env.NEXT_PUBLIC_API_URL}/api/v2/programs`
+      : null,
+    fetchWithToken
+  );
 
   const handleDelete = async () => {
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL;
-    const endpoint = `${apiUrl}/api/v2/programs/${programData?.id}`;
-    console.log("API endpoint:", endpoint);
-
     if (!session?.accessToken) {
       console.error("セッションのアクセストークンがありません");
       return;
     }
 
+    if (!programData || !programData.program) {
+      console.error("プログラムデータが見つかりません");
+      return;
+    }
+
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+    const endpoint = `${apiUrl}/api/v2/programs/${programData?.id}`;
+    console.log("API endpoint:", endpoint);
+
     try {
-      const response = await fetch(endpoint, {
-        method: "DELETE",
+      const response = await axios.delete(endpoint, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${session?.accessToken}`,
         },
       });
-      const data = await response.json();
-      console.log("Fetched program data:", data);
-      if (response.ok && data && data.program) {
-        console.log("Setting program data:", data.program);
-        setProgramData(data.program);
+
+      if (response.status === 200) {
+        mutate(); // SWRのキャッシュを無効にして再取得する
       } else {
-        console.error("プログラムデータが見つかりません");
-        setProgramData(null); // ここでNoProgramComponentが発火する
+        console.error("エラーが発生しました: ", response.data.message);
       }
     } catch (error) {
       console.error("エラーが発生しました: ", error);
-      setProgramData(null); // ここでNoProgramComponentが発火する
     }
   };
+
+  if (error) {
+    if (error instanceof FetchError) {
+      return <div>エラーが発生しました: {error.info.message}</div>;
+    }
+    return <div>エラーが発生しました</div>;
+  }
+  if (!programData) return <div>読み込み中...</div>;
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -117,9 +98,9 @@ const RecordPage: React.FC = () => {
             <h1 className="text-3xl font-bold text-blue-950 ">
               プログラム管理
             </h1>
-            {programData ? (
+            {programData && programData.program ? (
               <ProgramInfoComponent
-                program={programData}
+                program={programData.program}
                 onDelete={handleDelete}
               />
             ) : (

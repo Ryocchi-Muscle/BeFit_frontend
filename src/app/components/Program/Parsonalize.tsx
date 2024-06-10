@@ -12,7 +12,6 @@ import {
   SelectContent,
   SelectGroup,
   SelectItem,
-  SelectLabel,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
@@ -295,9 +294,7 @@ const PersonalizePage: React.FC = () => {
       programCards.push(
         <SwiperSlide key={`W${week}D${day - startIndex + 1}`}>
           <ProgramCard
-            week={week}
-            day={day - startIndex + 1}
-            details={programDetails}
+            dailyProgram={extendedProgram[day]}
             onStart={() => handleStartProgram(week, day - startIndex + 1)}
           />
         </SwiperSlide>
