@@ -10,13 +10,13 @@ import { fetcher } from "@/utils/fetcher";
 import { FetchError } from "@/utils/errors";
 import useSWR from "swr";
 import axios from "axios";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 
 const RecordPage: React.FC = () => {
   const { data: session } = useSession();
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const searchParams = useSearchParams();
-   const defaultTab = searchParams.get("tab") || "training";
+  const defaultTab = searchParams.get("tab") || "training";
 
   // Custom fetcher that includes the token in the header
   const fetchWithToken = (url: string) =>
@@ -128,7 +128,7 @@ const RecordPage: React.FC = () => {
               {/* ダイアログの追加 */}
               {isDeleteDialogOpen && (
                 <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-                  <div className="bg-white p-6 rounded-lg shadow-lg">
+                  <div className="bg-white p-6 rounded-lg shadow-lg  w-[80%] max-w-m">
                     <p>作成した全プログラムを本当に削除しますか？</p>
                     <div className="mt-4 flex justify-end space-x-2">
                       <button
