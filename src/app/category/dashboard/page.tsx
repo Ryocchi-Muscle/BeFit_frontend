@@ -10,10 +10,13 @@ import { fetcher } from "@/utils/fetcher";
 import { FetchError } from "@/utils/errors";
 import useSWR from "swr";
 import axios from "axios";
+import { useRouter, useSearchParams } from "next/navigation";
 
 const RecordPage: React.FC = () => {
   const { data: session } = useSession();
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+  const searchParams = useSearchParams();
+   const defaultTab = searchParams.get("tab") || "training";
 
   // Custom fetcher that includes the token in the header
   const fetchWithToken = (url: string) =>
@@ -87,7 +90,7 @@ const RecordPage: React.FC = () => {
   return (
     <div className="flex flex-col min-h-screen">
       <div className="flex-grow">
-        <Tabs defaultValue="training" className="w-full">
+        <Tabs defaultValue={defaultTab} className="w-full">
           <div className="pt-4 flex justify-center">
             <TabsList className="fixed justify-center inline-flex p-1 bg-gray-200 rounded-md">
               <TabsTrigger
