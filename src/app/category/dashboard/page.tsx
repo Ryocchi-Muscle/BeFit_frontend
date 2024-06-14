@@ -12,12 +12,15 @@ import useSWR from "swr";
 import axios from "axios";
 import { useSearchParams } from "next/navigation";
 import StartProgramHandler from "@/app/components/Program/StartProgramHandler";
+import usePreventScroll from "@/hooks/usePreventScroll";
 
 const RecordPage: React.FC = () => {
   const { data: session } = useSession();
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const searchParams = useSearchParams();
   const defaultTab = searchParams.get("tab") || "training";
+  // スクロールを防止するカスタムフックを呼び出す
+  usePreventScroll();
   const [startProgramFunc, setStartProgramFunc] = useState<any>(null);
 
   const fetchWithToken = (url: string) =>
@@ -97,11 +100,11 @@ const RecordPage: React.FC = () => {
   if (!programData) return <div>読み込み中...</div>;
 
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col min-h-screen overflow-hidden">
       <div className="flex-grow relative">
         <Tabs defaultValue={defaultTab} className="w-full">
-          <div className="pt-4 flex justify-center">
-            <TabsList className="fixed justify-center inline-flex p-1 bg-gray-200 rounded-md">
+          <div className="pt-8 flex justify-center">
+            <TabsList className=" fixed justify-center inline-flex p-1 bg-gray-200 rounded-md z-10">
               <TabsTrigger
                 value="training"
                 className="py-2 px-4 text-center rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
@@ -121,7 +124,10 @@ const RecordPage: React.FC = () => {
               <h1 className="text-3xl font-bold text-blue-950">記録</h1>
               <TrainingChart />
             </TabsContent>
-            <TabsContent value="program" className="flex justify-center p-4">
+            <TabsContent
+              value="program"
+              className="flex justify-center p-0 min-h-screen relative"
+            >
               <div className="flex flex-col items-center w-full max-w-3xl relative">
                 {programData && programData.program ? (
                   <>
