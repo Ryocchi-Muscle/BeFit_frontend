@@ -128,7 +128,7 @@ const RecordPage: React.FC = () => {
               value="program"
               className="flex justify-center p-0 min-h-screen relative"
             >
-              <div className="flex flex-col items-center w-full max-w-3xl relative">
+              <div className="flex flex-col items-center w-full max-w-3xl relative pt-5">
                 {programData && programData.program ? (
                   <>
                     <StepFourComponent

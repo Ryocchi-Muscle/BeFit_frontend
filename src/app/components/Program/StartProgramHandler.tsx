@@ -60,7 +60,12 @@ const StartProgramHandler: React.FC<StartProgramHandlerProps> = ({
 
   const handleStartProgramInternal = useCallback(
     (week: number, day: number) => {
-      console.log("handleStartProgramInternal called with week:", week, "day:", day);
+      console.log(
+        "handleStartProgramInternal called with week:",
+        week,
+        "day:",
+        day
+      );
       if (week == null || day == null) {
         console.error("Invalid week or day value");
         return;
@@ -100,8 +105,14 @@ const StartProgramHandler: React.FC<StartProgramHandlerProps> = ({
   };
 
   useEffect(() => {
-    onSetStartProgram(handleStartProgramInternal);
-  }, [onSetStartProgram, handleStartProgramInternal]);
+    console.log("Setting start program function");
+    onSetStartProgram(() => handleStartProgramInternal);
+  }, [
+    onSetStartProgram,
+    handleStartProgramInternal,
+    formData.frequency,
+    extendedProgram,
+  ]);
 
   return (
     <>
