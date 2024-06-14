@@ -7,7 +7,7 @@ const NoProgramComponent: React.FC = () => {
 
   const handleCreateProgram = () => {
     console.log("Button clicked"); // クリックイベントの確認用ログ
-    router.push("/category/parsonalize");
+    router.push("/category/personalize");
   };
 
   return (
