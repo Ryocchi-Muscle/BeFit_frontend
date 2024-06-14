@@ -17,7 +17,6 @@ import { MenuData } from "types/types";
 interface ProgramDetail {
   menu: string;
   set_info: string;
-  other: string;
 }
 
 interface ProgramTrainingMenuModalProps {

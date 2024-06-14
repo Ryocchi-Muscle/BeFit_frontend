@@ -16,20 +16,30 @@ interface StepFourComponentProps {
   dailyPrograms: DailyProgram[];
   onDelete: () => void;
   duration: number;
-  setStep: (step: number) => void;
+  onStartProgram: (week: number, day: number) => void;
 }
 
 const StepFourComponent: React.FC<StepFourComponentProps> = ({
   dailyPrograms,
   onDelete,
   duration,
-  setStep,
+  onStartProgram,
 }) => {
   const generateProgramCards = (week: number) => {
+    console.log(`week: ${week}`);
     const weekPrograms = dailyPrograms.filter((dp) => dp.week === week);
     return weekPrograms.map((dailyProgram, index) => (
       <SwiperSlide key={index}>
-        <ProgramCard dailyProgram={dailyProgram} onStart={() => {}} />
+        <ProgramCard
+          dailyProgram={dailyProgram}
+          onStart={() => {
+            console.log(
+              `onStart called with week: ${week}, day: ${dailyProgram.day}`
+            );
+            onStartProgram(week, dailyProgram.day);
+            console.log("onStartProgram called");
+          }}
+        />
       </SwiperSlide>
     ));
   };
