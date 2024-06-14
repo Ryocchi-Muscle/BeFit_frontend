@@ -11,14 +11,15 @@ import { FetchError } from "@/utils/errors";
 import useSWR from "swr";
 import axios from "axios";
 import { useSearchParams } from "next/navigation";
+import StartProgramHandler from "@/app/components/Program/StartProgramHandler";
 
 const RecordPage: React.FC = () => {
   const { data: session } = useSession();
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const searchParams = useSearchParams();
   const defaultTab = searchParams.get("tab") || "training";
+  const [startProgramFunc, setStartProgramFunc] = useState<any>(null);
 
-  // Custom fetcher that includes the token in the header
   const fetchWithToken = (url: string) =>
     fetcher(url, session?.accessToken as string);
 
@@ -79,6 +80,14 @@ const RecordPage: React.FC = () => {
     await handleDelete();
   };
 
+  const handleStartProgram = (week: number, day: number) => {
+    console.log("handleStartProgram called with week:", week, "day:", day);
+    console.log("startProgramFunc", startProgramFunc);
+    if (startProgramFunc) {
+      startProgramFunc(week, day);
+    }
+  };
+
   if (error) {
     if (error instanceof FetchError) {
       return <div>エラーが発生しました: {error.info.message}</div>;
@@ -89,7 +98,7 @@ const RecordPage: React.FC = () => {
 
   return (
     <div className="flex flex-col min-h-screen">
-      <div className="flex-grow">
+      <div className="flex-grow relative">
         <Tabs defaultValue={defaultTab} className="w-full">
           <div className="pt-4 flex justify-center">
             <TabsList className="fixed justify-center inline-flex p-1 bg-gray-200 rounded-md">
@@ -113,19 +122,28 @@ const RecordPage: React.FC = () => {
               <TrainingChart />
             </TabsContent>
             <TabsContent value="program" className="flex justify-center p-4">
-              <div className="flex flex-col items-center w-full max-w-3xl">
+              <div className="flex flex-col items-center w-full max-w-3xl relative">
                 {programData && programData.program ? (
-                  <StepFourComponent
-                    dailyPrograms={programData.program.daily_programs}
-                    onDelete={handleDeleteButtonClick}
-                    duration={programData.program.duration} // 取得したプログラムの期間を設定
-                    setStep={() => {}} // 必要ないので空関数を渡す
-                  />
+                  <>
+                    <StepFourComponent
+                      dailyPrograms={programData.program.daily_programs}
+                      onDelete={handleDeleteButtonClick}
+                      duration={programData.program.duration}
+                      onStartProgram={handleStartProgram}
+                    />
+                    <StartProgramHandler
+                      formData={{
+                        frequency: programData.program.frequency,
+                        gender: programData.program.gender,
+                      }}
+                      extendedProgram={programData.program.daily_programs}
+                      onSetStartProgram={setStartProgramFunc}
+                    />
+                  </>
                 ) : (
                   <NoProgramComponent />
                 )}
               </div>
-              {/* ダイアログの追加 */}
               {isDeleteDialogOpen && (
                 <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
                   <div className="bg-white p-6 rounded-lg shadow-lg  w-[80%] max-w-m">

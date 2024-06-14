@@ -9,7 +9,7 @@ interface ProgramCardProps {
 
 const ProgramCard: React.FC<ProgramCardProps> = ({ dailyProgram, onStart }) => {
   return (
-    <div onClick={onStart} className="program-card">
+    <div className="program-card">
       <div
         className="border border-gray-300 rounded-lg p-6 mx-3 text-center shadow-lg bg-white "
         style={{

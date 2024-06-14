@@ -14,14 +14,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import "simplebar/dist/simplebar.min.css";
-import { SwiperSlide } from "swiper/react";
-import "swiper/css";
-import "swiper/css/effect-coverflow";
-import "swiper/css/pagination";
-import "swiper/css/navigation";
-import { MenuData } from "types/types";
-import StepFourComponent from "./StepFourComponent";
 import { useRouter } from "next/navigation";
 
 interface Program {
@@ -41,7 +33,6 @@ interface ProgramDetail {
 const PersonalizePage: React.FC = () => {
   const { data: session } = useSession();
   const [hasProgram, setHasProgram] = useState(false);
-  const [step, setStep] = useState(0);
   const [formData, setFormData] = useState({
     gender: "",
     frequency: "",
@@ -60,8 +51,6 @@ const PersonalizePage: React.FC = () => {
   >([]);
   const router = useRouter();
 
-  const [menuData, setMenuData] = useState<MenuData[]>([]);
-
   const handleSelect = (key: string, value: string | number) => {
     setFormData((prevFormData) => ({
       ...prevFormData,
@@ -69,12 +58,6 @@ const PersonalizePage: React.FC = () => {
     }));
     console.log("value", value);
     console.log("formData", { ...formData, [key]: value });
-  };
-
-  const handleDelete = () => {
-    setProgram([]);
-    localStorage.removeItem("dailyPrograms");
-    setStep(0);
   };
 
   //APIを呼び出してプランを作成する
@@ -120,7 +103,6 @@ const PersonalizePage: React.FC = () => {
       console.error("エラーが発生しました: ", error);
     } finally {
       setLoading(false);
-      setStep(4);
       router.push("/category/dashboard?tab=program");
     }
   };
@@ -136,18 +118,6 @@ const PersonalizePage: React.FC = () => {
 
   const handleCloseTrainingMenuDialog = () => {
     setIsTrainingMenuDialogOpen(false);
-  };
-
-  const sliderSettings = {
-    dots: true,
-    infinite: false,
-    speed: 500,
-    slidesToShow: 1,
-    slidesToScroll: 1,
-    variableWidth: true,
-    centerMode: true,
-    centerPadding: "0px",
-    focusOnSelect: true,
   };
 
   useEffect(() => {
@@ -202,210 +172,134 @@ const PersonalizePage: React.FC = () => {
     }
   }, [program, formData.frequency, formData.duration]);
 
-  const updateMenuData = (
-    programDetails: { menu: string; set_info: string; other: string }[]
-  ) => {
-    const newMenuData = programDetails.map((detail, index) => {
-      //set_info からセット数を抽出
-      const setCountMatch = detail.set_info.match(/(\d+)セット/);
-      console.log("setCountMatch", setCountMatch);
-      const setCount = setCountMatch ? parseInt(setCountMatch[1], 10) : 1;
-      console.log("setCount", setCount);
+  // const updateMenuData = (
+  //   programDetails: { menu: string; set_info: string; other: string }[]
+  // ) => {
+  //   const newMenuData = programDetails.map((detail, index) => {
+  //     //set_info からセット数を抽出
+  //     const setCountMatch = detail.set_info.match(/(\d+)セット/);
+  //     console.log("setCountMatch", setCountMatch);
+  //     const setCount = setCountMatch ? parseInt(setCountMatch[1], 10) : 1;
+  //     console.log("setCount", setCount);
 
-      const sets = Array.from({ length: setCount }, (_, i) => ({
-        setId: i + 1,
-        setContent: detail.set_info,
-        weight: "",
-        reps: "",
-        completed: false,
-      }));
+  //     const sets = Array.from({ length: setCount }, (_, i) => ({
+  //       setId: i + 1,
+  //       setContent: detail.set_info,
+  //       weight: "",
+  //       reps: "",
+  //       completed: false,
+  //     }));
 
-      return {
-        menuId: index + 1,
-        menuName: detail.menu,
-        body_part: "", // 後で設定
-        sets: sets,
-      };
-    });
-    setMenuData(newMenuData);
-  };
+  //     return {
+  //       menuId: index + 1,
+  //       menuName: detail.menu,
+  //       body_part: "", // 後で設定
+  //       sets: sets,
+  //     };
+  //   });
+  //   setMenuData(newMenuData);
+  // };
 
-  //特定の週と日のプログラムデータを設定し、記録用のダイアログを開く。
-  const handleStartProgram = (week: number, day: number) => {
-    // 特定のプログラムデータを設定
-    const frequency = parseInt(formData.frequency, 10);
-    const startIndex = (week - 1) * frequency + (day - 1);
-    const programDetails = extendedProgram[startIndex].details;
-    updateMenuData(programDetails);
-    setSelectedProgramDetails(programDetails);
-    setIsStartProgramDialogOpen(true);
-  };
-
-  // 週ごとのプログラムカードを生成する
-  const generateProgramCards = (week: number) => {
-    const programCards = [];
-    const frequency = parseInt(formData.frequency, 10); // トレーニング頻度を数値として取得
-    const startIndex = (week - 1) * frequency; // 現在の週の開始インデックス
-    const endIndex = startIndex + frequency; // 現在の週の終了インデックス
-    const duration = parseInt(formData.duration, 10); // プログラム期間を数値として取得
-    const totalProgramsNeeded = frequency * duration; // 必要なプログラムの総数
-
-    console.log("totalProgramsNeeded:", totalProgramsNeeded);
-    console.log("program.length:", program.length);
-
-    if (program.length === 0) {
-      console.error("Program array is empty");
-      return []; // 何も表示しない
-    }
-
-    // 必要なプログラムデータの数を満たすためにプログラムデータを補完
-    const extendedProgramArray = Array.from(
-      { length: totalProgramsNeeded },
-      (_, i) => {
-        const programIndex = i % program.length;
-        return {
-          ...program[programIndex],
-          day: `${programIndex}-${i}`, // 各プログラムに一意のIDを追加
-        };
-      }
-    );
-
-    console.log("extendedProgram.length:", extendedProgram.length);
-    console.log("extendedProgram:", extendedProgram);
-
-    // ユニーク性の確認
-    const days = new Set(extendedProgramArray.map((p) => p.day));
-    if (days.size !== extendedProgramArray.length) {
-      console.error("プログラムデータに重複があります");
-    } else {
-      console.log("プログラムデータはユニークです");
-    }
-
-    console.log("startIndex:", startIndex);
-    console.log("endIndex:", endIndex);
-
-    for (let day = startIndex; day < endIndex; day++) {
-      console.log("day:", day);
-      console.log("extendedProgram.length:", extendedProgramArray.length);
-
-      // program 配列の day 番目の要素を直接使用
-      const programDetails = extendedProgramArray[day]?.details || [];
-      console.log("programDetails:", programDetails);
-
-      programCards.push(
-        <SwiperSlide key={`W${week}D${day - startIndex + 1}`}>
-          <ProgramCard
-            dailyProgram={extendedProgram[day]}
-            onStart={() => handleStartProgram(week, day - startIndex + 1)}
-          />
-        </SwiperSlide>
-      );
-    }
-
-    return programCards;
-  };
+  // //特定の週と日のプログラムデータを設定し、記録用のダイアログを開く。
+  // const handleStartProgram = (week: number, day: number) => {
+  //   // 特定のプログラムデータを設定
+  //   const frequency = parseInt(formData.frequency, 10);
+  //   const startIndex = (week - 1) * frequency + (day - 1);
+  //   const programDetails = extendedProgram[startIndex].details;
+  //   updateMenuData(programDetails);
+  //   setSelectedProgramDetails(programDetails);
+  //   setIsStartProgramDialogOpen(true);
+  //   console.log("programDetails", programDetails);
+  // };
 
   return (
     <div className="flex flex-col items-center p-0 min-h-screen overflow-y-auto">
       {loading && <LoadingScreen />}
       {!loading && (
         <>
-          {step < 4 && (
-            <div className="flex flex-col items-center justify-start min-h-[calc(100vh-70px)] pt-18">
-              <div className="bg-white p-8 rounded-lg shadow-lg text-center w-4/5 max-w-lg mt-0 space-y-6">
-                <div>
-                  <h2 className="text-blue-500 text-xl mb-2">性別</h2>
-                  <Select
-                    value={formData.gender}
-                    onValueChange={(value) => handleSelect("gender", value)}
-                  >
-                    <SelectTrigger className="w-[180px]">
-                      <SelectValue placeholder="性別" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectGroup>
-                        <SelectItem value="male">男</SelectItem>
-                        <SelectItem value="female">女</SelectItem>
-                      </SelectGroup>
-                    </SelectContent>
-                  </Select>
-                </div>
-                <div>
-                  <h2 className="text-blue-500 text-xl mb-2">
-                    トレーニング頻度（週）
-                  </h2>
-                  <Select
-                    value={formData.frequency}
-                    onValueChange={(value) => handleSelect("frequency", value)}
-                  >
-                    <SelectTrigger className="w-[180px]">
-                      <SelectValue placeholder="トレーニング頻度" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectGroup>
-                        <SelectItem value="1">週1</SelectItem>
-                        <SelectItem value="2">週2</SelectItem>
-                        <SelectItem value="3">週3</SelectItem>
-                        <SelectItem value="4">週4</SelectItem>
-                      </SelectGroup>
-                    </SelectContent>
-                  </Select>
-                </div>
-                <div>
-                  <h2 className="text-blue-500 text-xl mb-2">プログラム期間</h2>
-
-                  <Select
-                    value={formData.duration.toString()}
-                    onValueChange={(value) =>
-                      handleSelect("duration", parseInt(value))
-                    }
-                  >
-                    <SelectTrigger className="w-[180px]">
-                      <SelectValue placeholder="プログラム期間">
-                        {formData.duration
-                          ? `${formData.duration} 週間`
-                          : "プログラム期間"}
-                      </SelectValue>
-                    </SelectTrigger>
-                    <SelectContent style={{ top: "auto", bottom: "100%" }}>
-                      <SelectGroup>
-                        {Array.from({ length: 9 }, (_, i) => i + 4).map(
-                          (week) => (
-                            <SelectItem key={week} value={week.toString()}>
-                              {week} 週間
-                            </SelectItem>
-                          )
-                        )}
-                      </SelectGroup>
-                    </SelectContent>
-                  </Select>
-                </div>
+          <div className="flex flex-col items-center justify-start min-h-[calc(100vh-70px)] pt-18">
+            <div className="bg-white p-8 rounded-lg shadow-lg text-center w-4/5 max-w-lg mt-0 space-y-6">
+              <div>
+                <h2 className="text-blue-500 text-xl mb-2">性別</h2>
+                <Select
+                  value={formData.gender}
+                  onValueChange={(value) => handleSelect("gender", value)}
+                >
+                  <SelectTrigger className="w-[180px]">
+                    <SelectValue placeholder="性別" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectGroup>
+                      <SelectItem value="male">男</SelectItem>
+                      <SelectItem value="female">女</SelectItem>
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>
               </div>
               <div>
-                {!hasProgram && (
-                  <button
-                    className="mt-5 py-3 px-5 bg-blue-500 text-white border-none rounded-lg cursor-pointer"
-                    onClick={handlePlanCreation}
-                  >
-                    プラン作成
-                  </button>
-                )}
-                {hasProgram && (
-                  <p>
-                    既にプランが存在します。既存のプランを削除してください。
-                  </p>
-                )}
+                <h2 className="text-blue-500 text-xl mb-2">
+                  トレーニング頻度（週）
+                </h2>
+                <Select
+                  value={formData.frequency}
+                  onValueChange={(value) => handleSelect("frequency", value)}
+                >
+                  <SelectTrigger className="w-[180px]">
+                    <SelectValue placeholder="トレーニング頻度" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectGroup>
+                      <SelectItem value="1">週1</SelectItem>
+                      <SelectItem value="2">週2</SelectItem>
+                      <SelectItem value="3">週3</SelectItem>
+                      <SelectItem value="4">週4</SelectItem>
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div>
+                <h2 className="text-blue-500 text-xl mb-2">プログラム期間</h2>
+                <Select
+                  value={formData.duration.toString()}
+                  onValueChange={(value) =>
+                    handleSelect("duration", parseInt(value))
+                  }
+                >
+                  <SelectTrigger className="w-[180px]">
+                    <SelectValue placeholder="プログラム期間">
+                      {formData.duration
+                        ? `${formData.duration} 週間`
+                        : "プログラム期間"}
+                    </SelectValue>
+                  </SelectTrigger>
+                  <SelectContent style={{ top: "auto", bottom: "100%" }}>
+                    <SelectGroup>
+                      {Array.from({ length: 9 }, (_, i) => i + 4).map(
+                        (week) => (
+                          <SelectItem key={week} value={week.toString()}>
+                            {week} 週間
+                          </SelectItem>
+                        )
+                      )}
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>
               </div>
             </div>
-          )}
-          {step === 4 && (
-            <StepFourComponent
-              dailyPrograms={extendedProgram}
-              onDelete={handleDelete}
-              duration={parseInt(formData.duration, 10)}
-              setStep={setStep}
-            />
-          )}
+            <div>
+              {!hasProgram && (
+                <button
+                  className="mt-5 py-3 px-5 bg-blue-500 text-white border-none rounded-lg cursor-pointer"
+                  onClick={handlePlanCreation}
+                >
+                  プラン作成
+                </button>
+              )}
+              {hasProgram && (
+                <p>既にプランが存在します。既存のプランを削除してください。</p>
+              )}
+            </div>
+          </div>
 
           <StartProgramDialog
             open={isStartProgramDialogOpen}
