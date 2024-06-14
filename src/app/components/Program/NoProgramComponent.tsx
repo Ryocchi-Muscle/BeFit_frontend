@@ -11,13 +11,10 @@ const NoProgramComponent: React.FC = () => {
   };
 
   return (
-    <div className="relative flex flex-col items-center justify-center h-full w-full">
-      <Image
-        src="/images/ProgramStartImage.webp"
-        alt="Picture of the author"
-        layout="fill"
-        objectFit="cover"
-      />
+    <div
+      className="relative flex flex-col items-center justify-center h-full w-full bg-cover bg-center bg-no-repeat"
+      style={{ backgroundImage: "url('/images/ProgramStartImage.webp')" }}
+    >
       <div className="absolute inset-0 bg-black opacity-50"></div>
       <div className="relative z-10 flex flex-col items-center justify-center h-full space-y-6 px-4 text-center">
         <h1 className="text-3xl font-bold text-white mt-8">
