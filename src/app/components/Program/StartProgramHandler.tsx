@@ -7,6 +7,7 @@ import { MenuData } from "../../../../types/types";
 interface ProgramDetail {
   menu: string;
   set_info: string;
+  daily_program_id: number;
 }
 
 interface StartProgramHandlerProps {
@@ -34,7 +35,11 @@ const StartProgramHandler: React.FC<StartProgramHandlerProps> = ({
   const [menuData, setMenuData] = useState<MenuData[]>([]);
 
   const updateMenuData = (
-    programDetails: { menu: string; set_info: string; other: string }[]
+    programDetails: {
+      menu: string;
+      set_info: string;
+      daily_program_id: number;
+    }[]
   ) => {
     const newMenuData = programDetails.map((detail, index) => {
       const setCountMatch = detail.set_info.match(/(\d+)セット/);
@@ -53,6 +58,7 @@ const StartProgramHandler: React.FC<StartProgramHandlerProps> = ({
         menuName: detail.menu,
         body_part: "",
         sets: sets,
+        daily_program_id: detail.daily_program_id,
       };
     });
     setMenuData(newMenuData);
@@ -83,7 +89,12 @@ const StartProgramHandler: React.FC<StartProgramHandlerProps> = ({
         console.error("Selected program not found");
         return;
       }
-      const programDetails = extendedProgram[startIndex].details;
+      const programDetails = selectedProgram.details.map((detail: any, index:number) => ({
+        ...detail,
+        daily_program_id:
+          selectedProgram.training_menus[index].daily_program_id,
+      }));
+      console.log("programDetails:", programDetails);
       updateMenuData(programDetails);
       setSelectedProgramDetails(programDetails);
       setIsStartProgramDialogOpen(true);

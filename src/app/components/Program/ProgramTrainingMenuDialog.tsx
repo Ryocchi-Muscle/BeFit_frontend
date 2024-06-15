@@ -13,10 +13,13 @@ import {
 } from "@/components/ui/dialog";
 import TrainingMenuList from "../CarendarRecord/v2/TrainingMenuList";
 import { MenuData } from "types/types";
+import { useSession } from "next-auth/react";
+import { useToast } from "@/components/ui/use-toast";
 
 interface ProgramDetail {
   menu: string;
   set_info: string;
+  daily_program_id: number;
 }
 
 interface ProgramTrainingMenuModalProps {
@@ -35,38 +38,88 @@ const ProgramTrainingMenuDialog: React.FC<ProgramTrainingMenuModalProps> = ({
   program,
 }) => {
   const [menuData, setMenuData] = useState<MenuData[]>([]);
+  const { data: session } = useSession();
+  const { toast } = useToast();
 
- useEffect(() => {
-   if (open) {
-     let menuIdCounter = 1; // 各 day の最初に menuIdCounter をリセット
-     const newMenuData: MenuData[] = program.map((detail) => {
-       const { menu, set_info } = detail;
+  // `open`の変更を監視
+  useEffect(() => {
+    console.log("Dialog open state changed:", open);
+  }, [open]);
 
-       // set_info からセット数を抽出
-       const setCountMatch = set_info.match(/(\d+)セット/);
-       const setCount = setCountMatch ? parseInt(setCountMatch[1], 10) : 1;
+  useEffect(() => {
+    if (open) {
+      let menuIdCounter = 1;
+      const newMenuData: MenuData[] = program.map((detail) => {
+        const { menu, set_info, daily_program_id } = detail;
 
-       // sets 配列を生成
-       const sets = Array.from({ length: setCount }, (_, i) => ({
-         setId: i + 1,
-         setContent: set_info,
-         weight: "",
-         reps: "",
-         completed: false,
-       }));
+        // デバッグ用ログ
+        console.log("detail in map:", detail);
 
-       return {
-         menuId: menuIdCounter++,
-         menuName: menu,
-         body_part: "", // 後で設定
-         sets: sets,
-       };
-     });
+        // set_info からセット数を抽出
+        const setCountMatch = set_info.match(/(\d+)セット/);
+        const setCount = setCountMatch ? parseInt(setCountMatch[1], 10) : 1;
 
-     setMenuData(newMenuData);
-   }
- }, [open, program]);
+        // sets 配列を生成
+        const sets = Array.from({ length: setCount }, (_, i) => ({
+          setId: i + 1,
+          setContent: set_info,
+          weight: "",
+          reps: "",
+          completed: false,
+        }));
 
+        const menuData = {
+          menuId: menuIdCounter++,
+          menuName: menu,
+          body_part: "", // 後で設定
+          sets: sets,
+          daily_program_id: daily_program_id,
+        };
+
+        // デバッグ用ログ
+        console.log("menuData in map:", menuData);
+        return menuData;
+      });
+      console.log("menuData set in ProgramTrainingMenuDialog:", newMenuData); // デバッグ用ログ
+      setMenuData(newMenuData);
+    }
+  }, [open, program]);
+
+  const handleSave = async () => {
+    console.log("menuData before sending to API:", menuData); // デバッグ用ログ
+    const body = JSON.stringify({
+      menus: menuData,
+      date: date.toLocaleDateString(),
+    });
+    console.log("Data sent to API:", body); // デバッグ用ログ
+
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+    const endpoint = `${apiUrl}/api/v2/training_records`;
+
+    try {
+      const response = await fetch(endpoint, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${session?.accessToken}`,
+        },
+        body: body,
+      });
+      if (response.ok) {
+        toast({
+          title: "保存成功",
+          description: "メニューが正常に保存されました。",
+          duration: 3000,
+          style: { backgroundColor: "green", color: "white" },
+        });
+        onClose(); // ダイアログを閉じる
+      } else {
+        throw new Error("Network response was not ok");
+      }
+    } catch (error) {
+      console.error("メニューの保存に失敗しました: ", error);
+    }
+  };
   return (
     <Dialog open={open} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-md max-h-[80vh] flex flex-col">
@@ -83,7 +136,9 @@ const ProgramTrainingMenuDialog: React.FC<ProgramTrainingMenuModalProps> = ({
           <DialogClose asChild>
             <Button variant="secondary">キャンセル</Button>
           </DialogClose>
-          <Button variant="default">保存</Button>
+          <Button variant="default" onClick={handleSave}>
+            保存
+          </Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
