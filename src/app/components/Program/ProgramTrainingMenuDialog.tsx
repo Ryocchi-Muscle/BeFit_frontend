@@ -15,12 +15,7 @@ import TrainingMenuList from "../CarendarRecord/v2/TrainingMenuList";
 import { MenuData } from "types/types";
 import { useSession } from "next-auth/react";
 import { useToast } from "@/components/ui/use-toast";
-
-interface ProgramDetail {
-  menu: string;
-  set_info: string;
-  daily_program_id: number;
-}
+import { ProgramDetail } from "types/types";
 
 interface ProgramTrainingMenuModalProps {
   open: boolean;

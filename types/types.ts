@@ -20,6 +20,7 @@ export interface BodyPart {
 export interface ProgramDetail {
   menu: string;
   set_info: string;
+  daily_program_id: number;
 }
 
 export interface DailyProgram {
