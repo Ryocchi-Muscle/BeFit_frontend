@@ -15,6 +15,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useRouter } from "next/navigation";
+import { ProgramDetail } from "types/types";
 
 interface Program {
   title: string;
@@ -22,12 +23,6 @@ interface Program {
   week: number;
   details: { menu: string; set_info: string; other: string; day: number }[];
   day: number;
-}
-
-interface ProgramDetail {
-  menu: string;
-  set_info: string;
-  other: string;
 }
 
 const PersonalizePage: React.FC = () => {
