@@ -57,12 +57,13 @@ const ProgramTrainingMenuDialog: React.FC<ProgramTrainingMenuModalProps> = ({
         // sets 配列を生成
         const sets = Array.from({ length: setCount }, (_, i) => ({
           setId: i + 1,
+          setNumber: i + 1,
           setContent: set_info,
           weight: "",
           reps: "",
           completed: false,
         }));
-
+        console.log("sets with setNumber:", sets); // デバッグ用ログ
         const menuData = {
           menuId: menuIdCounter++,
           menuName: menu,
@@ -71,8 +72,9 @@ const ProgramTrainingMenuDialog: React.FC<ProgramTrainingMenuModalProps> = ({
           daily_program_id: daily_program_id,
         };
 
-        // デバッグ用ログ
         console.log("menuData in map:", menuData);
+        // デバッグ用ログ
+
         return menuData;
       });
       console.log("menuData set in ProgramTrainingMenuDialog:", newMenuData); // デバッグ用ログ
