@@ -96,7 +96,6 @@ const ProgramTrainingMenuDialog: React.FC<ProgramTrainingMenuModalProps> = ({
             return {
               menuId: menuIdCounter++, // 再割り当て
               menuName: menu.exercise_name,
-              body_part: menu.body_part,
               sets: sets,
               daily_program_id: menu.daily_program_id,
             };
