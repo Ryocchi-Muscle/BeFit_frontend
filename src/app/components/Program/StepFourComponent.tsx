@@ -32,6 +32,7 @@ const StepFourComponent: React.FC<StepFourComponentProps> = ({
       <SwiperSlide key={index}>
         <ProgramCard
           dailyProgram={dailyProgram}
+          week={week}
           onStart={() => {
             console.log(
               `onStart called with week: ${week}, day: ${dailyProgram.day}`

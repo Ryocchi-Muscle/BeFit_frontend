@@ -167,46 +167,6 @@ const PersonalizePage: React.FC = () => {
     }
   }, [program, formData.frequency, formData.duration]);
 
-  // const updateMenuData = (
-  //   programDetails: { menu: string; set_info: string; other: string }[]
-  // ) => {
-  //   const newMenuData = programDetails.map((detail, index) => {
-  //     //set_info からセット数を抽出
-  //     const setCountMatch = detail.set_info.match(/(\d+)セット/);
-  //     console.log("setCountMatch", setCountMatch);
-  //     const setCount = setCountMatch ? parseInt(setCountMatch[1], 10) : 1;
-  //     console.log("setCount", setCount);
-
-  //     const sets = Array.from({ length: setCount }, (_, i) => ({
-  //       setId: i + 1,
-  //       setContent: detail.set_info,
-  //       weight: "",
-  //       reps: "",
-  //       completed: false,
-  //     }));
-
-  //     return {
-  //       menuId: index + 1,
-  //       menuName: detail.menu,
-  //       body_part: "", // 後で設定
-  //       sets: sets,
-  //     };
-  //   });
-  //   setMenuData(newMenuData);
-  // };
-
-  // //特定の週と日のプログラムデータを設定し、記録用のダイアログを開く。
-  // const handleStartProgram = (week: number, day: number) => {
-  //   // 特定のプログラムデータを設定
-  //   const frequency = parseInt(formData.frequency, 10);
-  //   const startIndex = (week - 1) * frequency + (day - 1);
-  //   const programDetails = extendedProgram[startIndex].details;
-  //   updateMenuData(programDetails);
-  //   setSelectedProgramDetails(programDetails);
-  //   setIsStartProgramDialogOpen(true);
-  //   console.log("programDetails", programDetails);
-  // };
-
   return (
     <div className="flex flex-col items-center p-0 min-h-screen overflow-y-auto">
       {loading && <LoadingScreen />}
@@ -295,7 +255,6 @@ const PersonalizePage: React.FC = () => {
               )}
             </div>
           </div>
-
           <StartProgramDialog
             open={isStartProgramDialogOpen}
             onClose={handleCloseStartProgramDialog}

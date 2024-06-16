@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -46,27 +46,53 @@ const ProgramTrainingMenuDialog: React.FC<ProgramTrainingMenuModalProps> = ({
   );
 
   // メニューデータを取得する関数
-  const fetchMenuData = async (date: string) => {
-    const endpoint = `${apiUrl}/api/v2/training_records/${date}`;
-    try {
-      const response = await fetch(endpoint, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${session?.accessToken}`,
-        },
-      });
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
+  // const fetchMenuData = async (date: string) => {
+  //   const endpoint = `${apiUrl}/api/v2/training_records/${date}`;
+  //   try {
+  //     const response = await fetch(endpoint, {
+  //       method: "GET",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //         Authorization: `Bearer ${session?.accessToken}`,
+  //       },
+  //     });
+  //     if (!response.ok) {
+  //       throw new Error("Network response was not ok");
+  //     }
+  //     const data = await response.json();
+  //     console.log("Fetched menu data:", data); // 取得したデータを確認するためのログ
+  //     return data;
+  //   } catch (error) {
+  //     console.error("メニューデータの取得に失敗しました: ", error);
+  //     return null;
+  //   }
+  // };
+
+  // メニューデータを取得する関数をuseCallbackでラップ
+  const fetchMenuData = useCallback(
+    async (date: string) => {
+      const endpoint = `${apiUrl}/api/v2/training_records/${date}`;
+      try {
+        const response = await fetch(endpoint, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${session?.accessToken}`,
+          },
+        });
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        const data = await response.json();
+        console.log("Fetched menu data:", data); // 取得したデータを確認するためのログ
+        return data;
+      } catch (error) {
+        console.error("メニューデータの取得に失敗しました: ", error);
+        return null;
       }
-      const data = await response.json();
-      console.log("Fetched menu data:", data); // 取得したデータを確認するためのログ
-      return data;
-    } catch (error) {
-      console.error("メニューデータの取得に失敗しました: ", error);
-      return null;
-    }
-  };
+    },
+    [apiUrl, session?.accessToken]
+  );
 
   useEffect(() => {
     const loadMenuData = async () => {
@@ -121,7 +147,6 @@ const ProgramTrainingMenuDialog: React.FC<ProgramTrainingMenuModalProps> = ({
             const menuData = {
               menuId: menuIdCounter++,
               menuName: menu,
-              body_part: "", // 後で設定
               sets: sets,
               daily_program_id: daily_program_id,
             };
@@ -134,7 +159,7 @@ const ProgramTrainingMenuDialog: React.FC<ProgramTrainingMenuModalProps> = ({
     };
 
     loadMenuData();
-  }, [open, program, formattedDate, savedMenuData]);
+  }, [open, program, formattedDate, savedMenuData, fetchMenuData]);
 
   const handleSave = async () => {
     console.log("menuData before sending to API:", menuData); // デバッグ用ログ
