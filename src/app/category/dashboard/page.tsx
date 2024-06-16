@@ -100,9 +100,9 @@ const RecordPage: React.FC = () => {
   if (!programData) return <div>読み込み中...</div>;
 
   return (
-    <div className="flex flex-col min-h-screen overflow-hidden">
+    <div className="flex flex-col min-h-screen overflow-hidden ">
       <div className="flex-grow relative">
-        <Tabs defaultValue={defaultTab} className="w-full">
+        <Tabs defaultValue={defaultTab} className="w-full ">
           <div className="pt-8 flex justify-center">
             <TabsList className=" fixed justify-center inline-flex p-1 bg-gray-200 rounded-md z-10">
               <TabsTrigger

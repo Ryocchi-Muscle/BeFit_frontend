@@ -24,3 +24,4 @@ export const fetcher = async (url: string, token: string) => {
     }
   }
 };
+

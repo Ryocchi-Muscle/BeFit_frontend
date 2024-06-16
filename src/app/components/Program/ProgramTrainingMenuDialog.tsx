@@ -16,6 +16,8 @@ import { MenuData } from "types/types";
 import { useSession } from "next-auth/react";
 import { useToast } from "@/components/ui/use-toast";
 import { ProgramDetail } from "types/types";
+import useSWR from "swr";
+import { fetcher } from "@/utils/fetcher";
 
 interface ProgramTrainingMenuModalProps {
   open: boolean;
@@ -35,52 +37,104 @@ const ProgramTrainingMenuDialog: React.FC<ProgramTrainingMenuModalProps> = ({
   const [menuData, setMenuData] = useState<MenuData[]>([]);
   const { data: session } = useSession();
   const { toast } = useToast();
+  const formattedDate = date.toISOString().split("T")[0];
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+  const endpoint = `${apiUrl}/api/v2/training_records/${formattedDate}`;
+  const { data: savedMenuData } = useSWR(
+    session?.accessToken ? endpoint : null,
+    (url) => fetcher(url, session?.accessToken as string)
+  );
 
-  // `open`の変更を監視
-  useEffect(() => {
-    console.log("Dialog open state changed:", open);
-  }, [open]);
-
-  useEffect(() => {
-    if (open) {
-      let menuIdCounter = 1;
-      const newMenuData: MenuData[] = program.map((detail) => {
-        const { menu, set_info, daily_program_id } = detail;
-
-        // デバッグ用ログ
-        console.log("detail in map:", detail);
-
-        // set_info からセット数を抽出
-        const setCountMatch = set_info.match(/(\d+)セット/);
-        const setCount = setCountMatch ? parseInt(setCountMatch[1], 10) : 1;
-
-        // sets 配列を生成
-        const sets = Array.from({ length: setCount }, (_, i) => ({
-          setId: i + 1,
-          setNumber: i + 1,
-          setContent: set_info,
-          weight: "",
-          reps: "",
-          completed: false,
-        }));
-        console.log("sets with setNumber:", sets); // デバッグ用ログ
-        const menuData = {
-          menuId: menuIdCounter++,
-          menuName: menu,
-          body_part: "", // 後で設定
-          sets: sets,
-          daily_program_id: daily_program_id,
-        };
-
-        console.log("menuData in map:", menuData);
-        // デバッグ用ログ
-
-        return menuData;
+  // メニューデータを取得する関数
+  const fetchMenuData = async (date: string) => {
+    const endpoint = `${apiUrl}/api/v2/training_records/${date}`;
+    try {
+      const response = await fetch(endpoint, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${session?.accessToken}`,
+        },
       });
-      console.log("menuData set in ProgramTrainingMenuDialog:", newMenuData); // デバッグ用ログ
-      setMenuData(newMenuData);
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      const data = await response.json();
+      console.log("Fetched menu data:", data); // 取得したデータを確認するためのログ
+      return data;
+    } catch (error) {
+      console.error("メニューデータの取得に失敗しました: ", error);
+      return null;
     }
-  }, [open, program]);
+  };
+
+  useEffect(() => {
+    const loadMenuData = async () => {
+      if (open) {
+        const savedMenuData = await fetchMenuData(formattedDate);
+        if (
+          savedMenuData &&
+          Array.isArray(savedMenuData) &&
+          savedMenuData.length > 0
+        ) {
+          console.log("Saved menu data:", savedMenuData); // 取得したメニューのデータを確認するためのログ
+
+          let menuIdCounter = 1;
+          const menuData = savedMenuData.map((menu: any) => {
+            const sets = menu.training_sets.map((set: any, index: number) => ({
+              setId: index + 1, // 再割り当て
+              setNumber: set.set_number,
+              setContent: `${set.reps}回 ${set.weight}kg`,
+              weight: set.weight,
+              reps: set.reps,
+              completed: set.completed,
+            }));
+
+            return {
+              menuId: menuIdCounter++, // 再割り当て
+              menuName: menu.exercise_name,
+              body_part: menu.body_part,
+              sets: sets,
+              daily_program_id: menu.daily_program_id,
+            };
+          });
+          setMenuData(menuData);
+        } else {
+          let menuIdCounter = 1;
+          const newMenuData: MenuData[] = program.map((detail) => {
+            const { menu, set_info, daily_program_id } = detail;
+
+            // set_info からセット数を抽出
+            const setCountMatch = set_info.match(/(\d+)セット/);
+            const setCount = setCountMatch ? parseInt(setCountMatch[1], 10) : 1;
+
+            // sets 配列を生成
+            const sets = Array.from({ length: setCount }, (_, i) => ({
+              setId: i + 1,
+              setNumber: i + 1,
+              setContent: set_info,
+              weight: "",
+              reps: "",
+              completed: false,
+            }));
+
+            const menuData = {
+              menuId: menuIdCounter++,
+              menuName: menu,
+              body_part: "", // 後で設定
+              sets: sets,
+              daily_program_id: daily_program_id,
+            };
+
+            return menuData;
+          });
+          setMenuData(newMenuData);
+        }
+      }
+    };
+
+    loadMenuData();
+  }, [open, program, formattedDate, savedMenuData]);
 
   const handleSave = async () => {
     console.log("menuData before sending to API:", menuData); // デバッグ用ログ
@@ -109,6 +163,14 @@ const ProgramTrainingMenuDialog: React.FC<ProgramTrainingMenuModalProps> = ({
           duration: 3000,
           style: { backgroundColor: "green", color: "white" },
         });
+        const savedMenuData = await fetchMenuData(formattedDate); // 保存後に最新データを取得
+        if (
+          savedMenuData &&
+          Array.isArray(savedMenuData.menus) &&
+          savedMenuData.menus.length > 0
+        ) {
+          setMenuData(savedMenuData.menus);
+        }
         onClose(); // ダイアログを閉じる
       } else {
         throw new Error("Network response was not ok");

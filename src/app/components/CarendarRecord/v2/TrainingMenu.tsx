@@ -1,28 +1,25 @@
 import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
-import MyComboBox from "./Combobox";
 import TrainigSet from "./TrainigSet";
 import { TrainingSet } from "../../../../../types/types";
-import { bodyParts } from "@/data/bodyParts";
 import { validateTrainingMenuTitle } from "@/utils/validation";
 
 interface TrainingMenuProps {
   menuId: number;
   menuName: string;
-  bodyPart: string | null;
+
   sets: TrainingSet[];
   updateSetInMenu: (menuId: number, newSets: TrainingSet[]) => void;
   updateMenuName: (menuId: number, newName: string) => void;
-  updateBodyPart: (menuId: number, bodyPart: string) => void;
+
   removeMenu: (menuId: number) => void;
 }
 
 export default function TrainingMenuComponet({
   menuId,
   menuName = "",
-  bodyPart,
   sets = [],
   updateMenuName,
-  updateBodyPart,
+
   updateSetInMenu,
   removeMenu,
 }: TrainingMenuProps) {
@@ -50,9 +47,6 @@ export default function TrainingMenuComponet({
     setMenuNameError(error);
   };
 
-  const handleBodyPartChange = (newBodyPart: string) => {
-    updateBodyPart(menuId, newBodyPart);
-  };
   const handleAddSet = () => {
     const newSetId = sets.length > 0 ? sets[sets.length - 1].setId + 1 : 1;
     const newSets = [
@@ -97,11 +91,6 @@ export default function TrainingMenuComponet({
             {menuId}
           </span>
           <div className="flex flex-col w-full">
-            <MyComboBox
-              bodyParts={bodyParts}
-              selectedBodyPart={bodyPart}
-              onBodyPartSelect={handleBodyPartChange}
-            />
             <input
               ref={inputRef}
               className="ml-2 p-1 border flex-grow"
