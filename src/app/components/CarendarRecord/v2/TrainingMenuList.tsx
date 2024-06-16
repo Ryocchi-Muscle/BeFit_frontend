@@ -13,7 +13,7 @@ export default function TrainingMenuList({
     const newMenuId = menus.length > 0 ? menus[menus.length - 1].menuId + 1 : 1;
     setMenus([
       ...menus,
-      { menuId: newMenuId, menuName: "", body_part: null, sets: [] },
+      { menuId: newMenuId, menuName: "", sets: [] },
     ]);
     console.log("メニュー", menus);
   };
@@ -71,10 +71,8 @@ export default function TrainingMenuList({
             key={menu.menuId}
             menuId={menu.menuId}
             menuName={menu.menuName}
-            bodyPart={menu.body_part}
             sets={menu.sets}
             updateMenuName={updateMenuName}
-            updateBodyPart={updateBodyPart}
             updateSetInMenu={updateSetsInMenu}
             removeMenu={() => removeMenu(menu.menuId)}
           />
