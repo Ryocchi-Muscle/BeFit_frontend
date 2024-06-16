@@ -2,7 +2,6 @@
 
 import React, { useState, useEffect } from "react";
 import LoadingScreen from "./LoadingScreen";
-import ProgramCard from "./ProgramCard";
 import { useSession } from "next-auth/react";
 import ProgramTrainingMenuDialog from "./ProgramTrainingMenuDialog";
 import StartProgramDialog from "./StartProgramDialog";
