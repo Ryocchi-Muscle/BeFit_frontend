@@ -22,7 +22,7 @@ const ProgramCard: React.FC<ProgramCardProps> = ({ week, dailyProgram, onStart }
       >
         {dailyProgram && dailyProgram.details && (
           <>
-            <h3>{`Week ${week}, Day ${dailyProgram.day}`}</h3>
+            <h3 className="font-poppins font-bold text-xl">{`Week ${week}  Day ${dailyProgram.day}`}</h3>
 
             <Table>
               <TableBody>

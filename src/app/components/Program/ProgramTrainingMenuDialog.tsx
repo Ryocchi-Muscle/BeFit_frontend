@@ -45,29 +45,6 @@ const ProgramTrainingMenuDialog: React.FC<ProgramTrainingMenuModalProps> = ({
     (url) => fetcher(url, session?.accessToken as string)
   );
 
-  // メニューデータを取得する関数
-  // const fetchMenuData = async (date: string) => {
-  //   const endpoint = `${apiUrl}/api/v2/training_records/${date}`;
-  //   try {
-  //     const response = await fetch(endpoint, {
-  //       method: "GET",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //         Authorization: `Bearer ${session?.accessToken}`,
-  //       },
-  //     });
-  //     if (!response.ok) {
-  //       throw new Error("Network response was not ok");
-  //     }
-  //     const data = await response.json();
-  //     console.log("Fetched menu data:", data); // 取得したデータを確認するためのログ
-  //     return data;
-  //   } catch (error) {
-  //     console.error("メニューデータの取得に失敗しました: ", error);
-  //     return null;
-  //   }
-  // };
-
   // メニューデータを取得する関数をuseCallbackでラップ
   const fetchMenuData = useCallback(
     async (date: string) => {
