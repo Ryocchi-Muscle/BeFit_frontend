@@ -3,11 +3,12 @@ import { Table, TableBody, TableCell, TableRow } from "@/components/ui/table";
 import { DailyProgram } from "types/types";
 
 interface ProgramCardProps {
+  week: number;
   dailyProgram: DailyProgram;
   onStart: () => void;
 }
 
-const ProgramCard: React.FC<ProgramCardProps> = ({ dailyProgram, onStart }) => {
+const ProgramCard: React.FC<ProgramCardProps> = ({ week, dailyProgram, onStart }) => {
   return (
     <div className="program-card">
       <div
@@ -20,26 +21,30 @@ const ProgramCard: React.FC<ProgramCardProps> = ({ dailyProgram, onStart }) => {
         }}
       >
         {dailyProgram && dailyProgram.details && (
-          <Table>
-            <TableBody>
-              {dailyProgram.details.map((detail, index) => (
-                <React.Fragment key={index}>
-                  <TableRow>
-                    <TableCell colSpan={2} className="font-bold text-black">
-                      {detail.menu}
-                    </TableCell>
-                  </TableRow>
-                  {detail.set_info && (
+          <>
+            <h3>{`Week ${week}, Day ${dailyProgram.day}`}</h3>
+
+            <Table>
+              <TableBody>
+                {dailyProgram.details.map((detail, index) => (
+                  <React.Fragment key={index}>
                     <TableRow>
-                      <TableCell colSpan={2} className="text-gray-500">
-                        {detail.set_info}
+                      <TableCell colSpan={2} className="font-bold text-black">
+                        {detail.menu}
                       </TableCell>
                     </TableRow>
-                  )}
-                </React.Fragment>
-              ))}
-            </TableBody>
-          </Table>
+                    {detail.set_info && (
+                      <TableRow>
+                        <TableCell colSpan={2} className="text-gray-500">
+                          {detail.set_info}
+                        </TableCell>
+                      </TableRow>
+                    )}
+                  </React.Fragment>
+                ))}
+              </TableBody>
+            </Table>
+          </>
         )}
         <button
           onClick={onStart}
