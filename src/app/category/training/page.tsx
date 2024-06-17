@@ -19,7 +19,7 @@ export default function TrainingTutorialPage() {
               href="training/training_position"
               className="text-blue-500 hover:underline block mt-2"
             >
-              筋トレの部位別解説
+              ぽいち
             </Link>
           </Button>
         </div>
