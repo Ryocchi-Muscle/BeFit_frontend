@@ -12,7 +12,7 @@ const nextConfig = {
       pathname: "/images/**",
     },
   ],
-  productionBrowserSourceMaps: true, // ここに追加
+  productionBrowserSourceMaps: true, 
 };
 
 export default nextConfig;
