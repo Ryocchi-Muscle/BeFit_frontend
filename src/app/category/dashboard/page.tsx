@@ -128,8 +128,7 @@ const RecordPage: React.FC = () => {
               value="program"
               className="flex justify-center p-0 min-h-screen relative"
             >
-              <NoProgramComponent />
-              {/* <div className="flex flex-col items-center w-full max-w-3xl relative pt-5">
+              <div className="flex flex-col items-center w-full max-w-3xl relative pt-5">
                 {programData && programData.program ? (
                   <>
                     <StepFourComponent
@@ -150,7 +149,7 @@ const RecordPage: React.FC = () => {
                 ) : (
                   <NoProgramComponent />
                 )}
-              </div> */}
+              </div>
               {isDeleteDialogOpen && (
                 <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
                   <div className="bg-white p-6 rounded-lg shadow-lg  w-[80%] max-w-m">
