@@ -12,8 +12,8 @@ import { Toaster } from "@/components/ui/toaster";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "筋トレアプリ",
-  description: "fitness app",
+  title: "Be Fit",
+  description: "初心者のためのトレーニングアプリ",
 };
 
 export default async function RootLayout({
