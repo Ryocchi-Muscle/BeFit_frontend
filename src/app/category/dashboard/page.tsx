@@ -13,6 +13,7 @@ import axios from "axios";
 import { useSearchParams } from "next/navigation";
 import StartProgramHandler from "@/app/components/Program/StartProgramHandler";
 import usePreventScroll from "@/hooks/usePreventScroll";
+import Skeleton from "@/components/skeleton";
 
 const RecordPage: React.FC = () => {
   const { data: session } = useSession();
@@ -93,11 +94,18 @@ const RecordPage: React.FC = () => {
 
   if (error) {
     if (error instanceof FetchError) {
-      return <div>エラーが発生しました: {error.info.message}</div>;
+      return (
+        <div className="pt-8">エラーが発生しました: {error.info.message}</div>
+      );
     }
-    return <div>エラーが発生しました</div>;
+    return <div className="pt-8">エラーが発生しました</div>;
   }
-  if (!programData) return <div>読み込み中...</div>;
+  if (!programData)
+    return (
+      <div className="pt-8">
+        <Skeleton />
+      </div>
+    );
 
   return (
     <div className="flex flex-col min-h-screen overflow-hidden ">
