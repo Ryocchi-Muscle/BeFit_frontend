@@ -171,8 +171,8 @@ const PersonalizePage: React.FC = () => {
       {loading && <LoadingScreen />}
       {!loading && (
         <>
-          <div className="flex flex-col items-center justify-start min-h-[calc(100vh-70px)] pt-18">
-            <div className="bg-white p-8 rounded-lg shadow-lg text-center w-4/5 max-w-lg mt-0 space-y-6">
+          <div className="pt-16 flex flex-col items-center justify-start min-h-[calc(100vh-70px)] pt-18">
+            <div className=" bg-white p-8 rounded-lg shadow-lg text-center w-4/5 max-w-lg mt-0 space-y-6">
               <div>
                 <h2 className="text-blue-500 text-xl mb-2">性別</h2>
                 <Select
