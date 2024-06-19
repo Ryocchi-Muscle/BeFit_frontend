@@ -8,7 +8,11 @@ interface ProgramCardProps {
   onStart: () => void;
 }
 
-const ProgramCard: React.FC<ProgramCardProps> = ({ week, dailyProgram, onStart }) => {
+const ProgramCard: React.FC<ProgramCardProps> = ({
+  week,
+  dailyProgram,
+  onStart,
+}) => {
   return (
     <div className="program-card">
       <div
