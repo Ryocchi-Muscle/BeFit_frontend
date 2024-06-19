@@ -89,11 +89,13 @@ const StartProgramHandler: React.FC<StartProgramHandlerProps> = ({
         console.error("Selected program not found");
         return;
       }
-      const programDetails = selectedProgram.details.map((detail: any, index:number) => ({
-        ...detail,
-        daily_program_id:
-          selectedProgram.training_menus[index].daily_program_id,
-      }));
+      const programDetails = selectedProgram.details.map(
+        (detail: any, index: number) => ({
+          ...detail,
+          daily_program_id:
+            selectedProgram.training_menus[index].daily_program_id,
+        })
+      );
       console.log("programDetails:", programDetails);
       updateMenuData(programDetails);
       setSelectedProgramDetails(programDetails);
@@ -132,14 +134,17 @@ const StartProgramHandler: React.FC<StartProgramHandlerProps> = ({
         onClose={handleCloseStartProgramDialog}
         onConfirm={handleConfirmStartProgram}
       />
-      <ProgramTrainingMenuDialog
-        open={isTrainingMenuDialogOpen}
-        onClose={handleCloseTrainingMenuDialog}
-        date={selectedDate}
-        gender={formData.gender}
-        frequency={formData.frequency}
-        program={selectedProgramDetails}
-      />
+      {selectedProgramDetails.length > 0 && (
+        <ProgramTrainingMenuDialog
+          open={isTrainingMenuDialogOpen}
+          onClose={handleCloseTrainingMenuDialog}
+          date={selectedDate}
+          gender={formData.gender}
+          frequency={formData.frequency}
+          program={selectedProgramDetails}
+          dailyProgramId={selectedProgramDetails[0].daily_program_id}
+        />
+      )}
     </>
   );
 };
