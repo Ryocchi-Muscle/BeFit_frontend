@@ -43,6 +43,7 @@ const PersonalizePage: React.FC = () => {
   const [selectedProgramDetails, setSelectedProgramDetails] = useState<
     ProgramDetail[]
   >([]);
+  const [dailyProgramId, setDailyProgramId] = useState<number>(0);
   const router = useRouter();
 
   const handleSelect = (key: string, value: string | number) => {
@@ -86,8 +87,13 @@ const PersonalizePage: React.FC = () => {
       console.log("data", data);
       console.log("data.program", data.program);
       if (data && data.program && data.program.daily_programs) {
-        setProgram(data.program.daily_programs); // 保存されたプログラムを設定
+        setProgram(data.program.daily_programs);
         setHasProgram(true);
+        if (data.program.daily_programs[0]?.id) {
+          setDailyProgramId(data.program.daily_programs[0].id);
+        } else {
+          console.error("daily_programs の ID が見つかりません");
+        }
         console.log("data.program.daily_programs", data.program.daily_programs);
       } else {
         setProgram([]); // データが存在しない場合は空の配列を設定
@@ -266,6 +272,7 @@ const PersonalizePage: React.FC = () => {
             gender={formData.gender}
             frequency={formData.frequency}
             program={selectedProgramDetails}
+            dailyProgramId={dailyProgramId}
           />
         </>
       )}
