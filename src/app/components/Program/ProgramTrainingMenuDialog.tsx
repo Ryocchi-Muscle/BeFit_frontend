@@ -18,6 +18,7 @@ import { useToast } from "@/components/ui/use-toast";
 import { ProgramDetail } from "types/types";
 import useSWR from "swr";
 import { fetcher } from "@/utils/fetcher";
+import axios from "axios";
 
 interface ProgramTrainingMenuModalProps {
   open: boolean;
@@ -26,6 +27,7 @@ interface ProgramTrainingMenuModalProps {
   gender: string;
   frequency: string;
   program: ProgramDetail[];
+  dailyProgramId: number;
 }
 
 const ProgramTrainingMenuDialog: React.FC<ProgramTrainingMenuModalProps> = ({
@@ -33,6 +35,7 @@ const ProgramTrainingMenuDialog: React.FC<ProgramTrainingMenuModalProps> = ({
   onClose,
   date,
   program,
+  dailyProgramId,
 }) => {
   const [menuData, setMenuData] = useState<MenuData[]>([]);
   const { data: session } = useSession();
@@ -45,7 +48,6 @@ const ProgramTrainingMenuDialog: React.FC<ProgramTrainingMenuModalProps> = ({
     (url) => fetcher(url, session?.accessToken as string)
   );
 
-  // メニューデータを取得する関数をuseCallbackでラップ
   const fetchMenuData = useCallback(
     async (date: string) => {
       const endpoint = `${apiUrl}/api/v2/training_records/${date}`;
@@ -137,7 +139,51 @@ const ProgramTrainingMenuDialog: React.FC<ProgramTrainingMenuModalProps> = ({
     loadMenuData();
   }, [open, program, formattedDate, savedMenuData, fetchMenuData]);
 
-  const handleSave = async () => {
+  // const handleSave = async () => {
+  //   console.log("menuData before sending to API:", menuData); // デバッグ用ログ
+  //   const body = JSON.stringify({
+  //     menus: menuData,
+  //     date: date.toLocaleDateString(),
+  //   });
+  //   console.log("Data sent to API:", body); // デバッグ用ログ
+
+  //   const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+  //   const endpoint = `${apiUrl}/api/v2/training_records`;
+
+  //   try {
+  //     const response = await fetch(endpoint, {
+  //       method: "POST",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //         Authorization: `Bearer ${session?.accessToken}`,
+  //       },
+  //       body: body,
+  //     });
+  //     if (response.ok) {
+  //       toast({
+  //         title: "保存成功",
+  //         description: "メニューが正常に保存されました。",
+  //         duration: 3000,
+  //         style: { backgroundColor: "green", color: "white" },
+  //       });
+  //       const savedMenuData = await fetchMenuData(formattedDate); // 保存後に最新データを取得
+  //       if (
+  //         savedMenuData &&
+  //         Array.isArray(savedMenuData.menus) &&
+  //         savedMenuData.menus.length > 0
+  //       ) {
+  //         setMenuData(savedMenuData.menus);
+  //       }
+  //       onClose(); // ダイアログを閉じる
+  //     } else {
+  //       throw new Error("Network response was not ok");
+  //     }
+  //   } catch (error) {
+  //     console.error("メニューの保存に失敗しました: ", error);
+  //   }
+  // };
+
+  const handleComplete = async () => {
     console.log("menuData before sending to API:", menuData); // デバッグ用ログ
     const body = JSON.stringify({
       menus: menuData,
@@ -164,6 +210,16 @@ const ProgramTrainingMenuDialog: React.FC<ProgramTrainingMenuModalProps> = ({
           duration: 3000,
           style: { backgroundColor: "green", color: "white" },
         });
+        // 完了処理として date フィールドを更新するエンドポイントを呼び出す
+        await axios.patch(
+          `${apiUrl}/api/v2/personalized_menus/${dailyProgramId}/save_daily_program`,
+          {},
+          {
+            headers: {
+              Authorization: `Bearer ${session?.accessToken}`,
+            },
+          }
+        );
         const savedMenuData = await fetchMenuData(formattedDate); // 保存後に最新データを取得
         if (
           savedMenuData &&
@@ -180,6 +236,7 @@ const ProgramTrainingMenuDialog: React.FC<ProgramTrainingMenuModalProps> = ({
       console.error("メニューの保存に失敗しました: ", error);
     }
   };
+
   return (
     <Dialog open={open} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-md max-h-[80vh] flex flex-col">
@@ -196,8 +253,8 @@ const ProgramTrainingMenuDialog: React.FC<ProgramTrainingMenuModalProps> = ({
           <DialogClose asChild>
             <Button variant="secondary">キャンセル</Button>
           </DialogClose>
-          <Button variant="default" onClick={handleSave}>
-            保存
+          <Button variant="default" onClick={handleComplete}>
+            完了!!
           </Button>
         </DialogFooter>
       </DialogContent>
