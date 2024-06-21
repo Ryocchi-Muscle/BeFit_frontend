@@ -10,9 +10,9 @@ export default function Page() {
     <div className="flex flex-col h-screen">
       <AuthProvider>
         {/* <Header session={null} /> */}
-        <main className="flex-grow overflow-y-auto p-0 m-0">
+        <main className="flex-grow overflow-y-auto">
           {/* ヒーローセクション */}
-          <section className="text-white bg-blue-500 p-12 text-center">
+          <section className="text-white bg-blue-500 p-12 pt-24  text-center">
             <h1 className="text-4xl font-bold mb-4">Welcome to FitAPP</h1>
             <p className="mb-8">Your journey starts here.</p>
             <a
@@ -47,7 +47,7 @@ export default function Page() {
               </div>
             </div>
           </section>
-          <footer className="flex justify-end items-center p-5 bg-gray-200 text-black w-full">
+          <footer className="flex justify-end items-center p-5 bg-gray-200 text-black">
             <span className="md:hidden text-sm"> ©2024 Be Fit</span>
           </footer>
         </main>
