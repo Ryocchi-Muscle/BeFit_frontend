@@ -19,7 +19,7 @@ const ProgramCard: React.FC<ProgramCardProps> = ({
     ? "bg-blue-500 text-white"
     : "bg-white text-black";
   return (
-    <div className={`program-card ${completedStyle}`}>
+    <div className={`program-card ${completedStyle} flex justify-center`}>
       <div
         className="border border-gray-300 rounded-lg p-6 mx-3 text-center shadow-lg bg-white "
         style={{

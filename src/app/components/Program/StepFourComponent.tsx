@@ -31,7 +31,7 @@ const StepFourComponent: React.FC<StepFourComponentProps> = ({
     console.log(`week: ${week}`);
     const weekPrograms = dailyPrograms.filter((dp) => dp.week === week);
     return weekPrograms.map((dailyProgram, index) => (
-      <SwiperSlide key={index}>
+      <SwiperSlide key={index} className="flex justify-center">
         <ProgramCard
           dailyProgram={dailyProgram}
           week={week}
@@ -52,7 +52,7 @@ const StepFourComponent: React.FC<StepFourComponentProps> = ({
     <div className="fixed flex flex-col items-center justify-center pt-0 overflow-y-auto pb-20 w-full">
       <Tabs defaultValue="week1" className="w-full">
         <div className="relative">
-          <div className="flex items-center">
+          <div className="items-center flex justify-center">
             <TabsList className="flex overflow-x-auto whitespace-nowrap space-x-4 px-4 pl-4">
               <SimpleBar className="w-full" autoHide={false}>
                 {Array.from({ length: duration }, (_, i) => (
@@ -78,6 +78,7 @@ const StepFourComponent: React.FC<StepFourComponentProps> = ({
         {Array.from({ length: duration }, (_, i) => (
           <TabsContent key={i} value={`week${i + 1}`}>
             <Swiper
+              className="mx-auto"
               effect="coverflow"
               grabCursor={true}
               centeredSlides={true}
