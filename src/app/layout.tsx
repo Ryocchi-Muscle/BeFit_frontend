@@ -29,7 +29,7 @@ export default async function RootLayout({
       <body className={`${inter.className} pt-10`}>
         <NextAuthProvider>
           <Header session={session} />
-          <main className="flex flex-col min-h-screen"> {children}</main>
+          <main className="flex flex-col min-h-screen overflow-y-auto"> {children}</main>
           <Toaster />
         </NextAuthProvider>
       </body>
