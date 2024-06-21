@@ -38,16 +38,24 @@ const LoginPage = () => {
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-gray-100">
-      <div className="w-full max-w-xs space-y-6 rounded bg-white p-8 shadow-md">
+      <div className="w-full max-w-xs space-y-6 rounded-3xl bg-white p-8 shadow-xl">
         <div className="text-center">
-          {/* <img
-            src="/path/to/logo.png"
-            alt="TechFinder Logo"
-            className="mx-auto mb-4"
-          /> */}
-          <h2 className="text-lg font-bold">Beginner Fit</h2>
+          <Image
+            src="/images/Pasted Graphic.png"
+            alt="Be Fit Logo"
+            width={60}
+            height={60}
+            className="mx-auto mb-0"
+          />
+          <Image
+            src="/images/LOGO2.png"
+            alt="Be Fit Logo"
+            width={100}
+            height={100}
+            className="mx-auto mb-0 pt-2 pb-2"
+          />
           <p className="text-sm text-gray-600">
-            BeginnerFitはトレーニング初心者のためのトレーニングサポートアプリです。
+            Be Fitはトレーニング初心者のためのトレーニングサポートアプリです。
           </p>
           <p className="text-sm text-gray-600">
             あなたにあったプログラムで一緒にトレーニングを頑張りましょう！
