@@ -89,12 +89,31 @@ const StartProgramHandler: React.FC<StartProgramHandlerProps> = ({
         console.error("Selected program not found");
         return;
       }
+
+      console.log(
+        "selectedProgram.training_menus",
+        selectedProgram.training_menus
+      );
+      if (
+        !selectedProgram.training_menus ||
+        selectedProgram.training_menus.length === 0
+      ) {
+        console.error("Training menus not found or empty");
+        return;
+      }
+
       const programDetails = selectedProgram.details.map(
-        (detail: any, index: number) => ({
-          ...detail,
-          daily_program_id:
-            selectedProgram.training_menus[index].daily_program_id,
-        })
+        (detail: any, index: number) => {
+          if (index >= selectedProgram.training_menus.length) {
+            console.error(`Index ${index} out of bounds for training_menus`);
+            return { ...detail, daily_program_id: null };
+          }
+          return {
+            ...detail,
+            daily_program_id:
+              selectedProgram.training_menus[index].daily_program_id,
+          };
+        }
       );
       console.log("programDetails:", programDetails);
       updateMenuData(programDetails);

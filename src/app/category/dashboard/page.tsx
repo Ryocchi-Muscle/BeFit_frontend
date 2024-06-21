@@ -18,6 +18,7 @@ import Skeleton from "@/components/skeleton";
 const RecordPage: React.FC = () => {
   const { data: session } = useSession();
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+  const [completedPrograms, setCompletedPrograms] = useState<number[]>([]);
   const searchParams = useSearchParams();
   const defaultTab = searchParams.get("tab") || "training";
   // スクロールを防止するカスタムフックを呼び出す
@@ -144,6 +145,7 @@ const RecordPage: React.FC = () => {
                       onDelete={handleDeleteButtonClick}
                       duration={programData.program.duration}
                       onStartProgram={handleStartProgram}
+                      completedPrograms={completedPrograms} // 完了状態を渡す
                     />
                     <StartProgramHandler
                       formData={{
