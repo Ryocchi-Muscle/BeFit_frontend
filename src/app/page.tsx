@@ -48,7 +48,7 @@ export default function Page() {
             </div>
           </section>
           <footer className="flex justify-end items-center p-5 bg-gray-200 text-black">
-            <span className="md:hidden text-sm"> ©2024 Be Fit</span>
+            <span className="md:hidden text-sm pb-10"> ©2024 Be Fit</span>
           </footer>
         </main>
         {/* お問い合わせセクション */}
