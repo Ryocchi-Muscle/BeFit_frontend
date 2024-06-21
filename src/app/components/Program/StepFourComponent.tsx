@@ -17,6 +17,7 @@ interface StepFourComponentProps {
   onDelete: () => void;
   duration: number;
   onStartProgram: (week: number, day: number) => void;
+  completedPrograms: number[];
 }
 
 const StepFourComponent: React.FC<StepFourComponentProps> = ({
@@ -24,6 +25,7 @@ const StepFourComponent: React.FC<StepFourComponentProps> = ({
   onDelete,
   duration,
   onStartProgram,
+  completedPrograms,
 }) => {
   const generateProgramCards = (week: number) => {
     console.log(`week: ${week}`);
@@ -40,6 +42,7 @@ const StepFourComponent: React.FC<StepFourComponentProps> = ({
             onStartProgram(week, dailyProgram.day);
             console.log("onStartProgram called");
           }}
+          isCompleted={completedPrograms.includes(dailyProgram.id)} // completedPrograms を使用
         />
       </SwiperSlide>
     ));

@@ -139,50 +139,6 @@ const ProgramTrainingMenuDialog: React.FC<ProgramTrainingMenuModalProps> = ({
     loadMenuData();
   }, [open, program, formattedDate, savedMenuData, fetchMenuData]);
 
-  // const handleSave = async () => {
-  //   console.log("menuData before sending to API:", menuData); // デバッグ用ログ
-  //   const body = JSON.stringify({
-  //     menus: menuData,
-  //     date: date.toLocaleDateString(),
-  //   });
-  //   console.log("Data sent to API:", body); // デバッグ用ログ
-
-  //   const apiUrl = process.env.NEXT_PUBLIC_API_URL;
-  //   const endpoint = `${apiUrl}/api/v2/training_records`;
-
-  //   try {
-  //     const response = await fetch(endpoint, {
-  //       method: "POST",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //         Authorization: `Bearer ${session?.accessToken}`,
-  //       },
-  //       body: body,
-  //     });
-  //     if (response.ok) {
-  //       toast({
-  //         title: "保存成功",
-  //         description: "メニューが正常に保存されました。",
-  //         duration: 3000,
-  //         style: { backgroundColor: "green", color: "white" },
-  //       });
-  //       const savedMenuData = await fetchMenuData(formattedDate); // 保存後に最新データを取得
-  //       if (
-  //         savedMenuData &&
-  //         Array.isArray(savedMenuData.menus) &&
-  //         savedMenuData.menus.length > 0
-  //       ) {
-  //         setMenuData(savedMenuData.menus);
-  //       }
-  //       onClose(); // ダイアログを閉じる
-  //     } else {
-  //       throw new Error("Network response was not ok");
-  //     }
-  //   } catch (error) {
-  //     console.error("メニューの保存に失敗しました: ", error);
-  //   }
-  // };
-
   const handleComplete = async () => {
     console.log("menuData before sending to API:", menuData); // デバッグ用ログ
     const body = JSON.stringify({
@@ -254,7 +210,7 @@ const ProgramTrainingMenuDialog: React.FC<ProgramTrainingMenuModalProps> = ({
             <Button variant="secondary">キャンセル</Button>
           </DialogClose>
           <Button variant="default" onClick={handleComplete}>
-            完了!!
+            完了
           </Button>
         </DialogFooter>
       </DialogContent>

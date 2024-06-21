@@ -23,6 +23,7 @@ export interface ProgramDetail {
 }
 
 export interface DailyProgram {
+  id: number;
   week: number;
   day: number;
   details: {
