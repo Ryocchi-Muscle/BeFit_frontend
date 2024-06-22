@@ -35,11 +35,6 @@ const PersonalizePage: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [program, setProgram] = useState<Program[]>([]);
   const [extendedProgram, setExtendedProgram] = useState<Program[]>([]);
-  const [isStartProgramDialogOpen, setIsStartProgramDialogOpen] =
-    useState(false);
-  const [isTrainingMenuDialogOpen, setIsTrainingMenuDialogOpen] =
-    useState(false);
-  const [selectedDate, setSelectedDate] = useState(new Date());
   const [selectedProgramDetails, setSelectedProgramDetails] = useState<
     ProgramDetail[]
   >([]);
@@ -106,71 +101,6 @@ const PersonalizePage: React.FC = () => {
       router.push("/category/dashboard?tab=program");
     }
   };
-
-  const handleConfirmStartProgram = () => {
-    setIsStartProgramDialogOpen(false);
-    setIsTrainingMenuDialogOpen(true);
-  };
-
-  const handleCloseStartProgramDialog = () => {
-    setIsStartProgramDialogOpen(false);
-  };
-
-  const handleCloseTrainingMenuDialog = () => {
-    setIsTrainingMenuDialogOpen(false);
-  };
-
-  useEffect(() => {
-    const checkProgramExists = async () => {
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL;
-      const endpoint = `${apiUrl}/api/v2/programs`;
-      try {
-        const response = await fetch(endpoint, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${session?.accessToken}`,
-          },
-        });
-        if (response.ok) {
-          const data = await response.json();
-          setHasProgram(data.programs && data.programs.length > 0);
-          console.log("あるよん", data.programs);
-        } else {
-          console.error("プログラムの存在確認に失敗しました");
-        }
-      } catch (error) {
-        console.error("エラーが発生しました: ", error);
-      }
-    };
-
-    checkProgramExists();
-  }, [session]);
-
-  useEffect(() => {
-    if (program.length > 0) {
-      const frequency = parseInt(formData.frequency, 10); // トレーニング頻度を数値として取得
-      const duration = parseInt(formData.duration, 10); // プログラム期間を数値として取得
-      const totalProgramsNeeded = frequency * duration; // 必要なプログラムの総数
-
-      // 必要なプログラムデータの数を満たすためにプログラムデータを補完
-      const extendedProgramArray = new Array(totalProgramsNeeded);
-      for (let i = 0; i < duration; i++) {
-        for (let j = 0; j < frequency; j++) {
-          const programIndex = i * frequency + j;
-          const programData = program[programIndex % program.length];
-          extendedProgramArray[programIndex] = {
-            ...programData,
-            week: i + 1,
-            day: j + 1,
-          };
-        }
-      }
-
-      console.log("extendedProgramArray", extendedProgramArray);
-      setExtendedProgram(extendedProgramArray); // ここで状態に設定
-    }
-  }, [program, formData.frequency, formData.duration]);
 
   return (
     <div className="flex flex-col items-center p-0 min-h-screen overflow-y-auto">
@@ -260,20 +190,6 @@ const PersonalizePage: React.FC = () => {
               )}
             </div>
           </div>
-          <StartProgramDialog
-            open={isStartProgramDialogOpen}
-            onClose={handleCloseStartProgramDialog}
-            onConfirm={handleConfirmStartProgram}
-          />
-          <ProgramTrainingMenuDialog
-            open={isTrainingMenuDialogOpen}
-            onClose={handleCloseTrainingMenuDialog}
-            date={selectedDate}
-            gender={formData.gender}
-            frequency={formData.frequency}
-            program={selectedProgramDetails}
-            dailyProgramId={dailyProgramId}
-          />
         </>
       )}
     </div>
