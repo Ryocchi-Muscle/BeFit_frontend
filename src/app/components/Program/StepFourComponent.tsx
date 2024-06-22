@@ -42,7 +42,7 @@ const StepFourComponent: React.FC<StepFourComponentProps> = ({
             onStartProgram(week, dailyProgram.day);
             console.log("onStartProgram called");
           }}
-          isCompleted={completedPrograms.includes(dailyProgram.id)} // completedPrograms を使用
+          isCompleted={completedPrograms.includes(dailyProgram.id)}
         />
       </SwiperSlide>
     ));

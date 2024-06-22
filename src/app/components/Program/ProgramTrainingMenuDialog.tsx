@@ -28,6 +28,7 @@ interface ProgramTrainingMenuModalProps {
   frequency: string;
   program: ProgramDetail[];
   dailyProgramId: number;
+  onComplete: (dailyProgramId: number) => void;
 }
 
 const ProgramTrainingMenuDialog: React.FC<ProgramTrainingMenuModalProps> = ({
@@ -36,6 +37,7 @@ const ProgramTrainingMenuDialog: React.FC<ProgramTrainingMenuModalProps> = ({
   date,
   program,
   dailyProgramId,
+  onComplete,
 }) => {
   const [menuData, setMenuData] = useState<MenuData[]>([]);
   const { data: session } = useSession();
@@ -162,7 +164,7 @@ const ProgramTrainingMenuDialog: React.FC<ProgramTrainingMenuModalProps> = ({
       if (response.ok) {
         toast({
           title: "保存成功",
-          description: "メニューが正常に保存されました。",
+          description: "メニューが保存されました。",
           duration: 3000,
           style: { backgroundColor: "green", color: "white" },
         });
@@ -184,7 +186,8 @@ const ProgramTrainingMenuDialog: React.FC<ProgramTrainingMenuModalProps> = ({
         ) {
           setMenuData(savedMenuData.menus);
         }
-        onClose(); // ダイアログを閉じる
+        onComplete(dailyProgramId);
+        onClose();
       } else {
         throw new Error("Network response was not ok");
       }

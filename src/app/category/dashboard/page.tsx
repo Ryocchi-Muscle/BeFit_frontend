@@ -1,6 +1,6 @@
 "use client";
 import Footer from "@/app/components/layout/Footer";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import TrainingChart from "@/components/TrainingChart";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useSession } from "next-auth/react";
@@ -24,6 +24,25 @@ const RecordPage: React.FC = () => {
   // スクロールを防止するカスタムフックを呼び出す
   usePreventScroll();
   const [startProgramFunc, setStartProgramFunc] = useState<any>(null);
+
+  //定義したが使用していない
+  const handleComplete = async (dailyProgramId: number) => {
+    try {
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+      await axios.patch(
+        `${apiUrl}/api/v2/personalized_menus/${dailyProgramId}/save_daily_program`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${session?.accessToken}`,
+          },
+        }
+      );
+      setCompletedPrograms((prev) => [...prev, dailyProgramId]);
+    } catch (error) {
+      console.error("Failed to complete the daily program: ", error);
+    }
+  };
 
   const fetchWithToken = (url: string) =>
     fetcher(url, session?.accessToken as string);
@@ -145,7 +164,7 @@ const RecordPage: React.FC = () => {
                       onDelete={handleDeleteButtonClick}
                       duration={programData.program.duration}
                       onStartProgram={handleStartProgram}
-                      completedPrograms={completedPrograms} // 完了状態を渡す
+                      completedPrograms={completedPrograms}
                     />
                     <StartProgramHandler
                       formData={{
@@ -154,6 +173,7 @@ const RecordPage: React.FC = () => {
                       }}
                       extendedProgram={programData.program.daily_programs}
                       onSetStartProgram={setStartProgramFunc}
+                      onComplete={handleComplete} 
                     />
                   </>
                 ) : (
