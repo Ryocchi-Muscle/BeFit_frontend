@@ -17,7 +17,7 @@ const LoginPage = () => {
     // ログイン済みの場合はTOPページにリダイレクト
     if (status === "authenticated") {
       toast({
-        title: "今日もトレーニング頑張ろう！！",
+        title: "ログインしました！",
         duration: 3000,
         style: { backgroundColor: "green", color: "white" },
       });
