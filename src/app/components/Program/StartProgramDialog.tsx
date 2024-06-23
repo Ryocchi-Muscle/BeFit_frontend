@@ -21,26 +21,28 @@ export default function StartProgramDialog({
 }: StartProgramDialogProps) {
   return (
     <Dialog open={open} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-md">
+      <DialogContent className="sm:max-w-md max-w-xs rounded-lg">
         <DialogHeader>
           <DialogTitle>プログラム開始</DialogTitle>
           <DialogDescription>今日の記録ページに移動する</DialogDescription>
         </DialogHeader>
-        <DialogFooter className="sm:justify-start">
-          <Button
-            variant="secondary"
-            onClick={onClose}
-            className="px-3 py-1 text-sm"
-          >
-            キャンセル
-          </Button>
-          <Button
-            variant="default"
-            onClick={onConfirm}
-            className="px-3 py-1 text-sm"
-          >
-            確認
-          </Button>
+        <DialogFooter className="flex justify-center">
+          <div className="flex justify-center space-x-4">
+            <Button
+              variant="default"
+              onClick={onConfirm}
+              className="w-24 px-2 py-1 text-sm"
+            >
+              確認
+            </Button>
+            <Button
+              variant="secondary"
+              onClick={onClose}
+              className="w-24 px-2 py-1 text-sm"
+            >
+              キャンセル
+            </Button>
+          </div>
         </DialogFooter>
       </DialogContent>
     </Dialog>
