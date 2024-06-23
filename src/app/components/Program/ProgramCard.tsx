@@ -1,6 +1,8 @@
 import React from "react";
 import { Table, TableBody, TableCell, TableRow } from "@/components/ui/table";
 import { DailyProgram } from "types/types";
+import { isProgramAlreadyCompletedForDate } from "@/app/utils/utils";
+import { useSession } from "next-auth/react";
 
 interface ProgramCardProps {
   week: number;
@@ -15,9 +17,26 @@ const ProgramCard: React.FC<ProgramCardProps> = ({
   onStart,
   isCompleted,
 }) => {
+  const { data: session } = useSession();
   const completedStyle = isCompleted
     ? "bg-blue-500 text-white"
     : "bg-white text-black";
+
+  const handleStartClick = async () => {
+    const date = new Date().toISOString().split("T")[0]; // 現在の日付を取得
+    const isCompleted = await isProgramAlreadyCompletedForDate(
+      date,
+      dailyProgram.id,
+      session?.accessToken as string
+    );
+    console.log("isCompleted: ", isCompleted);
+
+    if (isCompleted) {
+      alert("プログラムは１日１つしかできません。");
+      return;
+    }
+    onStart();
+  };
   return (
     <div className={`program-card ${completedStyle} flex justify-center`}>
       <div
@@ -57,7 +76,7 @@ const ProgramCard: React.FC<ProgramCardProps> = ({
         {!isCompleted && (
           <>
             <button
-              onClick={onStart}
+              onClick={handleStartClick}
               className="mt-4 py-2 px-4 bg-blue-500 text-white rounded-lg"
             >
               プログラムをスタートする

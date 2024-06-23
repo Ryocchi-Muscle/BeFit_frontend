@@ -25,7 +25,6 @@ const RecordPage: React.FC = () => {
   usePreventScroll();
   const [startProgramFunc, setStartProgramFunc] = useState<any>(null);
 
-  //定義したが使用していない
   const handleComplete = async (dailyProgramId: number) => {
     try {
       const apiUrl = process.env.NEXT_PUBLIC_API_URL;
@@ -173,7 +172,7 @@ const RecordPage: React.FC = () => {
                       }}
                       extendedProgram={programData.program.daily_programs}
                       onSetStartProgram={setStartProgramFunc}
-                      onComplete={handleComplete} 
+                      onComplete={handleComplete}
                     />
                   </>
                 ) : (
