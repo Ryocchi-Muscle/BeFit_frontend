@@ -197,23 +197,31 @@ const ProgramTrainingMenuDialog: React.FC<ProgramTrainingMenuModalProps> = ({
 
   return (
     <Dialog open={open} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-md max-h-[80vh] flex flex-col">
+      <DialogContent className="fixed z-50 flex flex-col bg-white overflow-y-auto w-full h-full p-4 sm:rounded-lg sm:max-w-md sm:max-h-[80vh]">
         <DialogHeader>
           <DialogTitle>トレーニングメニュー入力</DialogTitle>
           <DialogDescription>
             {date.toLocaleDateString()} のトレーニング詳細を入力してください。
           </DialogDescription>
         </DialogHeader>
-        <div className="max-h-[60vh] overflow-auto">
+        <div className="max-h-[70vh] overflow-auto">
           <TrainingMenuList menus={menuData || []} setMenus={setMenuData} />
         </div>
         <DialogFooter>
-          <DialogClose asChild>
-            <Button variant="secondary">キャンセル</Button>
-          </DialogClose>
-          <Button variant="default" onClick={handleComplete}>
-            完了
-          </Button>
+          <div className="flex justify-center space-x-4">
+            <Button
+              variant="default"
+              className="w-24 px-2 py-1 text-sm"
+              onClick={handleComplete}
+            >
+              完了
+            </Button>
+            <DialogClose asChild>
+              <Button variant="secondary" className="w-24 px-2 py-1 text-sm">
+                キャンセル
+              </Button>
+            </DialogClose>
+          </div>
         </DialogFooter>
       </DialogContent>
     </Dialog>
