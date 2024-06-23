@@ -14,11 +14,14 @@ import { useSearchParams } from "next/navigation";
 import StartProgramHandler from "@/app/components/Program/StartProgramHandler";
 import usePreventScroll from "@/hooks/usePreventScroll";
 import Skeleton from "@/components/skeleton";
+import CustomDialog from "@/app/components/Program/CustomDialog";
 
 const RecordPage: React.FC = () => {
   const { data: session } = useSession();
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [completedPrograms, setCompletedPrograms] = useState<number[]>([]);
+  const [showCustomDialog, setShowCustomDialog] = useState(false);
+  const [dialogMessage, setDialogMessage] = useState("");
   const searchParams = useSearchParams();
   const defaultTab = searchParams.get("tab") || "training";
   // スクロールを防止するカスタムフックを呼び出す
@@ -173,6 +176,8 @@ const RecordPage: React.FC = () => {
                       duration={programData.program.duration}
                       onStartProgram={handleStartProgram}
                       completedPrograms={completedPrograms}
+                      setShowCustomDialog={setShowCustomDialog}
+                      setDialogMessage={setDialogMessage}
                     />
                     <StartProgramHandler
                       formData={{
@@ -208,6 +213,12 @@ const RecordPage: React.FC = () => {
                     </div>
                   </div>
                 </div>
+              )}
+              {showCustomDialog && (
+                <CustomDialog
+                  message={dialogMessage}
+                  onClose={() => setShowCustomDialog(false)}
+                />
               )}
             </TabsContent>
           </div>

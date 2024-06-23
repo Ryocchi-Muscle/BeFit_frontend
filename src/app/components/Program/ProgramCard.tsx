@@ -1,14 +1,17 @@
-import React from "react";
+import React, { useState } from "react";
 import { Table, TableBody, TableCell, TableRow } from "@/components/ui/table";
 import { DailyProgram } from "types/types";
 import { isProgramAlreadyCompletedForDate } from "@/app/utils/utils";
 import { useSession } from "next-auth/react";
+import CustomDialog from "@/app/components/Program/CustomDialog";
 
 interface ProgramCardProps {
   week: number;
   dailyProgram: DailyProgram;
   onStart: () => void;
   isCompleted: boolean;
+  setShowCustomDialog: (show: boolean) => void;
+  setDialogMessage: (message: string) => void;
 }
 
 const ProgramCard: React.FC<ProgramCardProps> = ({
@@ -16,8 +19,11 @@ const ProgramCard: React.FC<ProgramCardProps> = ({
   dailyProgram,
   onStart,
   isCompleted,
+  setShowCustomDialog,
+  setDialogMessage,
 }) => {
   const { data: session } = useSession();
+  const [showDialog, setShowDialog] = useState(false);
   const completedStyle = isCompleted
     ? "bg-blue-500 text-white"
     : "bg-white text-black";
@@ -32,7 +38,10 @@ const ProgramCard: React.FC<ProgramCardProps> = ({
     console.log("isCompleted: ", isCompleted);
 
     if (isCompleted) {
-      alert("プログラムは１日１つしかできません。");
+      setDialogMessage(
+        "プログラムは１日１つしかできません。\n次のトレーニングのために体力を温存しましょう！"
+      );
+      setShowCustomDialog(true);
       return;
     }
     onStart();
@@ -48,6 +57,13 @@ const ProgramCard: React.FC<ProgramCardProps> = ({
           overflowY: "auto",
         }}
       >
+        {isCompleted && (
+          <>
+            <div className="mt-4 py-2 px-4 bg-green-500 text-white rounded-lg">
+              プログラム完了済み
+            </div>
+          </>
+        )}
         {dailyProgram && dailyProgram.details && (
           <>
             <h3 className="font-poppins font-bold text-xl">{`Week ${week}  Day ${dailyProgram.day}`}</h3>
