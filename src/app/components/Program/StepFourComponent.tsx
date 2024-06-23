@@ -18,6 +18,8 @@ interface StepFourComponentProps {
   duration: number;
   onStartProgram: (week: number, day: number) => void;
   completedPrograms: number[];
+  setShowCustomDialog: (show: boolean) => void;
+  setDialogMessage: (message: string) => void;
 }
 
 const StepFourComponent: React.FC<StepFourComponentProps> = ({
@@ -26,6 +28,8 @@ const StepFourComponent: React.FC<StepFourComponentProps> = ({
   duration,
   onStartProgram,
   completedPrograms,
+  setShowCustomDialog,
+  setDialogMessage,
 }) => {
   const generateProgramCards = (week: number) => {
     console.log(`week: ${week}`);
@@ -43,6 +47,8 @@ const StepFourComponent: React.FC<StepFourComponentProps> = ({
             console.log("onStartProgram called");
           }}
           isCompleted={completedPrograms.includes(dailyProgram.id)}
+          setShowCustomDialog={setShowCustomDialog}
+          setDialogMessage={setDialogMessage}
         />
       </SwiperSlide>
     ));
