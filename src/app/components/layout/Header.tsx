@@ -48,7 +48,7 @@ const Header = ({ session }: { session: Session | null }) => {
         ) : !isLoginPage ? (
           <>
             <li>
-              <Link href="account/login">
+              <Link href="account/login" legacyBehavior>
                 <button className="rounded-lg bg-blue-500 px-4 py-[7px] text-white hover:bg-gray-600">
                   ログイン
                 </button>

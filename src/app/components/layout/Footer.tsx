@@ -30,7 +30,7 @@ const Footer: React.FC<Props> = ({ children, className }) => {
                 className={`flex items-center justify-center hover:bg-gray-300 p-2 rounded-full ${isActive(
                   "/category/record"
                 )}`}
-              >
+                legacyBehavior>
                 <FaHistory className="text-black" />
               </Link>
             </li>
@@ -40,7 +40,7 @@ const Footer: React.FC<Props> = ({ children, className }) => {
                 className={`flex items-center justify-center hover:bg-gray-300 p-2 rounded-full ${isActive(
                   "/category/calendar"
                 )}`}
-              >
+                legacyBehavior>
                 <FaRegCalendar className="text-black" />
               </Link>
             </li>
@@ -50,7 +50,7 @@ const Footer: React.FC<Props> = ({ children, className }) => {
                 className={`flex items-center justify-center hover:bg-gray-300 p-2 rounded-full ${isActive(
                   "/category/training"
                 )}`}
-              >
+                legacyBehavior>
                 <FaDumbbell className="text-black" />
               </Link>
             </li>
@@ -60,7 +60,7 @@ const Footer: React.FC<Props> = ({ children, className }) => {
                 className={`flex items-center justify-center hover:bg-gray-300 p-2 rounded-full ${isActive(
                   "/category/user_info"
                 )}`}
-              >
+                legacyBehavior>
                 <IoPerson className="text-black" />
               </Link>
             </li>
