@@ -1,6 +1,6 @@
 "use client";
 import Footer from "@/app/components/layout/Footer";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import TrainingChart from "@/components/TrainingChart";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useSession } from "next-auth/react";
@@ -25,6 +25,29 @@ const RecordPage: React.FC = () => {
   usePreventScroll();
   const [startProgramFunc, setStartProgramFunc] = useState<any>(null);
 
+  const fetchWithToken = (url: string) =>
+    fetcher(url, session?.accessToken as string);
+
+  const {
+    data: programData,
+    error,
+    mutate,
+  } = useSWR(
+    session?.accessToken
+      ? `${process.env.NEXT_PUBLIC_API_URL}/api/v2/personalized_menus`
+      : null,
+    fetchWithToken
+  );
+
+  useEffect(() => {
+    if (programData && programData.program) {
+      const completedIds = programData.program.daily_programs
+        .filter((program: any) => program.completed)
+        .map((program: any) => program.id);
+      setCompletedPrograms(completedIds);
+    }
+  }, [programData]);
+
   const handleComplete = async (dailyProgramId: number) => {
     try {
       const apiUrl = process.env.NEXT_PUBLIC_API_URL;
@@ -42,20 +65,6 @@ const RecordPage: React.FC = () => {
       console.error("Failed to complete the daily program: ", error);
     }
   };
-
-  const fetchWithToken = (url: string) =>
-    fetcher(url, session?.accessToken as string);
-
-  const {
-    data: programData,
-    error,
-    mutate,
-  } = useSWR(
-    session?.accessToken
-      ? `${process.env.NEXT_PUBLIC_API_URL}/api/v2/personalized_menus`
-      : null,
-    fetchWithToken
-  );
 
   const handleDelete = async () => {
     if (!session?.accessToken) {

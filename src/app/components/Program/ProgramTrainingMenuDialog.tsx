@@ -168,7 +168,6 @@ const ProgramTrainingMenuDialog: React.FC<ProgramTrainingMenuModalProps> = ({
           duration: 3000,
           style: { backgroundColor: "green", color: "white" },
         });
-        // 完了処理として date フィールドを更新するエンドポイントを呼び出す
         await axios.patch(
           `${apiUrl}/api/v2/personalized_menus/${dailyProgramId}/save_daily_program`,
           {},
