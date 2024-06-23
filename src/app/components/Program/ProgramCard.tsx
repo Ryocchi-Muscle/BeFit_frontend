@@ -23,7 +23,6 @@ const ProgramCard: React.FC<ProgramCardProps> = ({
   setDialogMessage,
 }) => {
   const { data: session } = useSession();
-  const [showDialog, setShowDialog] = useState(false);
   const completedStyle = isCompleted
     ? "bg-blue-500 text-white"
     : "bg-white text-black";
