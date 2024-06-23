@@ -8,6 +8,7 @@ import { useSession } from "next-auth/react";
 import { useToast } from "@/components/ui/use-toast";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
+import Link from "next/link";
 
 const LoginPage = () => {
   const { data: session, status } = useSession();
@@ -38,7 +39,7 @@ const LoginPage = () => {
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-gray-100">
-      <div className="w-full max-w-xs space-y-6 rounded-3xl bg-white p-8 shadow-xl">
+      <div className="w-full max-w-xs space-y-6 rounded-3xl bg-white p-8 shadow-xl absolute top-20">
         <div className="text-center">
           <Image
             src="/images/Pasted Graphic.png"
@@ -75,13 +76,13 @@ const LoginPage = () => {
           Googleでログイン
         </button>
         <div className="text-center">
-          <a href="#" className="text-xs text-gray-600">
-            利用規約
-          </a>
-          、
-          <a href="#" className="text-xs text-gray-600">
-            プライバシーポリシー
-          </a>
+          <Link href="#" className="text-xs text-gray-600">
+            <Link legacyBehavior></Link>
+            <a id="link">利用規約</a>
+          </Link>
+          <Link href="#" className="text-xs text-gray-600">
+            <a id="link">プライバシーポリシー</a>
+          </Link>
           に同意したうえでログインしてください。
         </div>
       </div>
