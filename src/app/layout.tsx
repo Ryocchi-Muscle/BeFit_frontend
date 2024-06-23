@@ -14,6 +14,17 @@ const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
   title: "Be Fit",
   description: "初心者のためのトレーニングアプリ",
+  appleWebApp: {
+    title: "Apple Web App",
+    statusBarStyle: "black-translucent",
+    startupImage: [
+      "/public/images/Pasted Graphic.png",
+      {
+        url: "/assets/startup/apple-touch-startup-image-1536x2008.png",
+        media: "(device-width: 768px) and (device-height: 1024px)",
+      },
+    ],
+  },
 };
 
 export default async function RootLayout({
@@ -25,11 +36,23 @@ export default async function RootLayout({
 
   return (
     <html lang="ja">
+      <head>
+        {/* ブルー系のステータスバー色を設定 */}
+        <meta name="theme-color" content="#4285f4" />
+        {/* ここでブルー系の色を指定 */}
+        <meta
+          name="apple-mobile-web-app-status-bar-style"
+          content="black-translucent"
+        />
+      </head>
       <GoogleTagManager gtmId={process.env.GA_ID ?? ""} />
       <body className={`${inter.className} pt-10`}>
         <NextAuthProvider>
           <Header session={session} />
-          <main className="flex flex-col min-h-screen overflow-y-auto"> {children}</main>
+          <main className="flex flex-col min-h-screen overflow-y-auto">
+            {" "}
+            {children}
+          </main>
           <Toaster />
         </NextAuthProvider>
       </body>
