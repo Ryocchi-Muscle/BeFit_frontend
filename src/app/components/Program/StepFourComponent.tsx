@@ -22,6 +22,8 @@ interface StepFourComponentProps {
   setDialogMessage: (message: string) => void;
 }
 
+
+
 const StepFourComponent: React.FC<StepFourComponentProps> = ({
   dailyPrograms,
   onDelete,
@@ -56,6 +58,15 @@ const StepFourComponent: React.FC<StepFourComponentProps> = ({
 
   return (
     <div className="fixed flex flex-col items-center justify-center pt-0 overflow-y-auto pb-20 w-full">
+      <style>{`
+        .custom-swiper-pagination {
+          bottom: 180px !important; /* 必要に応じてこの値を調整 */
+        }
+        .custom-swiper-button-next, .custom-swiper-button-prev {
+          top: 45% !important; /* 必要に応じてこの値を調整 */
+          transform: translateY(-50%);
+        }
+      `}</style>
       <Tabs defaultValue="week1" className="w-full">
         <div className="relative">
           <div className="items-center flex justify-center">
@@ -96,17 +107,30 @@ const StepFourComponent: React.FC<StepFourComponentProps> = ({
                 modifier: 1,
                 slideShadows: true,
               }}
-              pagination={{ clickable: true }}
-              navigation
+              pagination={{
+                clickable: true,
+                el: ".custom-swiper-pagination", // カスタムクラスを使用
+              }}
+              navigation={{
+                nextEl: ".custom-swiper-button-next", // カスタムクラスを使用
+                prevEl: ".custom-swiper-button-prev", // カスタムクラスを使用
+              }}
               modules={[EffectCoverflow, Pagination, Navigation]}
             >
               {generateProgramCards(i + 1)}
             </Swiper>
+            <div className="custom-swiper-pagination swiper-pagination"></div>{" "}
+            {/* カスタムクラスを追加 */}
+            <div className="custom-swiper-button-next swiper-button-next"></div>{" "}
+            {/* カスタムクラスを追加 */}
+            <div className="custom-swiper-button-prev swiper-button-prev"></div>{" "}
+            {/* カスタムクラスを追加 */}
           </TabsContent>
         ))}
       </Tabs>
     </div>
   );
+
 };
 
 export default StepFourComponent;
