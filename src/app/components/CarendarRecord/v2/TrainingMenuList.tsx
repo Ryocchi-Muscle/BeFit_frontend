@@ -11,10 +11,7 @@ export default function TrainingMenuList({
 }) {
   const addMenu = () => {
     const newMenuId = menus.length > 0 ? menus[menus.length - 1].menuId + 1 : 1;
-    setMenus([
-      ...menus,
-      { menuId: newMenuId, menuName: "", sets: [] },
-    ]);
+    setMenus([...menus, { menuId: newMenuId, menuName: "", sets: [] }]);
     console.log("メニュー", menus);
   };
   console.log("All menus data:", menus);
@@ -43,14 +40,6 @@ export default function TrainingMenuList({
     );
   };
 
-  const updateBodyPart = (menuId: number, newBodyPart: string) => {
-    setMenus(
-      menus.map((menu) =>
-        menu.menuId === menuId ? { ...menu, body_part: newBodyPart } : menu
-      )
-    );
-  };
-
   // setを更新する関数
   const updateSetsInMenu = (menuId: number, newSets: TrainingSet[]) => {
     setMenus(
@@ -58,6 +47,10 @@ export default function TrainingMenuList({
         menu.menuId === menuId ? { ...menu, sets: newSets } : menu
       )
     );
+  };
+
+  const removeOrdinal = (menuName: string) => {
+    return menuName.replace(/^\d+\.\s*/, ""); // 序数とそれに続く空白を削除
   };
 
   return (
@@ -70,7 +63,7 @@ export default function TrainingMenuList({
           <TrainingMenuComponet
             key={menu.menuId}
             menuId={menu.menuId}
-            menuName={menu.menuName}
+            menuName={removeOrdinal(menu.menuName)}
             sets={menu.sets}
             updateMenuName={updateMenuName}
             updateSetInMenu={updateSetsInMenu}
