@@ -1,10 +1,11 @@
-import React from 'react'
+import React from "react";
 
 export default function page() {
   return (
-    <div>
-      <h1>ユーザー詳細ページ</h1>
-      <h2>coming soon ...</h2>
+    <div className="flex justify-center bg-gray-200 h-32">
+      <div>Item 1</div>
+      <div>Item 2</div>
+      <div>Item 3</div>
     </div>
   );
 }
