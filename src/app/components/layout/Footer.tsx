@@ -21,7 +21,7 @@ const Footer: React.FC<Props> = ({ children, className }) => {
   return (
     <div className={combinedClassName}>
       <main>{children}</main>
-      <footer className="bg-white text-black p-4 shadow-md border-t border-black">
+      <footer className="bg-white text-black p-4 shadow-md border-t border-gray">
         <nav className="container mx-auto flex justify-between items-center">
           <ul className="flex flex-grow justify-evenly">
             <li>

@@ -15,6 +15,7 @@ import StartProgramHandler from "@/app/components/Program/StartProgramHandler";
 import usePreventScroll from "@/hooks/usePreventScroll";
 import Skeleton from "@/components/skeleton";
 import CustomDialog from "@/app/components/Program/CustomDialog";
+import ProgramTrainingMenuDialog from "@/app/components/Program/ProgramTrainingMenuDialog";
 
 const RecordPage: React.FC = () => {
   const { data: session } = useSession();
@@ -27,6 +28,14 @@ const RecordPage: React.FC = () => {
   // スクロールを防止するカスタムフックを呼び出す
   usePreventScroll();
   const [startProgramFunc, setStartProgramFunc] = useState<any>(null);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [currentDailyProgramId, setCurrentDailyProgramId] = useState<
+    number | null
+  >(null);
+  const [currentProgramDate, setCurrentProgramDate] = useState<Date | null>(
+    null
+  );
+  const [currentProgram, setCurrentProgram] = useState<any>(null);
 
   const fetchWithToken = (url: string) =>
     fetcher(url, session?.accessToken as string);
@@ -66,6 +75,25 @@ const RecordPage: React.FC = () => {
       setCompletedPrograms((prev) => [...prev, dailyProgramId]);
     } catch (error) {
       console.error("Failed to complete the daily program: ", error);
+    }
+  };
+
+  const handleSave = async (dailyProgramId: number, programDetails: any) => {
+    try {
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+      await axios.patch(
+        `${apiUrl}/api/v2/personalized_menus/${dailyProgramId}/update`,
+        { details: programDetails },
+        {
+          headers: {
+            Authorization: `Bearer ${session?.accessToken}`,
+          },
+        }
+      );
+      // 編集後のデータを取得するためにSWRの再検証をトリガー
+      mutate();
+    } catch (error) {
+      console.error("Failed to save the edited program: ", error);
     }
   };
 
@@ -123,6 +151,26 @@ const RecordPage: React.FC = () => {
     }
   };
 
+  const openTrainingMenuDialog = (
+    dailyProgramId: number,
+    week: number,
+    day: number
+  ) => {
+    const program = programData.program.daily_programs.find(
+      (p: any) => p.id === dailyProgramId
+    );
+    if (!program) return;
+
+    setCurrentDailyProgramId(dailyProgramId);
+    setCurrentProgramDate(new Date(program.date));
+    setCurrentProgram(program);
+    setIsDialogOpen(true);
+  };
+
+  const closeTrainingMenuDialog = () => {
+    setIsDialogOpen(false);
+  };
+
   if (error) {
     if (error instanceof FetchError) {
       return (
@@ -178,6 +226,7 @@ const RecordPage: React.FC = () => {
                       completedPrograms={completedPrograms}
                       setShowCustomDialog={setShowCustomDialog}
                       setDialogMessage={setDialogMessage}
+                      openTrainingMenuDialog={openTrainingMenuDialog}
                     />
                     <StartProgramHandler
                       formData={{
@@ -220,6 +269,25 @@ const RecordPage: React.FC = () => {
                   onClose={() => setShowCustomDialog(false)}
                 />
               )}
+              {isDialogOpen &&
+                currentDailyProgramId &&
+                currentProgramDate &&
+                currentProgram && (
+                  <ProgramTrainingMenuDialog
+                    open={isDialogOpen}
+                    onClose={closeTrainingMenuDialog}
+                    date={currentProgramDate}
+                    program={currentProgram.details}
+                    dailyProgramId={currentDailyProgramId}
+                    onComplete={handleComplete}
+                    onSave={handleSave} // handleSave 関数を定義して渡します
+                    gender={programData.program.gender} // programData から gender を渡します
+                    frequency={programData.program.frequency} // programData から frequency を渡します
+                    isCompleted={completedPrograms.includes(
+                      currentDailyProgramId
+                    )} // 追加
+                  />
+                )}
             </TabsContent>
           </div>
         </Tabs>
