@@ -1,5 +1,5 @@
 // CustomDialog.tsx
-import React from "react";
+import React from 'react';
 
 interface CustomDialogProps {
   message: string;
@@ -11,7 +11,7 @@ const CustomDialog: React.FC<CustomDialogProps> = ({ message, onClose }) => {
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
       <div className="relative z-60 bg-white p-8 rounded-lg shadow-lg w-64">
         <p className="text-lg font-semibold text-gray-800">
-          {message.split("\n").map((line, index) => (
+          {message.split('\n').map((line, index) => (
             <React.Fragment key={index}>
               {line}
               <br />

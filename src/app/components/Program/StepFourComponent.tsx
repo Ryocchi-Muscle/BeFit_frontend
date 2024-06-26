@@ -20,9 +20,12 @@ interface StepFourComponentProps {
   completedPrograms: number[];
   setShowCustomDialog: (show: boolean) => void;
   setDialogMessage: (message: string) => void;
+  openTrainingMenuDialog: (
+    dailyProgramId: number,
+    week: number,
+    day: number
+  ) => void;
 }
-
-
 
 const StepFourComponent: React.FC<StepFourComponentProps> = ({
   dailyPrograms,
@@ -32,6 +35,7 @@ const StepFourComponent: React.FC<StepFourComponentProps> = ({
   completedPrograms,
   setShowCustomDialog,
   setDialogMessage,
+  openTrainingMenuDialog,
 }) => {
   const generateProgramCards = (week: number) => {
     console.log(`week: ${week}`);
@@ -51,6 +55,7 @@ const StepFourComponent: React.FC<StepFourComponentProps> = ({
           isCompleted={completedPrograms.includes(dailyProgram.id)}
           setShowCustomDialog={setShowCustomDialog}
           setDialogMessage={setDialogMessage}
+          openTrainingMenuDialog={openTrainingMenuDialog}
         />
       </SwiperSlide>
     ));
@@ -130,7 +135,6 @@ const StepFourComponent: React.FC<StepFourComponentProps> = ({
       </Tabs>
     </div>
   );
-
 };
 
 export default StepFourComponent;

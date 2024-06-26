@@ -26,6 +26,7 @@ export interface DailyProgram {
   id: number;
   week: number;
   day: number;
+  date: string;
   details: {
     menu: string;
     set_info: string;

@@ -29,6 +29,8 @@ interface ProgramTrainingMenuModalProps {
   program: ProgramDetail[];
   dailyProgramId: number;
   onComplete: (dailyProgramId: number) => void;
+  onSave?: (dailyProgramId: number, programDetails: any) => Promise<void>;
+  isCompleted?: boolean;
 }
 
 const ProgramTrainingMenuDialog: React.FC<ProgramTrainingMenuModalProps> = ({
@@ -38,6 +40,8 @@ const ProgramTrainingMenuDialog: React.FC<ProgramTrainingMenuModalProps> = ({
   program,
   dailyProgramId,
   onComplete,
+  onSave,
+  isCompleted, // 追加
 }) => {
   const [menuData, setMenuData] = useState<MenuData[]>([]);
   const { data: session } = useSession();
@@ -142,12 +146,12 @@ const ProgramTrainingMenuDialog: React.FC<ProgramTrainingMenuModalProps> = ({
   }, [open, program, formattedDate, savedMenuData, fetchMenuData]);
 
   const handleComplete = async () => {
-    console.log("menuData before sending to API:", menuData); // デバッグ用ログ
+    console.log("menuData before sending to API:", menuData);
     const body = JSON.stringify({
       menus: menuData,
       date: date.toLocaleDateString(),
     });
-    console.log("Data sent to API:", body); // デバッグ用ログ
+    console.log("Data sent to API:", body);
 
     const apiUrl = process.env.NEXT_PUBLIC_API_URL;
     const endpoint = `${apiUrl}/api/v2/training_records`;
@@ -195,6 +199,13 @@ const ProgramTrainingMenuDialog: React.FC<ProgramTrainingMenuModalProps> = ({
     }
   };
 
+  const handleSave = async () => {
+    if (onSave) {
+      await onSave(dailyProgramId, menuData);
+    }
+    onClose();
+  };
+
   return (
     <Dialog open={open} onOpenChange={onClose}>
       <DialogContent className="fixed z-50 flex flex-col bg-white overflow-y-auto w-full h-full p-4 sm:rounded-lg sm:max-w-md sm:max-h-[80vh]">
@@ -209,13 +220,23 @@ const ProgramTrainingMenuDialog: React.FC<ProgramTrainingMenuModalProps> = ({
         </div>
         <DialogFooter>
           <div className="flex justify-center space-x-4">
-            <Button
-              variant="default"
-              className="w-24 px-2 py-1 text-sm"
-              onClick={handleComplete}
-            >
-              完了
-            </Button>
+            {isCompleted ? (
+              <Button
+                variant="default"
+                className="w-24 px-2 py-1 text-sm"
+                onClick={handleSave}
+              >
+                保存
+              </Button>
+            ) : (
+              <Button
+                variant="default"
+                className="w-24 px-2 py-1 text-sm"
+                onClick={handleComplete}
+              >
+                完了
+              </Button>
+            )}
             <DialogClose asChild>
               <Button variant="secondary" className="w-24 px-2 py-1 text-sm">
                 キャンセル
