@@ -156,7 +156,7 @@ function Calendar({
     console.log("body:", body);
     // TODO: ここでTrainingMenuListからデータを取得してAPIに送信する
     const apiUrl = process.env.NEXT_PUBLIC_API_URL;
-    const endpoint = `${apiUrl}/api/v2/training_records`;
+    const endpoint = `${apiUrl}/api/v2/training_records/edit_and_save`;
 
     try {
       const response = await fetch(endpoint, {
@@ -246,11 +246,10 @@ function Calendar({
       {isDialogOpen && selectedDate && (
         <Dialog open={isDialogOpen} onOpenChange={setDialogOpen}>
           <DialogContent className="flex flex-col max-h-[90vh] max-w-xs">
-            <DialogTitle>トレーニングメニュー入力</DialogTitle>
-            <DialogDescription>
-              {selectedDate.toLocaleDateString()}{" "}
-              のトレーニング詳細を入力してください。
-            </DialogDescription>
+            <DialogTitle >
+              {selectedDate.toLocaleDateString()} のメニュー
+            </DialogTitle>
+            {/* <DialogDescription>のトレーニング</DialogDescription> */}
             <div className="flex flex-col flex-grow overflow-y-auto">
               <form id="training-menu-form" onSubmit={handleFormSubmit}>
                 <TrainingMenuList
