@@ -1,9 +1,6 @@
 import React from "react";
-import TrainingMenuComponet from "/Users/tesuto1/ポートフォリオ/fitapp/fitapp-frontend/src/app/components/Program/TrainingMenu.tsx";
-import {
-  MenuData,
-  TrainingSet,
-} from "/Users/tesuto1/ポートフォリオ/fitapp/fitapp-frontend/types/types.ts";
+import TrainingMenuComponet from "@/app/components/Program/TrainingMenu";
+import { MenuData, TrainingSet } from "types/types";
 
 export default function TrainingMenuList({
   menus,
