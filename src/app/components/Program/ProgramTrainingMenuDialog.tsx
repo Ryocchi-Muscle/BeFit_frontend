@@ -28,7 +28,6 @@ interface ProgramTrainingMenuModalProps {
   frequency: string;
   program: ProgramDetail[];
   dailyProgramId: number;
-  onComplete: (dailyProgramId: number) => void;
   onSave?: (dailyProgramId: number, programDetails: any) => Promise<void>;
   isCompleted?: boolean;
 }
@@ -39,7 +38,6 @@ const ProgramTrainingMenuDialog: React.FC<ProgramTrainingMenuModalProps> = ({
   date,
   program,
   dailyProgramId,
-  onComplete,
   onSave,
   isCompleted, // 追加
 }) => {
@@ -150,15 +148,16 @@ const ProgramTrainingMenuDialog: React.FC<ProgramTrainingMenuModalProps> = ({
     const body = JSON.stringify({
       menus: menuData,
       date: date.toLocaleDateString(),
+      dailyProgramId: dailyProgramId,
     });
     console.log("Data sent to API:", body);
 
     const apiUrl = process.env.NEXT_PUBLIC_API_URL;
-    const endpoint = `${apiUrl}/api/v2/training_records`;
+    const endpoint = `${apiUrl}/api/v2/training_records/${dailyProgramId}`;
 
     try {
       const response = await fetch(endpoint, {
-        method: "POST",
+        method: "PATCH",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${session?.accessToken}`,
@@ -172,15 +171,6 @@ const ProgramTrainingMenuDialog: React.FC<ProgramTrainingMenuModalProps> = ({
           duration: 3000,
           style: { backgroundColor: "green", color: "white" },
         });
-        await axios.patch(
-          `${apiUrl}/api/v2/personalized_menus/${dailyProgramId}/save_daily_program`,
-          {},
-          {
-            headers: {
-              Authorization: `Bearer ${session?.accessToken}`,
-            },
-          }
-        );
         const savedMenuData = await fetchMenuData(formattedDate); // 保存後に最新データを取得
         if (
           savedMenuData &&
@@ -189,7 +179,6 @@ const ProgramTrainingMenuDialog: React.FC<ProgramTrainingMenuModalProps> = ({
         ) {
           setMenuData(savedMenuData.menus);
         }
-        onComplete(dailyProgramId);
         onClose();
       } else {
         throw new Error("Network response was not ok");

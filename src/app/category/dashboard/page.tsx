@@ -279,7 +279,6 @@ const RecordPage: React.FC = () => {
                     date={currentProgramDate}
                     program={currentProgram.details}
                     dailyProgramId={currentDailyProgramId}
-                    onComplete={handleComplete}
                     onSave={handleSave} // handleSave 関数を定義して渡します
                     gender={programData.program.gender} // programData から gender を渡します
                     frequency={programData.program.frequency} // programData から frequency を渡します
