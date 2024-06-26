@@ -1,7 +1,7 @@
 import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { TrainingSet } from "types/types";
+import { validateTrainingMenuTitle } from "@/utils/validation";
 import TrainigSet from "./TrainigSet";
-import { TrainingSet } from "/Users/tesuto1/ポートフォリオ/fitapp/fitapp-frontend/types/types.ts";
-import { validateTrainingMenuTitle } from "/Users/tesuto1/ポートフォリオ/fitapp/fitapp-frontend/src/utils/validation.ts";
 
 interface TrainingMenuProps {
   menuId: number;
