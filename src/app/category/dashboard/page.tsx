@@ -235,7 +235,7 @@ const RecordPage: React.FC = () => {
                       }}
                       extendedProgram={programData.program.daily_programs}
                       onSetStartProgram={setStartProgramFunc}
-                      onComplete={handleComplete}
+                      // onComplete={handleComplete}
                     />
                   </>
                 ) : (
