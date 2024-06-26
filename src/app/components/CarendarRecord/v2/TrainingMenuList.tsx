@@ -70,13 +70,13 @@ export default function TrainingMenuList({
             removeMenu={() => removeMenu(menu.menuId)}
           />
         ))}
-        <button
+        {/* <button
           type="button"
           onClick={addMenu}
           className="my-4 p-2 bg-blue-500 text-white rounded"
         >
           メニュー追加
-        </button>
+        </button> */}
       </div>
     </div>
   );
