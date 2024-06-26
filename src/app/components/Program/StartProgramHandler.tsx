@@ -17,14 +17,14 @@ interface StartProgramHandlerProps {
   };
   extendedProgram: any[];
   onSetStartProgram: (handler: (week: number, day: number) => void) => void;
-  onComplete: (dailyProgramId: number) => void;
+  // onComplete: (dailyProgramId: number) => void;
 }
 
 const StartProgramHandler: React.FC<StartProgramHandlerProps> = ({
   formData,
   extendedProgram,
   onSetStartProgram,
-  onComplete,
+  // onComplete,
 }) => {
   const [isStartProgramDialogOpen, setIsStartProgramDialogOpen] =
     useState(false);
@@ -164,7 +164,7 @@ const StartProgramHandler: React.FC<StartProgramHandlerProps> = ({
           frequency={formData.frequency}
           program={selectedProgramDetails}
           dailyProgramId={selectedProgramDetails[0].daily_program_id}
-          onComplete={onComplete}
+          // onComplete={onComplete}
         />
       )}
     </>
