@@ -39,7 +39,10 @@ export default function TrainigSet({
   };
   return (
     <div className="training-set bg-white shadow-sm rounded p-3 flex items-center justify-between mb-2">
-      <span className="mr-3">{setId}</span>
+      <span className="mr-3 text-lg font-bold font-custom tracking-wider text-shadow-default">
+        {setId}
+      </span>
+
       <input
         className="border p-1 mr-2 w-16"
         type="number"
@@ -58,18 +61,18 @@ export default function TrainigSet({
         pattern="[0-9]*"
         inputMode="numeric"
       />
-      <input
+      {/* <input
         type="checkbox"
         checked={completed}
         onChange={handleCompletedChange}
-      />
-      <button
+      /> */}
+      {/* <button
         className="ml-3 bg-red-500 hover:bg-red-600 text-white p-2 rounded"
         onClick={removeSet}
         type="button"
       >
         <FaTrashAlt />
-      </button>
+      </button> */}
     </div>
   );
 }
