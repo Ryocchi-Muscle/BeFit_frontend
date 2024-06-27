@@ -270,12 +270,12 @@ function Calendar({
               </form>
             </div>
             <DialogFooter>
-              <Button type="submit" form="training-menu-form">
+              {/* <Button type="submit" form="training-menu-form">
                 保存
               </Button>
               <DialogClose asChild>
                 <Button variant="ghost">キャンセル</Button>
-              </DialogClose>
+              </DialogClose> */}
             </DialogFooter>
           </DialogContent>
         </Dialog>

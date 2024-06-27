@@ -87,9 +87,17 @@ export default function TrainingMenuComponet({
     <div className="training-menu my-4 p-4 border rounded shadow">
       <div className="menu-header flex justify-between items-center mb-4">
         <div className="flex items-center space-x-3 flex-grow">
-          <span className="mr-3 text-lg font-bold text-white py-1 px-2 bg-gradient-to-r from-blue-500 to-teal-500 shadow-md flex-none">
+          <span
+            className="mr-3 text-lg font-bold text-white py-1 px-2 bg-gradient-to-r from-blue-500 to-teal-500 shadow-md flex-none"
+            style={{
+              fontFamily: "Arial, sans-serif",
+              textShadow: "1px 1px 2px black",
+              letterSpacing: "0.05em",
+            }}
+          >
             {menuId}
           </span>
+
           <div className="flex flex-col w-full">
             <input
               ref={inputRef}
@@ -117,7 +125,7 @@ export default function TrainingMenuComponet({
           removeSet={() => handleRemoveSet(set.setId)}
         />
       ))}
-      <button
+      {/* <button
         type="button"
         className="mt-2 py-1 px-2 bg-blue-500 text-white rounded"
         onClick={handleAddSet}
@@ -130,7 +138,7 @@ export default function TrainingMenuComponet({
         onClick={() => removeMenu(menuId)}
       >
         メニュー削除
-      </button>
+      </button> */}
     </div>
   );
 }
