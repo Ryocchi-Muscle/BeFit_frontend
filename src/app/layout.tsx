@@ -3,7 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import NextAuthProvider from "./provider/NextAuth";
 import { getServerSession } from "next-auth/next";
-import { GoogleTagManager } from "@next/third-parties/google";
+import { GoogleAnalytics } from "@next/third-parties/google";
 
 import Header from "./components/layout/Header";
 import { nextAuthOptions } from "./utils/next-auth-options";
@@ -45,13 +45,13 @@ export default async function RootLayout({
           content="black-translucent"
         />
       </head>
-      <GoogleTagManager gtmId={process.env.GA_ID ?? ""} />
+
       <body className={`${inter.className} pt-10`}>
         <NextAuthProvider>
           <Header session={session} />
           <main className="flex flex-col min-h-screen overflow-y-auto">
-            {" "}
             {children}
+            <GoogleAnalytics gaId={process.env.GA_ID ?? ""} />
           </main>
           <Toaster />
         </NextAuthProvider>
