@@ -44,13 +44,15 @@ export const nextAuthOptions: NextAuthOptions = {
       // アクセストークンの有効期限が近づいている場合
       if (
         typeof token.accessTokenExpires === "number" &&
-        now < token.accessTokenExpires
+        now > token.accessTokenExpires
       ) {
-        return token;
+        console.log("Access token expired, refreshing token.");
+        return refreshAccessToken(token);
       }
 
-      // アクセストークンをリフレッシュする
-      return refreshAccessToken(token);
+      // アクセストークンが有効期限内の場合、そのまま返す
+      console.log("Access token valid, returning existing token.");
+      return token;
     },
     async session({ session, token }: { session: MySession; token: MyToken }) {
       if (token.accessToken) {
@@ -105,7 +107,9 @@ async function refreshAccessToken(token: MyToken) {
     });
 
     const refreshedTokens = response.data;
-
+    // テストのために有効期限を短く設定する
+    refreshedTokens.expires_in = 60; // 60秒
+    console.log("Received refreshed tokens:", refreshedTokens);
     if (response.status !== 200) {
       throw refreshedTokens;
     }
