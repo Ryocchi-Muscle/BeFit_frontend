@@ -1,11 +1,12 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import Footer from "@/app/components/layout/Footer";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 
 const trainingMenus = [
   { name: "スクワット", gender: "male", url: "/training/men/squat" },
@@ -22,10 +23,27 @@ const trainingMenus = [
     url: "/training/women/lat-pulldown",
   },
   { name: "レッグプレス", gender: "female", url: "/training/women/leg-press" },
+  // 他の種目を追加
 ];
 
 export default function TrainingTutorialPage() {
   const [searchTerm, setSearchTerm] = useState("");
+  const [selectedTab, setSelectedTab] = useState("male");
+
+  useEffect(() => {
+    // ページがロードされたときにローカルストレージからタブの状態を読み込む
+    const savedTab = localStorage.getItem("selectedTab");
+    if (savedTab) {
+      console.log("Loading tab from localStorage:", savedTab);
+      setSelectedTab(savedTab);
+    }
+  }, []);
+
+  useEffect(() => {
+    // タブの状態が変更されたときにローカルストレージに保存する
+    console.log("Saving tab to localStorage:", selectedTab);
+    localStorage.setItem("selectedTab", selectedTab);
+  }, [selectedTab]);
 
   const filteredMenus = trainingMenus.filter((menu) =>
     menu.name.toLowerCase().includes(searchTerm.toLowerCase())
@@ -57,52 +75,61 @@ export default function TrainingTutorialPage() {
           </Button>
         </div>
         <Separator className="mb-10" />
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <div>
-            <h2 className="text-2xl font-bold mb-4">男性メニュー解説</h2>
-            {filteredMenus
-              .filter((menu) => menu.gender === "male")
-              .map((menu) => (
-                <Card key={menu.name} className="mb-4">
-                  <CardHeader>
-                    <CardTitle>{menu.name}</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <Button asChild className="w-full">
-                      <Link
-                        href={menu.url}
-                        className="text-blue-500 hover:underline block"
-                      >
-                        詳細を見る
-                      </Link>
-                    </Button>
-                  </CardContent>
-                </Card>
-              ))}
-          </div>
-          <div>
-            <h2 className="text-2xl font-bold mb-4">女性メニュー解説</h2>
-            {filteredMenus
-              .filter((menu) => menu.gender === "female")
-              .map((menu) => (
-                <Card key={menu.name} className="mb-4">
-                  <CardHeader>
-                    <CardTitle>{menu.name}</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <Button asChild className="w-full">
-                      <Link
-                        href={menu.url}
-                        className="text-blue-500 hover:underline block"
-                      >
-                        詳細を見る
-                      </Link>
-                    </Button>
-                  </CardContent>
-                </Card>
-              ))}
-          </div>
-        </div>
+        <Tabs
+          value={selectedTab}
+          onValueChange={(value) => setSelectedTab(value)}
+        >
+          <TabsList>
+            <TabsTrigger value="male">男性メニュー解説</TabsTrigger>
+            <TabsTrigger value="female">女性メニュー解説</TabsTrigger>
+          </TabsList>
+          <TabsContent value="male">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {filteredMenus
+                .filter((menu) => menu.gender === "male")
+                .map((menu) => (
+                  <Card key={menu.name} className="mb-4">
+                    <CardHeader>
+                      <CardTitle>{menu.name}</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <Button asChild className="w-full">
+                        <Link
+                          href={menu.url}
+                          className="text-blue-500 hover:underline block"
+                        >
+                          詳細を見る
+                        </Link>
+                      </Button>
+                    </CardContent>
+                  </Card>
+                ))}
+            </div>
+          </TabsContent>
+          <TabsContent value="female">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {filteredMenus
+                .filter((menu) => menu.gender === "female")
+                .map((menu) => (
+                  <Card key={menu.name} className="mb-4">
+                    <CardHeader>
+                      <CardTitle>{menu.name}</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <Button asChild className="w-full">
+                        <Link
+                          href={menu.url}
+                          className="text-blue-500 hover:underline block"
+                        >
+                          詳細を見る
+                        </Link>
+                      </Button>
+                    </CardContent>
+                  </Card>
+                ))}
+            </div>
+          </TabsContent>
+        </Tabs>
       </div>
       <Footer />
     </div>
