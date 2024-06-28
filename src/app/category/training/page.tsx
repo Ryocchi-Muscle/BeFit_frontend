@@ -8,22 +8,160 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 
-const trainingMenus = [
-  { name: "スクワット", gender: "male", url: "/training/men/squat" },
-  { name: "ベンチプレス", gender: "male", url: "/training/men/bench-press" },
-  { name: "デッドリフト", gender: "male", url: "/training/men/deadlift" },
+const maleTrainingMenus = [
+  {
+    name: "スクワット",
+    position: "脚",
+    gender: "male",
+    url: "/training/men/squat",
+  },
+  {
+    name: "ベンチプレス",
+    position: "胸",
+    gender: "male",
+    url: "/training/men/bench-press",
+  },
+  {
+    name: "デッドリフト",
+    position: "背中",
+    gender: "male",
+    url: "/training/men/deadlift",
+  },
+  {
+    name: "ブルガリアンスクワット",
+    position: "脚",
+    gender: "male",
+    url: "/training/men/bulgarian-squat",
+  },
+  {
+    name: "アブローラー",
+    position: "腹",
+    gender: "male",
+    url: "/training/men/ab-roller",
+  },
+  {
+    name: "懸垂",
+    position: "背中",
+    gender: "male",
+    url: "/training/men/pull-up",
+  },
+  {
+    name: "サイドレイズ",
+    position: "肩",
+    gender: "male",
+    url: "/training/men/side-raise",
+  },
+  {
+    name: "ダンベルカール",
+    position: "腕",
+    gender: "male",
+    url: "/training/men/dumbbell-curl",
+  },
+  {
+    name: "ライイングトライセプスEX",
+    position: "腕",
+    gender: "male",
+    url: "/training/men/lying-triceps-extension",
+  },
+  {
+    name: "インクラインダンベルカール",
+    position: "腕",
+    gender: "male",
+    url: "/training/men/incline-dumbbell-curl",
+  },
+  {
+    name: "ショルダープレス",
+    position: "肩",
+    gender: "male",
+    url: "/training/men/shoulder-press",
+  },
+];
+
+const femaleTrainingMenus = [
   {
     name: "ヒップスラスト",
+    position: "尻",
     gender: "female",
     url: "/training/women/hip-thrust",
   },
   {
     name: "ラットプルダウン",
+    position: "背中",
     gender: "female",
     url: "/training/women/lat-pulldown",
   },
-  { name: "レッグプレス", gender: "female", url: "/training/women/leg-press" },
-  // 他の種目を追加
+  {
+    name: "レッグプレス",
+    position: "脚",
+    gender: "female",
+    url: "/training/women/leg-press",
+  },
+  {
+    name: "ルーマニアンデッドリフト",
+    position: "ハムストリングス",
+    gender: "female",
+    url: "/training/women/romanian-deadlift",
+  },
+  {
+    name: "シーテッドロウ",
+    position: "背中",
+    gender: "female",
+    url: "/training/women/seated-row",
+  },
+  {
+    name: "インナーサイ",
+    position: "ハムストリングス",
+    gender: "female",
+    url: "/training/women/inner-thigh",
+  },
+  {
+    name: "アウターサイ",
+    position: "尻",
+    gender: "female",
+    url: "/training/women/outer-thigh",
+  },
+  {
+    name: "バックエクステンション",
+    position: "ハムストリングス",
+    gender: "female",
+    url: "/training/women/back-extension",
+  },
+  {
+    name: "ケーブルヒップキックバック",
+    position: "尻",
+    gender: "female",
+    url: "/training/women/cable-hip-kickback",
+  },
+  {
+    name: "腹筋マシン",
+    position: "腹",
+    gender: "female",
+    url: "/training/women/ab-machine",
+  },
+  {
+    name: "スクワット",
+    position: "脚＆尻",
+    gender: "female",
+    url: "/training/women/squat",
+  },
+  {
+    name: "ブルガリアンスクワット",
+    position: "脚＆尻",
+    gender: "female",
+    url: "/training/women/bulgarian-squat",
+  },
+  {
+    name: "レッグカール",
+    position: "ハムストリングス",
+    gender: "female",
+    url: "/training/women/leg-curl",
+  },
+  {
+    name: "アブローラー",
+    position: "腹",
+    gender: "female",
+    url: "/training/women/ab-roller",
+  },
 ];
 
 export default function TrainingTutorialPage() {
@@ -45,7 +183,11 @@ export default function TrainingTutorialPage() {
     localStorage.setItem("selectedTab", selectedTab);
   }, [selectedTab]);
 
-  const filteredMenus = trainingMenus.filter((menu) =>
+  const filteredMaleMenus = maleTrainingMenus.filter((menu) =>
+    menu.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  const filteredFemaleMenus = femaleTrainingMenus.filter((menu) =>
     menu.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
@@ -85,12 +227,20 @@ export default function TrainingTutorialPage() {
           </TabsList>
           <TabsContent value="male">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {filteredMenus
+              {filteredMaleMenus
                 .filter((menu) => menu.gender === "male")
                 .map((menu) => (
                   <Card key={menu.name} className="mb-4">
                     <CardHeader>
-                      <CardTitle>{menu.name}</CardTitle>
+                      <CardTitle>
+                        {menu.name}
+                        {menu.position && (
+                          <>
+                            <br />
+                            部位：{menu.position}
+                          </>
+                        )}
+                      </CardTitle>
                     </CardHeader>
                     <CardContent>
                       <Button asChild className="w-full">
@@ -108,12 +258,20 @@ export default function TrainingTutorialPage() {
           </TabsContent>
           <TabsContent value="female">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {filteredMenus
+              {filteredFemaleMenus
                 .filter((menu) => menu.gender === "female")
                 .map((menu) => (
                   <Card key={menu.name} className="mb-4">
                     <CardHeader>
-                      <CardTitle>{menu.name}</CardTitle>
+                      <CardTitle>
+                        {menu.name}
+                        {menu.position && (
+                          <>
+                            <br />
+                            部位：{menu.position}
+                          </>
+                        )}
+                      </CardTitle>
                     </CardHeader>
                     <CardContent>
                       <Button asChild className="w-full">
