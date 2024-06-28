@@ -1,16 +1,19 @@
 import { useSession } from "next-auth/react";
 import useSWR from "swr";
 import axios from "axios";
+import { fetchWithToken } from "@/utils/auth";
 
 const REFRESH_INTERVAL_MS = 3600000;
 
-const fetcher = async ([url, token]: [string, string | undefined]) => {
-  const headers = token ? { Authorization: `Bearer ${token}` } : {};
-  const response = await axios.get(url, { headers });
-  if (response.status !== 200) {
-    throw new Error("Failed to fetch data");
-  }
-  return response.data;
+const fetcher = async (url: string) => {
+  return fetchWithToken(url, async (url: string, token: string) => {
+    const headers = { Authorization: `Bearer ${token}` };
+    const response = await axios.get(url, { headers });
+    if (response.status !== 200) {
+      throw new Error("Failed to fetch data");
+    }
+    return response.data;
+  });
 };
 
 const useTrainingData = () => {
@@ -22,7 +25,7 @@ const useTrainingData = () => {
   console.log("Session status:", status);
   console.log("Session data:", session);
 
-  const { data, error } = useSWR(session ? [url, token] : null, fetcher, {
+  const { data, error } = useSWR(session ? url : null, fetcher, {
     refreshInterval: REFRESH_INTERVAL_MS,
   });
   console.log("Fetched data:", data);

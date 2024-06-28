@@ -9,8 +9,10 @@ import { useToast } from "@/components/ui/use-toast";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
+import usePreventScroll from "@/hooks/usePreventScroll";
 
 const LoginPage = () => {
+  usePreventScroll();
   const { data: session, status } = useSession();
   const { toast } = useToast();
   const router = useRouter();
