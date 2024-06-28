@@ -16,6 +16,7 @@ import usePreventScroll from "@/hooks/usePreventScroll";
 import Skeleton from "@/components/skeleton";
 import CustomDialog from "@/app/components/Program/CustomDialog";
 import ProgramTrainingMenuDialog from "@/app/components/Program/ProgramTrainingMenuDialog";
+import { fetchWithToken } from "@/utils/auth";
 
 const RecordPage: React.FC = () => {
   const { data: session } = useSession();
@@ -25,8 +26,6 @@ const RecordPage: React.FC = () => {
   const [dialogMessage, setDialogMessage] = useState("");
   const searchParams = useSearchParams();
   const defaultTab = searchParams.get("tab") || "training";
-  // スクロールを防止するカスタムフックを呼び出す
-  usePreventScroll();
   const [startProgramFunc, setStartProgramFunc] = useState<any>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [currentDailyProgramId, setCurrentDailyProgramId] = useState<
@@ -37,8 +36,23 @@ const RecordPage: React.FC = () => {
   );
   const [currentProgram, setCurrentProgram] = useState<any>(null);
 
-  const fetchWithToken = (url: string) =>
-    fetcher(url, session?.accessToken as string);
+  const fetcher = async (url: string) => {
+    const data = await fetchWithToken(
+      url,
+      async (url: string, token: string) => {
+        const response = await fetch(url, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        return response.json();
+      }
+    );
+    return data;
+  };
 
   const {
     data: programData,
@@ -48,7 +62,7 @@ const RecordPage: React.FC = () => {
     session?.accessToken
       ? `${process.env.NEXT_PUBLIC_API_URL}/api/v2/personalized_menus`
       : null,
-    fetchWithToken
+    fetcher
   );
 
   useEffect(() => {
