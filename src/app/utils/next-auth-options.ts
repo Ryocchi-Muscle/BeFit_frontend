@@ -13,6 +13,8 @@ interface MySession extends Session {
 interface MyToken extends JWT {
   accessToken?: string;
   user_id?: string;
+  accessTokenExpires?: number;
+  refreshToken?: string;
 }
 
 export const nextAuthOptions: NextAuthOptions = {
@@ -25,15 +27,30 @@ export const nextAuthOptions: NextAuthOptions = {
   ],
   session: {
     strategy: "jwt",
-    maxAge: 60 * 24 * 24, // JWTの最大有効期限を秒で指定（ここでは30日）
+    maxAge: 30 * 24 * 60 * 60,
+    updateAge: 12 * 60 * 60,
   },
   callbacks: {
     async jwt({ token, account, user }) {
+      const now = Date.now() / 1000; 
+
       if (account && account.access_token && user) {
         token.id = user.id;
         token.accessToken = account.access_token;
+        token.accessTokenExpires = account.expires_at;
+        token.refreshToken = account.refresh_token;
       }
-      return token;
+
+      // アクセストークンの有効期限が近づいている場合
+      if (
+        typeof token.accessTokenExpires === "number" &&
+        now < token.accessTokenExpires
+      ) {
+        return token;
+      }
+
+      // アクセストークンをリフレッシュする
+      return refreshAccessToken(token);
     },
     async session({ session, token }: { session: MySession; token: MyToken }) {
       if (token.accessToken) {
@@ -46,9 +63,9 @@ export const nextAuthOptions: NextAuthOptions = {
     },
     async signIn({ user, account }) {
       if (!account) return false;
-      const provider = account?.provider;
-      const uid = user?.id;
-      const name = user?.name;
+      const provider = account.provider;
+      const uid = user.id;
+      const name = user.name;
       try {
         const response = await axios.post(
           `${apiUrl}/auth/${provider}/callback`,
@@ -71,3 +88,40 @@ export const nextAuthOptions: NextAuthOptions = {
     },
   },
 };
+
+async function refreshAccessToken(token: MyToken) {
+  try {
+    const url =
+      `https://oauth2.googleapis.com/token?` +
+      `client_id=${process.env.GOOGLE_CLIENT_ID}&` +
+      `client_secret=${process.env.GOOGLE_CLIENT_SECRET}&` +
+      `grant_type=refresh_token&` +
+      `refresh_token=${token.refreshToken}`;
+
+    const response = await axios.post(url, {
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+    });
+
+    const refreshedTokens = response.data;
+
+    if (response.status !== 200) {
+      throw refreshedTokens;
+    }
+
+    return {
+      ...token,
+      accessToken: refreshedTokens.access_token,
+      accessTokenExpires: Date.now() + refreshedTokens.expires_in * 1000,
+      refreshToken: refreshedTokens.refresh_token ?? token.refreshToken, // 必要に応じて新しいリフレッシュトークン
+    };
+  } catch (error) {
+    console.error("Error refreshing access token:", error);
+
+    return {
+      ...token,
+      error: "RefreshAccessTokenError",
+    };
+  }
+}
