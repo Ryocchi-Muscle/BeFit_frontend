@@ -8,9 +8,11 @@ const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 interface MySession extends Session {
   accessToken?: string;
   user_id?: string;
+  accessTokenExpires?: number;
 }
 
 interface MyToken extends JWT {
+  id?: string;
   accessToken?: string;
   user_id?: string;
   accessTokenExpires?: number;
@@ -37,7 +39,9 @@ export const nextAuthOptions: NextAuthOptions = {
       if (account && account.access_token && user) {
         token.id = user.id;
         token.accessToken = account.access_token;
-        token.accessTokenExpires = account.expires_at;
+        token.accessTokenExpires = account.expires_at
+          ? account.expires_at * 1000
+          : Date.now() + 3600 * 1000; // 修正: 有効期限の単位がミリ秒、デフォルトで1時間
         token.refreshToken = account.refresh_token;
       }
 
@@ -55,12 +59,9 @@ export const nextAuthOptions: NextAuthOptions = {
       return token;
     },
     async session({ session, token }: { session: MySession; token: MyToken }) {
-      if (token.accessToken) {
-        session.accessToken = token.accessToken;
-      }
-      if (token.user_id) {
-        session.user_id = token.user_id;
-      }
+      session.accessToken = token.accessToken;
+      session.accessTokenExpires = token.accessTokenExpires; // 修正: 有効期限をセッションに追加
+      session.user_id = token.id;
       return session;
     },
     async signIn({ user, account }) {
@@ -93,6 +94,15 @@ export const nextAuthOptions: NextAuthOptions = {
 
 async function refreshAccessToken(token: MyToken) {
   try {
+    const clientId =
+      process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID || process.env.GOOGLE_CLIENT_ID;
+    const clientSecret =
+      process.env.NEXT_PUBLIC_GOOGLE_CLIENT_SECRET ||
+      process.env.GOOGLE_CLIENT_SECRET;
+
+    // ログを追加して環境変数が正しく読み込まれているか確認
+    console.log("Client ID:", clientId);
+    console.log("Client Secret:", clientSecret);
     const url =
       `https://oauth2.googleapis.com/token?` +
       `client_id=${process.env.GOOGLE_CLIENT_ID}&` +
@@ -106,13 +116,12 @@ async function refreshAccessToken(token: MyToken) {
       },
     });
 
-    const refreshedTokens = response.data;
-    // テストのために有効期限を短く設定する
-    refreshedTokens.expires_in = 60; // 60秒
-    console.log("Received refreshed tokens:", refreshedTokens);
     if (response.status !== 200) {
-      throw refreshedTokens;
+      throw response.data;
     }
+
+    const refreshedTokens = response.data;
+    console.log("Received refreshed tokens:", refreshedTokens);
 
     return {
       ...token,
