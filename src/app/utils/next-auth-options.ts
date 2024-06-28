@@ -32,7 +32,7 @@ export const nextAuthOptions: NextAuthOptions = {
   },
   callbacks: {
     async jwt({ token, account, user }) {
-      const now = Date.now() / 1000; 
+      const now = Date.now() / 1000;
 
       if (account && account.access_token && user) {
         token.id = user.id;
