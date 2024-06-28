@@ -39,7 +39,7 @@ const ProgramTrainingMenuDialog: React.FC<ProgramTrainingMenuModalProps> = ({
   program,
   dailyProgramId,
   onSave,
-  isCompleted, // 追加
+  isCompleted, 
 }) => {
   const [menuData, setMenuData] = useState<MenuData[]>([]);
   const { data: session } = useSession();

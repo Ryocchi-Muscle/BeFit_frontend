@@ -60,24 +60,6 @@ const RecordPage: React.FC = () => {
     }
   }, [programData]);
 
-  const handleComplete = async (dailyProgramId: number) => {
-    try {
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL;
-      await axios.patch(
-        `${apiUrl}/api/v2/personalized_menus/${dailyProgramId}/save_daily_program`,
-        {},
-        {
-          headers: {
-            Authorization: `Bearer ${session?.accessToken}`,
-          },
-        }
-      );
-      setCompletedPrograms((prev) => [...prev, dailyProgramId]);
-    } catch (error) {
-      console.error("Failed to complete the daily program: ", error);
-    }
-  };
-
   const handleSave = async (dailyProgramId: number, programDetails: any) => {
     try {
       const apiUrl = process.env.NEXT_PUBLIC_API_URL;
@@ -90,7 +72,6 @@ const RecordPage: React.FC = () => {
           },
         }
       );
-      // 編集後のデータを取得するためにSWRの再検証をトリガー
       mutate();
     } catch (error) {
       console.error("Failed to save the edited program: ", error);
@@ -279,12 +260,12 @@ const RecordPage: React.FC = () => {
                     date={currentProgramDate}
                     program={currentProgram.details}
                     dailyProgramId={currentDailyProgramId}
-                    onSave={handleSave} // handleSave 関数を定義して渡します
-                    gender={programData.program.gender} // programData から gender を渡します
-                    frequency={programData.program.frequency} // programData から frequency を渡します
+                    onSave={handleSave}
+                    gender={programData.program.gender}
+                    frequency={programData.program.frequency}
                     isCompleted={completedPrograms.includes(
                       currentDailyProgramId
-                    )} // 追加
+                    )}
                   />
                 )}
             </TabsContent>
