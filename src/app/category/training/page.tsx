@@ -7,6 +7,15 @@ import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
+import {
+  Dialog,
+  DialogTrigger,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from "@/components/ui/dialog";
+import Image from "next/image";
 
 const maleTrainingMenus = [
   {
@@ -14,6 +23,9 @@ const maleTrainingMenus = [
     position: "脚",
     gender: "male",
     url: "/training/men/squat",
+    image: "/images/squat.jpeg",
+    description: "スクワットの説明",
+    youtubeId: "exampleId1",
   },
   {
     name: "ベンチプレス",
@@ -243,14 +255,36 @@ export default function TrainingTutorialPage() {
                       </CardTitle>
                     </CardHeader>
                     <CardContent>
-                      <Button asChild className="w-full">
-                        <Link
-                          href={menu.url}
-                          className="text-blue-500 hover:underline block"
-                        >
-                          詳細を見る
-                        </Link>
-                      </Button>
+                      <Dialog>
+                        <DialogTrigger asChild>
+                          <Button className="w-full">詳細を見る</Button>
+                        </DialogTrigger>
+                        <DialogContent className="w-full max-w-xs sm:max-w-md md:max-w-lg lg:max-w-xl p-4 sm:p-6 md:p-8 mx-auto">
+                          <DialogHeader>
+                            <DialogTitle>{menu.name}</DialogTitle>
+                            <DialogDescription>
+                              {menu.description}
+                            </DialogDescription>
+                          </DialogHeader>
+                          <Image
+                            src={menu.image || "/default-image.jpg"} // 画像が未定義の場合はデフォルト画像を使用
+                            alt={`${menu.name}の対象筋肉`}
+                            className="w-full h-auto mb-4"
+                            layout="responsive"
+                            width={560}
+                            height={315}
+                          />
+                          <div className="relative pb-9/16 h-0 overflow-hidden mb-4">
+                            <iframe
+                              className="absolute top-0 left-0 w-full h-full"
+                              src={`https://www.youtube.com/embed/${menu.youtubeId}`}
+                              title={menu.name}
+                              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                              allowFullScreen
+                            ></iframe>
+                          </div>
+                        </DialogContent>
+                      </Dialog>
                     </CardContent>
                   </Card>
                 ))}
