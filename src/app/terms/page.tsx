@@ -246,6 +246,8 @@ const TermsOfService = () => {
         <p>
           本規約の解釈にあたっては、日本法を準拠法とします。本サービスに関して紛争が生じた場合には、当社の本店所在地を管轄する地方裁判所を専属的合意管轄とします。
         </p>
+
+        <p className="mt-8">以上</p>
       </section>
 
       <footer className="mt-8 text-center">
