@@ -29,8 +29,7 @@ export const nextAuthOptions: NextAuthOptions = {
   ],
   session: {
     strategy: "jwt",
-    maxAge: 30 * 24 * 60 * 60,
-    updateAge: 12 * 60 * 60,
+    maxAge: 30 * 24 * 60 * 60, // 30 days
   },
   callbacks: {
     async jwt({ token, account, user }) {
@@ -40,18 +39,9 @@ export const nextAuthOptions: NextAuthOptions = {
         token.id = user.id;
         token.accessToken = account.access_token;
         token.accessTokenExpires = account.expires_at
-          ? account.expires_at * 1000
-          : Date.now() + 3600 * 1000; // 修正: 有効期限の単位がミリ秒、デフォルトで1時間
+          ? account.expires_at * 10
+          : Date.now() + 10; // 修正: 有効期限の単位がミリ秒、デフォルトで1時間
         token.refreshToken = account.refresh_token;
-      }
-
-      // アクセストークンの有効期限が近づいている場合
-      if (
-        typeof token.accessTokenExpires === "number" &&
-        now > token.accessTokenExpires
-      ) {
-        console.log("Access token expired, refreshing token.");
-        return refreshAccessToken(token);
       }
 
       // アクセストークンが有効期限内の場合、そのまま返す
@@ -92,49 +82,4 @@ export const nextAuthOptions: NextAuthOptions = {
   },
 };
 
-async function refreshAccessToken(token: MyToken) {
-  try {
-    const clientId =
-      process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID || process.env.GOOGLE_CLIENT_ID;
-    const clientSecret =
-      process.env.NEXT_PUBLIC_GOOGLE_CLIENT_SECRET ||
-      process.env.GOOGLE_CLIENT_SECRET;
 
-    // ログを追加して環境変数が正しく読み込まれているか確認
-    console.log("Client ID:", clientId);
-    console.log("Client Secret:", clientSecret);
-    const url =
-      `https://oauth2.googleapis.com/token?` +
-      `client_id=${process.env.GOOGLE_CLIENT_ID}&` +
-      `client_secret=${process.env.GOOGLE_CLIENT_SECRET}&` +
-      `grant_type=refresh_token&` +
-      `refresh_token=${token.refreshToken}`;
-
-    const response = await axios.post(url, {
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
-      },
-    });
-
-    if (response.status !== 200) {
-      throw response.data;
-    }
-
-    const refreshedTokens = response.data;
-    console.log("Received refreshed tokens:", refreshedTokens);
-
-    return {
-      ...token,
-      accessToken: refreshedTokens.access_token,
-      accessTokenExpires: Date.now() + refreshedTokens.expires_in * 1000,
-      refreshToken: refreshedTokens.refresh_token ?? token.refreshToken, // 必要に応じて新しいリフレッシュトークン
-    };
-  } catch (error) {
-    console.error("Error refreshing access token:", error);
-
-    return {
-      ...token,
-      error: "RefreshAccessTokenError",
-    };
-  }
-}
