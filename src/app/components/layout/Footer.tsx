@@ -1,7 +1,12 @@
 "use client";
 import React from "react";
-import { FaRegCalendar, FaHistory, FaDumbbell } from "react-icons/fa";
-import { IoPerson } from "react-icons/io5";
+import {
+  FaRegCalendar,
+  FaHistory,
+  FaDumbbell,
+  FaClipboardList,
+} from "react-icons/fa";
+
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 
@@ -23,7 +28,7 @@ const Footer: React.FC<Props> = ({ children, className }) => {
       <main>{children}</main>
       <footer className="bg-white text-black p-4 shadow-md border-t border-gray">
         <nav className="container mx-auto flex justify-between items-center">
-          <ul className="flex flex-grow justify-evenly gap-14">
+          <ul className="flex justify-between w-full max-w-2xl mx-auto">
             <li className="flex flex-col items-center">
               <Link
                 href="/category/dashboard"
@@ -66,6 +71,24 @@ const Footer: React.FC<Props> = ({ children, className }) => {
             </li>
             <li className="flex flex-col items-center">
               <Link
+                href="/category/program"
+                className={`flex flex-col items-center justify-center hover:bg-gray-300 p-2 rounded-full ${isActive(
+                  "/category/program"
+                )}`}
+                legacyBehavior
+              >
+                <span className="flex flex-col items-center justify-center">
+                  <FaClipboardList
+                    className={`w-5 h-5 mb-1 ${isActive("/category/program")}`}
+                  />
+                  <span className={`text-xs ${isActive("/category/program")}`}>
+                    Program
+                  </span>
+                </span>
+              </Link>
+            </li>
+            <li className="flex flex-col items-center">
+              <Link
                 href="/category/training"
                 className={`flex flex-col items-center justify-center hover:bg-gray-300 p-2 rounded-full ${isActive(
                   "/category/training"
@@ -88,6 +111,5 @@ const Footer: React.FC<Props> = ({ children, className }) => {
     </div>
   );
 };
-
 
 export default Footer;
