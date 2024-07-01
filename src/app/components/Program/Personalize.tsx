@@ -98,7 +98,7 @@ const PersonalizePage: React.FC = () => {
       console.error("エラーが発生しました: ", error);
     } finally {
       setLoading(false);
-      router.push("/category/dashboard?tab=program");
+      router.push("/category/program");
     }
   };
 

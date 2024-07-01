@@ -31,40 +31,18 @@ const Footer: React.FC<Props> = ({ children, className }) => {
           <ul className="flex justify-between w-full max-w-2xl mx-auto">
             <li className="flex flex-col items-center">
               <Link
-                href="/category/dashboard"
+                href="/category/record"
                 className={`flex flex-col items-center justify-center hover:bg-gray-300 p-2 rounded-full ${isActive(
-                  "/category/dashboard"
+                  "/category/record"
                 )}`}
                 legacyBehavior
               >
                 <span className="flex flex-col items-center justify-center">
                   <FaHistory
-                    className={`w-5 h-5 mb-1 ${isActive(
-                      "/category/dashboard"
-                    )}`}
+                    className={`w-5 h-5 mb-1 ${isActive("/category/record")}`}
                   />
-                  <span
-                    className={`text-xs ${isActive("/category/dashboard")}`}
-                  >
-                    Dashboard
-                  </span>
-                </span>
-              </Link>
-            </li>
-            <li className="flex flex-col items-center">
-              <Link
-                href="/category/calendar"
-                className={`flex flex-col items-center justify-center hover:bg-gray-300 p-2 rounded-full ${isActive(
-                  "/category/calendar"
-                )}`}
-                legacyBehavior
-              >
-                <span className="flex flex-col items-center justify-center">
-                  <FaRegCalendar
-                    className={`w-5 h-5 mb-1 ${isActive("/category/calendar")}`}
-                  />
-                  <span className={`text-xs ${isActive("/category/calendar")}`}>
-                    Calendar
+                  <span className={`text-xs ${isActive("/category/record")}`}>
+                    Record
                   </span>
                 </span>
               </Link>
@@ -89,6 +67,25 @@ const Footer: React.FC<Props> = ({ children, className }) => {
             </li>
             <li className="flex flex-col items-center">
               <Link
+                href="/category/calendar"
+                className={`flex flex-col items-center justify-center hover:bg-gray-300 p-2 rounded-full ${isActive(
+                  "/category/calendar"
+                )}`}
+                legacyBehavior
+              >
+                <span className="flex flex-col items-center justify-center">
+                  <FaRegCalendar
+                    className={`w-5 h-5 mb-1 ${isActive("/category/calendar")}`}
+                  />
+                  <span className={`text-xs ${isActive("/category/calendar")}`}>
+                    Calendar
+                  </span>
+                </span>
+              </Link>
+            </li>
+
+            <li className="flex flex-col items-center">
+              <Link
                 href="/category/training"
                 className={`flex flex-col items-center justify-center hover:bg-gray-300 p-2 rounded-full ${isActive(
                   "/category/training"
@@ -100,7 +97,7 @@ const Footer: React.FC<Props> = ({ children, className }) => {
                     className={`w-5 h-5 mb-1 ${isActive("/category/training")}`}
                   />
                   <span className={`text-xs ${isActive("/category/training")}`}>
-                    TrainingGuide
+                    Guide
                   </span>
                 </span>
               </Link>
