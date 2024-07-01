@@ -4,7 +4,6 @@ import "./globals.css";
 import NextAuthProvider from "./provider/NextAuth";
 import { getServerSession } from "next-auth/next";
 import { GoogleAnalytics } from "@next/third-parties/google";
-
 import Header from "./components/layout/Header";
 import { nextAuthOptions } from "./utils/next-auth-options";
 import { Toaster } from "@/components/ui/toaster";
