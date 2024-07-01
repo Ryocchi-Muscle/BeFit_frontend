@@ -28,15 +28,6 @@ const Header = ({ session }: { session: Session | null }) => {
         {session ? (
           <>
             <li>
-              <Image
-                src={session.user?.image ?? ""}
-                alt={session.user?.name ?? ""}
-                width={40}
-                height={40}
-                className="rounded-full"
-              />
-            </li>
-            <li>
               <button
                 onClick={() => signOut({ callbackUrl: "/" })}
                 className="rounded-lg bg-blue-500 px-4 py-[7px] text-white hover:bg-gray-600"
