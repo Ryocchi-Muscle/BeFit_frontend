@@ -24,7 +24,6 @@ const StartProgramHandler: React.FC<StartProgramHandlerProps> = ({
   formData,
   extendedProgram,
   onSetStartProgram,
-  // onComplete,
 }) => {
   const [isStartProgramDialogOpen, setIsStartProgramDialogOpen] =
     useState(false);
@@ -164,7 +163,6 @@ const StartProgramHandler: React.FC<StartProgramHandlerProps> = ({
           frequency={formData.frequency}
           program={selectedProgramDetails}
           dailyProgramId={selectedProgramDetails[0].daily_program_id}
-          // onComplete={onComplete}
         />
       )}
     </>
