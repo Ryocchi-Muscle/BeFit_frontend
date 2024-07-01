@@ -24,8 +24,8 @@ const LoginPage = () => {
         duration: 3000,
         style: { backgroundColor: "green", color: "white" },
       });
-      setTimeout(() => router.push("/category/dashboard"), 3200);
-      redirect("/category/dashboard");
+      setTimeout(() => router.push("/category/record"), 3200);
+      redirect("/category/record");
     }
   }, [session, status, toast, router]);
 
@@ -35,7 +35,7 @@ const LoginPage = () => {
 
     // ログインに成功したらTOPページにリダイレクト
     if (result) {
-      redirect("/category/dashboard");
+      redirect("/category/record");
     }
   };
 
