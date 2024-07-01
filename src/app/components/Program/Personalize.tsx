@@ -3,8 +3,6 @@
 import React, { useState, useEffect } from "react";
 import LoadingScreen from "./LoadingScreen";
 import { useSession } from "next-auth/react";
-import ProgramTrainingMenuDialog from "./ProgramTrainingMenuDialog";
-import StartProgramDialog from "./StartProgramDialog";
 import {
   Select,
   SelectContent,
@@ -14,7 +12,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useRouter } from "next/navigation";
-import { ProgramDetail } from "types/types";
+import usePreventScroll from "@/hooks/usePreventScroll";
 
 interface Program {
   title: string;
@@ -25,6 +23,7 @@ interface Program {
 }
 
 const PersonalizePage: React.FC = () => {
+  usePreventScroll();
   const { data: session } = useSession();
   const [hasProgram, setHasProgram] = useState(false);
   const [formData, setFormData] = useState({
@@ -34,10 +33,6 @@ const PersonalizePage: React.FC = () => {
   });
   const [loading, setLoading] = useState(false);
   const [program, setProgram] = useState<Program[]>([]);
-  const [extendedProgram, setExtendedProgram] = useState<Program[]>([]);
-  const [selectedProgramDetails, setSelectedProgramDetails] = useState<
-    ProgramDetail[]
-  >([]);
   const [dailyProgramId, setDailyProgramId] = useState<number>(0);
   const router = useRouter();
 
@@ -184,9 +179,6 @@ const PersonalizePage: React.FC = () => {
                 >
                   プラン作成
                 </button>
-              )}
-              {hasProgram && (
-                <p>既にプランが存在します。既存のプランを削除してください。</p>
               )}
             </div>
           </div>
