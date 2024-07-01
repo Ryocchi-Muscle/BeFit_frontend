@@ -1,7 +1,12 @@
 "use client";
 import React from "react";
-import { FaRegCalendar, FaHistory, FaDumbbell } from "react-icons/fa";
-import { IoPerson } from "react-icons/io5";
+import {
+  FaRegCalendar,
+  FaHistory,
+  FaDumbbell,
+  FaClipboardList,
+} from "react-icons/fa";
+
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 
@@ -15,7 +20,7 @@ const Footer: React.FC<Props> = ({ children, className }) => {
   const combinedClassName = `fixed inset-x-0 bottom-0 ${className}`;
 
   const isActive = (path: string) => {
-    return pathname === path ? "bg-gray-200 rounded-full p-2" : "";
+    return pathname === path ? "bg-gray-300 rounded-full" : "";
   };
 
   return (
@@ -23,45 +28,81 @@ const Footer: React.FC<Props> = ({ children, className }) => {
       <main>{children}</main>
       <footer className="bg-white text-black p-4 shadow-md border-t border-gray">
         <nav className="container mx-auto flex justify-between items-center">
-          <ul className="flex flex-grow justify-evenly">
-            <li>
+          <ul className="flex justify-between w-full max-w-2xl mx-auto">
+            <li className="flex flex-col items-center">
               <Link
                 href="/category/dashboard"
-                className={`flex items-center justify-center hover:bg-gray-300 p-2 rounded-full ${isActive(
-                  "/category/record"
+                className={`flex flex-col items-center justify-center hover:bg-gray-300 p-2 rounded-full ${isActive(
+                  "/category/dashboard"
                 )}`}
-                legacyBehavior>
-                <FaHistory className="text-black" />
+                legacyBehavior
+              >
+                <span className="flex flex-col items-center justify-center">
+                  <FaHistory
+                    className={`w-5 h-5 mb-1 ${isActive(
+                      "/category/dashboard"
+                    )}`}
+                  />
+                  <span
+                    className={`text-xs ${isActive("/category/dashboard")}`}
+                  >
+                    Dashboard
+                  </span>
+                </span>
               </Link>
             </li>
-            <li>
+            <li className="flex flex-col items-center">
               <Link
                 href="/category/calendar"
-                className={`flex items-center justify-center hover:bg-gray-300 p-2 rounded-full ${isActive(
+                className={`flex flex-col items-center justify-center hover:bg-gray-300 p-2 rounded-full ${isActive(
                   "/category/calendar"
                 )}`}
-                legacyBehavior>
-                <FaRegCalendar className="text-black" />
+                legacyBehavior
+              >
+                <span className="flex flex-col items-center justify-center">
+                  <FaRegCalendar
+                    className={`w-5 h-5 mb-1 ${isActive("/category/calendar")}`}
+                  />
+                  <span className={`text-xs ${isActive("/category/calendar")}`}>
+                    Calendar
+                  </span>
+                </span>
               </Link>
             </li>
-            <li>
+            <li className="flex flex-col items-center">
+              <Link
+                href="/category/program"
+                className={`flex flex-col items-center justify-center hover:bg-gray-300 p-2 rounded-full ${isActive(
+                  "/category/program"
+                )}`}
+                legacyBehavior
+              >
+                <span className="flex flex-col items-center justify-center">
+                  <FaClipboardList
+                    className={`w-5 h-5 mb-1 ${isActive("/category/program")}`}
+                  />
+                  <span className={`text-xs ${isActive("/category/program")}`}>
+                    Program
+                  </span>
+                </span>
+              </Link>
+            </li>
+            <li className="flex flex-col items-center">
               <Link
                 href="/category/training"
-                className={`flex items-center justify-center hover:bg-gray-300 p-2 rounded-full ${isActive(
+                className={`flex flex-col items-center justify-center hover:bg-gray-300 p-2 rounded-full ${isActive(
                   "/category/training"
                 )}`}
-                legacyBehavior>
-                <FaDumbbell className="text-black" />
-              </Link>
-            </li>
-            <li>
-              <Link
-                href="/category/user_info"
-                className={`flex items-center justify-center hover:bg-gray-300 p-2 rounded-full ${isActive(
-                  "/category/user_info"
-                )}`}
-                legacyBehavior>
-                <IoPerson className="text-black" />
+                legacyBehavior
+              >
+                <span className="flex flex-col items-center justify-center">
+                  <FaDumbbell
+                    className={`w-5 h-5 mb-1 ${isActive("/category/training")}`}
+                  />
+                  <span className={`text-xs ${isActive("/category/training")}`}>
+                    TrainingGuide
+                  </span>
+                </span>
               </Link>
             </li>
           </ul>
