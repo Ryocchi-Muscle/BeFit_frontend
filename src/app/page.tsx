@@ -3,6 +3,7 @@
 import React from "react";
 import { AuthProvider } from "./components/context/authContext";
 import Image from "next/image";
+import Link from "next/link";
 
 interface FeatureCardProps {
   src: string;
@@ -35,15 +36,25 @@ export default function TopPage() {
           <section className="bg-gray-900 py-10 text-white">
             <div className="max-w-5xl px-4 mx-auto my-8 space-y-8 text-center">
               <div className="space-y-4">
+                <h2 className="text-2xl sm:text-3xl font-bold text-white">
+                  トレーニングサポートサービス
+                </h2>
                 <p className="text-gray-300 text-lg sm:text-xl">
-                  旅行プラン共有サービス
+                  Be Fit
+                  は、筋トレ初心者でも簡単にトレーニングプランを作成・記録できるアプリです。
                 </p>
                 <p className="text-gray-300 text-base sm:text-lg">
-                  Be Fit
-                  は、誰でも簡単に旅行プランを作成・共有できるサービスです。
+                  あなたのフィットネス目標達成をサポートします。
                   <br />
-                  あなたの旅行が素晴らしい思い出になるようにサポートします。
+                  Googleアカウントがあれば、ログインボタンを押すだけですぐに始められます！
                 </p>
+                <div className="flex justify-center mt-6">
+                  <Link href="account/login" legacyBehavior>
+                    <button className="rounded-lg bg-blue-500 px-4 py-[7px] text-white hover:bg-gray-600">
+                      今すぐ始める
+                    </button>
+                  </Link>
+                </div>
               </div>
             </div>
           </section>
