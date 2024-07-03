@@ -32,7 +32,8 @@ const RecordPage: React.FC = () => {
   const [currentProgram, setCurrentProgram] = useState<any>(null);
   usePreventScroll();
 
-  const fetcher = async (url: string) => {
+const fetcher = async (url: string) => {
+  try {
     const data = await fetchWithToken(
       url,
       async (url: string, token: string) => {
@@ -41,14 +42,22 @@ const RecordPage: React.FC = () => {
             Authorization: `Bearer ${token}`,
           },
         });
+        console.log("Fetch response:", response); // フェッチのレスポンスを出力
         if (!response.ok) {
-          throw new Error("Network response was not ok");
+          throw new Error(
+            `Network response was not ok: ${response.statusText}`
+          );
         }
         return response.json();
       }
     );
     return data;
-  };
+  } catch (error) {
+    console.error("Fetcher error:", error); // フェッチエラーを出力
+    throw error;
+  }
+};
+
 
   const {
     data: programData,
