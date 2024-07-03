@@ -98,88 +98,96 @@ const PersonalizePage: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col items-center p-0 min-h-screen overflow-y-auto">
+    <div className="flex flex-col items-center p-4 min-h-screen overflow-y-auto bg-gray-50">
       {loading && <LoadingScreen />}
       {!loading && (
         <>
-          <div className="pt-16 flex flex-col items-center justify-start min-h-[calc(100vh-70px)] pt-18">
-            <div className="bg-white p-8 rounded-lg shadow-lg text-center w-4/5 max-w-lg mt-0 space-y-6 relative">
+          <div className="pt-2 flex flex-col items-center justify-start min-h-[calc(100vh-70px)]  max-w-xs mx-auto">
+            <div className="bg-white p-8 rounded-lg shadow-lg text-center max-w-md mt-0 space-y-6">
               <div>
-                <h2 className="text-blue-500 text-xl mb-2">性別</h2>
-                <Select
-                  value={formData.gender}
-                  onValueChange={(value) => handleSelect("gender", value)}
-                >
-                  <SelectTrigger className="w-[180px]">
-                    <SelectValue placeholder="性別" />
-                  </SelectTrigger>
-                  <SelectContent className="absolute left-0 right-0 top-full z-10">
-                    <SelectGroup>
-                      <SelectItem value="male">男</SelectItem>
-                      <SelectItem value="female">女</SelectItem>
-                    </SelectGroup>
-                  </SelectContent>
-                </Select>
-              </div>
-              <div>
-                <h2 className="text-blue-500 text-xl mb-2">
-                  トレーニング頻度（週）
+                <h2 className="text-blue-500 text-xl mb-4 font-semibold">
+                  トレーニングプラン設定
                 </h2>
-                <Select
-                  value={formData.frequency}
-                  onValueChange={(value) => handleSelect("frequency", value)}
-                >
-                  <SelectTrigger className="w-[180px]">
-                    <SelectValue placeholder="トレーニング頻度" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectGroup>
-                      <SelectItem value="1">週1</SelectItem>
-                      <SelectItem value="2">週2</SelectItem>
-                      <SelectItem value="3">週3</SelectItem>
-                      <SelectItem value="4">週4</SelectItem>
-                    </SelectGroup>
-                  </SelectContent>
-                </Select>
+                <p className="text-gray-600 mb-6">
+                  以下の情報を入力してプランを作成しましょう。
+                </p>
+                <div className="mb-4">
+                  <h3 className="text-blue-500 text-l mb-2">性別</h3>
+                  <Select
+                    value={formData.gender}
+                    onValueChange={(value) => handleSelect("gender", value)}
+                  >
+                    <SelectTrigger className="w-full max-w-xs mx-auto">
+                      <SelectValue placeholder="性別" />
+                    </SelectTrigger>
+                    <SelectContent className="absolute left-0 right-0 top-full z-10">
+                      <SelectGroup>
+                        <SelectItem value="male">男</SelectItem>
+                        <SelectItem value="female">女</SelectItem>
+                      </SelectGroup>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div className="mb-4">
+                  <h3 className="text-blue-500 text-l mb-2">
+                    トレーニング頻度（週）
+                  </h3>
+                  <Select
+                    value={formData.frequency}
+                    onValueChange={(value) => handleSelect("frequency", value)}
+                  >
+                    <SelectTrigger className="w-full max-w-xs mx-auto">
+                      <SelectValue placeholder="トレーニング頻度" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectGroup>
+                        <SelectItem value="1">週1</SelectItem>
+                        <SelectItem value="2">週2</SelectItem>
+                        <SelectItem value="3">週3</SelectItem>
+                        <SelectItem value="4">週4</SelectItem>
+                      </SelectGroup>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div className="mb-4">
+                  <h3 className="text-blue-500 text-l mb-2">プログラム期間</h3>
+                  <Select
+                    value={formData.duration.toString()}
+                    onValueChange={(value) =>
+                      handleSelect("duration", parseInt(value))
+                    }
+                  >
+                    <SelectTrigger className="w-full max-w-xs mx-auto">
+                      <SelectValue placeholder="プログラム期間">
+                        {formData.duration
+                          ? `${formData.duration} 週間`
+                          : "プログラム期間"}
+                      </SelectValue>
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectGroup>
+                        {Array.from({ length: 9 }, (_, i) => i + 4).map(
+                          (week) => (
+                            <SelectItem key={week} value={week.toString()}>
+                              {week} 週間
+                            </SelectItem>
+                          )
+                        )}
+                      </SelectGroup>
+                    </SelectContent>
+                  </Select>
+                </div>
               </div>
               <div>
-                <h2 className="text-blue-500 text-xl mb-2">プログラム期間</h2>
-                <Select
-                  value={formData.duration.toString()}
-                  onValueChange={(value) =>
-                    handleSelect("duration", parseInt(value))
-                  }
-                >
-                  <SelectTrigger className="w-[180px]">
-                    <SelectValue placeholder="プログラム期間">
-                      {formData.duration
-                        ? `${formData.duration} 週間`
-                        : "プログラム期間"}
-                    </SelectValue>
-                  </SelectTrigger>
-                  <SelectContent style={{ top: "auto", bottom: "100%" }}>
-                    <SelectGroup>
-                      {Array.from({ length: 9 }, (_, i) => i + 4).map(
-                        (week) => (
-                          <SelectItem key={week} value={week.toString()}>
-                            {week} 週間
-                          </SelectItem>
-                        )
-                      )}
-                    </SelectGroup>
-                  </SelectContent>
-                </Select>
+                {!hasProgram && (
+                  <button
+                    className="mt-5 py-3 px-5 bg-blue-500 text-white font-semibold rounded-lg cursor-pointer transition duration-300 hover:bg-blue-700"
+                    onClick={handlePlanCreation}
+                  >
+                    プラン作成
+                  </button>
+                )}
               </div>
-            </div>
-            <div>
-              {!hasProgram && (
-                <button
-                  className="mt-5 py-3 px-5 bg-blue-500 text-white border-none rounded-lg cursor-pointer"
-                  onClick={handlePlanCreation}
-                >
-                  プラン作成
-                </button>
-              )}
             </div>
           </div>
         </>

@@ -178,7 +178,7 @@ const RecordPage: React.FC = () => {
     );
 
   return (
-    <div className="flex flex-col min-h-screen overflow-hidden">
+    <div className="pt-8 flex flex-col min-h-screen overflow-hidden">
       <div className="flex-grow relative">
         <div className="flex justify-center p-0 min-h-screen relative">
           <div className="flex flex-col items-center w-full max-w-3xl relative">
