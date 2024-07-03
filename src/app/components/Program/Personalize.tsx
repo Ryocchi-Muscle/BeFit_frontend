@@ -103,7 +103,7 @@ const PersonalizePage: React.FC = () => {
       {!loading && (
         <>
           <div className="pt-16 flex flex-col items-center justify-start min-h-[calc(100vh-70px)] pt-18">
-            <div className=" bg-white p-8 rounded-lg shadow-lg text-center w-4/5 max-w-lg mt-0 space-y-6">
+            <div className="bg-white p-8 rounded-lg shadow-lg text-center w-4/5 max-w-lg mt-0 space-y-6 relative">
               <div>
                 <h2 className="text-blue-500 text-xl mb-2">性別</h2>
                 <Select
@@ -113,7 +113,7 @@ const PersonalizePage: React.FC = () => {
                   <SelectTrigger className="w-[180px]">
                     <SelectValue placeholder="性別" />
                   </SelectTrigger>
-                  <SelectContent>
+                  <SelectContent className="absolute left-0 right-0 top-full z-10">
                     <SelectGroup>
                       <SelectItem value="male">男</SelectItem>
                       <SelectItem value="female">女</SelectItem>

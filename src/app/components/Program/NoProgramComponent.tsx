@@ -6,7 +6,7 @@ const NoProgramComponent: React.FC = () => {
   const router = useRouter();
 
   const handleCreateProgram = () => {
-    console.log("Button clicked"); 
+    console.log("Button clicked");
     router.push("/category/personalize");
   };
 
@@ -24,7 +24,7 @@ const NoProgramComponent: React.FC = () => {
           className="mt-8 px-6 py-3 bg-yellow-400 text-black text-lg font-bold rounded-full"
           onClick={handleCreateProgram}
         >
-          START BUILDING YOUR BODY
+          プログラムを作成する
         </button>
       </div>
     </div>
