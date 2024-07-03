@@ -7,11 +7,17 @@ import Link from "next/link";
 import { signOut } from "next-auth/react";
 import { usePathname } from "next/navigation";
 
-const Header = ({ session }: { session: Session | null }) => {
+interface HeaderProps {
+  session: Session | null;
+}
+
+const Header: React.FC<HeaderProps> = ({ session }) => {
   const pathname = usePathname();
   const isLoginPage = pathname === "/account/login";
   return (
-    <header className="fixed top-0 left-0 right-0 flex items-center justify-between bg-blue-950 shadow-md p-2 lg:p-4">
+    <header
+      className={`fixed top-0 left-0 right-0 flex items-center justify-between bg-blue-950 shadow-md p-2 lg:p-4 z-10`}
+    >
       <div className="flex items-center">
         <Image
           src="/images/Pasted Graphic.png"
