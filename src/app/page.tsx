@@ -104,8 +104,20 @@ export default function TopPage() {
         </main>
         <footer className="footer footer-center p-10 base-100 text-base-300 rounded mt-auto gap-y-1 bg-gray-200">
           <div className="container mx-auto px-4">
-            <div className="flex justify-end">
-              <span className="text-sm">©2024 Be Fit</span>
+            <div className="flex flex-col sm:flex-row justify-between items-center">
+              <div className="flex flex-col sm:flex-row gap-x-4 gap-y-2">
+                <Link href="/TopPage/privacy">
+                  <span className="text-sm cursor-pointer">
+                    プライバシーポリシー
+                  </span>
+                </Link>
+                <Link href="/TopPage/terms">
+                  <span className="text-sm cursor-pointer">利用規約</span>
+                </Link>
+              </div>
+              <span className="text-sm mt-2 sm:mt-0">
+                © 2024 Be Fit. All rights reserved.
+              </span>
             </div>
           </div>
         </footer>

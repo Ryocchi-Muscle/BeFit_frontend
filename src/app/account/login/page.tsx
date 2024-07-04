@@ -78,10 +78,10 @@ const LoginPage = () => {
           Googleでログイン
         </button>
         <div className="text-center">
-          <Link href="/terms" className="text-xs text-gray-600 mr-2" id="link">
+          <Link href="/account/login/terms" className="text-xs text-gray-600 mr-2" id="link">
             ①利用規約
           </Link>
-          <Link href="/privacy" className="text-xs text-gray-600" id="link">
+          <Link href="/account/login/privacy" className="text-xs text-gray-600" id="link">
             ②プライバシーポリシー
           </Link>
           に同意したうえでログインしてください。
