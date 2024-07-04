@@ -26,9 +26,7 @@ const Header: React.FC<HeaderProps> = ({ session }) => {
           height={40}
           className="mr-2"
         />
-        <Link href="/" className="text-4xl  text-white font-bold">
-          Be Fit
-        </Link>
+        <p className="text-4xl  text-white font-bold">Be Fit</p>
       </div>
       <ul className="flex items-center space-x-4">
         {session ? (
