@@ -19,6 +19,35 @@ interface MyToken extends JWT {
   refreshToken?: string;
 }
 
+// Googleのアクセストークンをリフレッシュする関数
+async function refreshAccessToken(token: MyToken): Promise<MyToken> {
+  console.log("リフレッシュトークン:", token.refreshToken);
+  try {
+    const url = "https://oauth2.googleapis.com/token";
+    const response = await axios.post(url, {
+      client_id: process.env.GOOGLE_CLIENT_ID,
+      client_secret: process.env.GOOGLE_CLIENT_SECRET,
+      grant_type: "refresh_token",
+      refresh_token: token.refreshToken,
+    });
+
+    const refreshedTokens = response.data;
+
+    return {
+      ...token,
+      accessToken: refreshedTokens.access_token,
+      accessTokenExpires: Date.now() + refreshedTokens.expires_in * 1000,
+      refreshToken: refreshedTokens.refresh_token ?? token.refreshToken, // 更新されなければ元のリフレッシュトークンを使用
+    };
+  } catch (error: any) {
+    console.error("Error refreshing access token", error.response?.data);
+    return {
+      ...token,
+      error: "RefreshAccessTokenError",
+    };
+  }
+}
+
 export const nextAuthOptions: NextAuthOptions = {
   debug: true,
   providers: [
@@ -30,27 +59,44 @@ export const nextAuthOptions: NextAuthOptions = {
   session: {
     strategy: "jwt",
     maxAge: 30 * 24 * 60 * 60, // 30 days
+    updateAge: 24 * 60 * 60, // 24 hours
   },
   callbacks: {
     async jwt({ token, account, user }) {
       const now = Date.now() / 1000;
 
+      // 初回サインイン
       if (account && account.access_token && user) {
-        token.id = user.id;
-        token.accessToken = account.access_token;
-        token.accessTokenExpires = account.expires_at
-          ? account.expires_at * 10
-          : Date.now() + 10; // 修正: 有効期限の単位がミリ秒、デフォルトで1時間
-        token.refreshToken = account.refresh_token;
+        console.log("Initial sign in, saving token information:");
+        console.log({
+          accessToken: account.access_token,
+          accessTokenExpires: Date.now() + (account.expires_at ?? 0) * 1000,
+          refreshToken: account.refresh_token,
+        });
+        return {
+          accessToken: account.access_token,
+          accessTokenExpires: Date.now() + (account.expires_at ?? 0) * 1000,
+          refreshToken: account.refresh_token,
+          user,
+        };
       }
 
       // アクセストークンが有効期限内の場合、そのまま返す
-      console.log("Access token valid, returning existing token.");
-      return token;
+      if (
+        typeof token.accessTokenExpires === "number" &&
+        now < token.accessTokenExpires
+      ) {
+        console.log("Access token is still valid, returning existing token.");
+        return token;
+      }
+
+      // アクセストークンが期限切れの場合、リフレッシュ
+      console.log("Access token expired, refreshing...");
+      return refreshAccessToken(token as MyToken);
     },
     async session({ session, token }: { session: MySession; token: MyToken }) {
       session.accessToken = token.accessToken;
-      session.accessTokenExpires = token.accessTokenExpires; // 修正: 有効期限をセッションに追加
+      session.accessTokenExpires = token.accessTokenExpires;
       session.user_id = token.id;
       return session;
     },

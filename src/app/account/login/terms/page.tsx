@@ -1,12 +1,11 @@
 import React from "react";
+import TermsOfService from "@/app/components/terms/TermsOfService";
 import Link from "next/link";
-import PrivacyPolicy from "../components/privacy/PrivacyPolicy";
 
-
-const LoginPrivacyPolicyPage = () => {
+const LoginTermsPage = () => {
   return (
     <div>
-      <PrivacyPolicy />
+      <TermsOfService />
       <div className="mb-10">
         <Link href="/account/login" className="block mb-4">
           ログインページに戻る
@@ -16,4 +15,4 @@ const LoginPrivacyPolicyPage = () => {
   );
 };
 
-export default LoginPrivacyPolicyPage;
+export default LoginTermsPage;
