@@ -7,7 +7,6 @@ import NoProgramComponent from "@/app/components/Program/NoProgramComponent";
 import { FetchError } from "@/utils/errors";
 import useSWR from "swr";
 import axios from "axios";
-import { useSearchParams } from "next/navigation";
 import StartProgramHandler from "@/app/components/Program/StartProgramHandler";
 import usePreventScroll from "@/hooks/usePreventScroll";
 import Skeleton from "@/components/skeleton";
@@ -32,32 +31,31 @@ const RecordPage: React.FC = () => {
   const [currentProgram, setCurrentProgram] = useState<any>(null);
   usePreventScroll();
 
-const fetcher = async (url: string) => {
-  try {
-    const data = await fetchWithToken(
-      url,
-      async (url: string, token: string) => {
-        const response = await fetch(url, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        console.log("Fetch response:", response); // フェッチのレスポンスを出力
-        if (!response.ok) {
-          throw new Error(
-            `Network response was not ok: ${response.statusText}`
-          );
+  const fetcher = async (url: string) => {
+    try {
+      const data = await fetchWithToken(
+        url,
+        async (url: string, token: string) => {
+          const response = await fetch(url, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
+          console.log("Fetch response:", response); // フェッチのレスポンスを出力
+          if (!response.ok) {
+            throw new Error(
+              `Network response was not ok: ${response.statusText}`
+            );
+          }
+          return response.json();
         }
-        return response.json();
-      }
-    );
-    return data;
-  } catch (error) {
-    console.error("Fetcher error:", error); // フェッチエラーを出力
-    throw error;
-  }
-};
-
+      );
+      return data;
+    } catch (error) {
+      console.error("Fetcher error:", error); // フェッチエラーを出力
+      throw error;
+    }
+  };
 
   const {
     data: programData,
@@ -179,15 +177,13 @@ const fetcher = async (url: string) => {
     }
     return <div className="pt-8">エラーが発生しました</div>;
   }
-  if (!programData)
-    return (
-      <div className="pt-8">
-        <Skeleton />
-      </div>
-    );
 
   return (
-    <div className="pt-8 flex flex-col min-h-screen overflow-hidden">
+    <div
+      className={`flex flex-col min-h-screen overflow-hidden ${
+        !programData || !programData.program ? "" : "pt-8"
+      }`}
+    >
       <div className="flex-grow relative">
         <div className="flex justify-center p-0 min-h-screen relative">
           <div className="flex flex-col items-center w-full max-w-3xl relative">

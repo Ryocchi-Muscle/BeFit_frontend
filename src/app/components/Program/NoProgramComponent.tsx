@@ -12,19 +12,19 @@ const NoProgramComponent: React.FC = () => {
 
   return (
     <div
-      className="relative flex flex-col items-center justify-center h-full w-full bg-cover bg-center bg-no-repeat"
+      className="relative flex flex-col items-center justify-center min-h-screen w-full bg-cover bg-center bg-no-repeat"
       style={{ backgroundImage: "url('/images/ProgramStartImage.webp')" }}
     >
       <div className="absolute inset-0 bg-black opacity-50"></div>
       <div className="relative z-10 flex flex-col items-center justify-center h-full space-y-6 px-4 text-center">
-        <h1 className="text-3xl font-bold text-white mt-8">
-          VOLUME UP YOUR BODY GOALS
+        <h1 className="text-4xl font-bold text-white pb-14">
+          Let&apos;s start your program!
         </h1>
         <button
-          className="mt-8 px-6 py-3 bg-yellow-400 text-black text-lg font-bold rounded-full"
+          className="mt-8 px-6 py-3 bg-yellow-400 text-black text-lg font-bold rounded-full border-2 border-black shadow-lg hover:bg-yellow-500"
           onClick={handleCreateProgram}
         >
-          プログラムを作成する
+          start program
         </button>
       </div>
     </div>
