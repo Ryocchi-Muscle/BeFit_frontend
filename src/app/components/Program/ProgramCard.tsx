@@ -31,8 +31,6 @@ const ProgramCard: React.FC<ProgramCardProps> = ({
   const completedStyle = isCompleted
     ? "relative bg-white text-black"
     : "bg-white text-black";
-  // const today = new Date().toISOString().split("T")[0]; //後で使うかもしれない
-  // const programDate = dailyProgram.date;
 
   const handleStartClick = async () => {
     const date = new Date().toISOString().split("T")[0];
