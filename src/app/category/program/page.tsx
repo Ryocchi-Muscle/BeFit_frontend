@@ -9,7 +9,6 @@ import useSWR from "swr";
 import axios from "axios";
 import StartProgramHandler from "@/app/components/Program/StartProgramHandler";
 import usePreventScroll from "@/hooks/usePreventScroll";
-import Skeleton from "@/components/skeleton";
 import CustomDialog from "@/app/components/Program/CustomDialog";
 import ProgramTrainingMenuDialog from "@/app/components/Program/ProgramTrainingMenuDialog";
 import { fetchWithToken } from "@/utils/auth";
