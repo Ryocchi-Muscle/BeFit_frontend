@@ -17,7 +17,7 @@ export const metadata: Metadata = {
     title: "Apple Web App",
     statusBarStyle: "black-translucent",
     startupImage: [
-      "/public/images/Pasted Graphic.png",
+      "/public/images/thumbnail.png",
       {
         url: "/assets/startup/apple-touch-startup-image-1536x2008.png",
         media: "(device-width: 768px) and (device-height: 1024px)",
