@@ -7,6 +7,7 @@ import { GoogleAnalytics } from "@next/third-parties/google";
 import Header from "./components/layout/Header";
 import { nextAuthOptions } from "./utils/next-auth-options";
 import { Toaster } from "@/components/ui/toaster";
+import Head from "next/head";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -35,7 +36,7 @@ export default async function RootLayout({
 
   return (
     <html lang="ja">
-      <head>
+      <Head>
         <meta name="theme-color" content="#4285f4" />
         <meta
           name="apple-mobile-web-app-status-bar-style"
@@ -66,7 +67,7 @@ export default async function RootLayout({
           content="Be Fitは初心者のためのトレーニングアプリです。"
         />
         <meta name="twitter:image" content="public/images/thumbnail.png" />
-      </head>
+      </Head>
       <body className={`${inter.className} pt-10`}>
         <NextAuthProvider>
           <Header session={session} />
