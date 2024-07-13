@@ -22,7 +22,7 @@ export default function TopPage() {
             <div className="relative w-full h-64  sm:h-96  md:h-[600px] lg:h-[800px] xl:h-[900px] overflow-hidden">
               <div className="absolute inset-0">
                 <Image
-                  src="/images/TopPage/サムネ画像.png"
+                  src="/images/thumbnail.png"
                   alt="LOGO"
                   layout="fill"
                   objectFit="cover"
