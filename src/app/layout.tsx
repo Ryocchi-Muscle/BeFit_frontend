@@ -36,15 +36,37 @@ export default async function RootLayout({
   return (
     <html lang="ja">
       <head>
-        {/* ブルー系のステータスバー色を設定 */}
         <meta name="theme-color" content="#4285f4" />
-        {/* ここでブルー系の色を指定 */}
         <meta
           name="apple-mobile-web-app-status-bar-style"
           content="black-translucent"
         />
-      </head>
 
+        {/* OGP meta tags */}
+        <meta
+          property="og:title"
+          content="Be Fit - 初心者のためのトレーニングアプリ"
+        />
+        <meta
+          property="og:description"
+          content="Be Fitは初心者のためのトレーニングアプリです。"
+        />
+        <meta property="og:image" content="public/images/thumbnail.png" />
+        <meta property="og:url" content="https://www.befitvercel.com/" />
+        <meta property="og:type" content="website" />
+
+        {/* Twitter meta tags */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta
+          name="twitter:title"
+          content="Be Fit - 初心者のためのトレーニングアプリ"
+        />
+        <meta
+          name="twitter:description"
+          content="Be Fitは初心者のためのトレーニングアプリです。"
+        />
+        <meta name="twitter:image" content="public/images/thumbnail.png" />
+      </head>
       <body className={`${inter.className} pt-10`}>
         <NextAuthProvider>
           <Header session={session} />
