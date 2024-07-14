@@ -16,15 +16,15 @@ export const metadata: Metadata = {
   description: "Be Fit | 筋トレサポートトレーニングアプリ",
   openGraph: {
     title: "Be Fit | 筋トレサポートトレーニングアプリ",
-    description: "筋トレサポートトレーニングアプリ",
+    description: "筋トレサポートアプリ",
     siteName: "Be Fit",
-    images: "https://www.befitvercel.com/public/images/thumbnail.png",
+    images: "https://www.befitvercel.com/images/thumbnail.png",
   },
   twitter: {
     title: "Be Fit | 筋トレサポートトレーニングアプリ",
-    description: "筋トレサポートトレーニングアプリ",
+    description: "筋トレサポートアプリ",
     card: "summary_large_image",
-    images: "https://www.grassbattle.com/OGP.webp",
+    images: "https://www.befitvercel.com/images/thumbnail.png",
   },
 };
 
