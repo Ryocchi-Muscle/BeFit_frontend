@@ -70,21 +70,25 @@ const Header: React.FC<HeaderProps> = ({ session }) => {
                     <IoPersonCircleSharp size={30} />
                   </button>
                 </AlertDialogTrigger>
-                <AlertDialogContent className="max-w-sm p-4 rounded-lg">
+                <AlertDialogContent className="sm:max-w-md max-w-xs rounded-lg">
                   <AlertDialogHeader>
                     <AlertDialogTitle>退会</AlertDialogTitle>
                     <AlertDialogDescription>
-                      アカウントを削除すると、これまでのデータは全て削除され、復元できなくなります。
-                      <br />
-                      この操作は取り消せません。 <br />
-                      本当にアカウントを削除してもよろしいですか？
+                      アカウントを削除すると、これまでのデータは全て削除され、復元できなくなります。この操作は取り消せません。本当にアカウントを削除してもよろしいですか？
                     </AlertDialogDescription>
                   </AlertDialogHeader>
-                  <AlertDialogFooter className="flex justify-between">
-                    <AlertDialogCancel>キャンセル</AlertDialogCancel>
-                    <AlertDialogAction onClick={handleDeleteAccount}>
-                      退会する
-                    </AlertDialogAction>
+                  <AlertDialogFooter className="flex justify-between mt-4">
+                    <div className="flex justify-center space-x-4">
+                      <AlertDialogAction
+                        onClick={handleDeleteAccount}
+                        className="px-4 py-2 rounded bg-red-500 text-white hover:bg-red-600"
+                      >
+                        退会する
+                      </AlertDialogAction>
+                      <AlertDialogCancel className="px-4 py-2 rounded bg-gray-500 text-white hover:bg-gray-600">
+                        キャンセル
+                      </AlertDialogCancel>
+                    </div>
                   </AlertDialogFooter>
                 </AlertDialogContent>
               </AlertDialog>
