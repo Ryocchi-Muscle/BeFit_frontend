@@ -72,9 +72,12 @@ const Header: React.FC<HeaderProps> = ({ session }) => {
                 </AlertDialogTrigger>
                 <AlertDialogContent className="max-w-sm p-4 rounded-lg">
                   <AlertDialogHeader>
-                    <AlertDialogTitle>本当に退会しますか？</AlertDialogTitle>
+                    <AlertDialogTitle>退会</AlertDialogTitle>
                     <AlertDialogDescription>
-                      本当に退会しますか？
+                      アカウントを削除すると、これまでのデータは全て削除され、復元できなくなります。
+                      <br />
+                      この操作は取り消せません。 <br />
+                      本当にアカウントを削除してもよろしいですか？
                     </AlertDialogDescription>
                   </AlertDialogHeader>
                   <AlertDialogFooter className="flex justify-between">

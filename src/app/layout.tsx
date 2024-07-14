@@ -18,11 +18,13 @@ export const metadata: Metadata = {
     title: "Be Fit | 筋トレサポートトレーニングアプリ",
     description: "筋トレサポートトレーニングアプリ",
     siteName: "Be Fit",
+    images: "https://www.befitvercel.com/public/images/thumbnail.png",
   },
   twitter: {
     title: "Be Fit | 筋トレサポートトレーニングアプリ",
     description: "筋トレサポートトレーニングアプリ",
     card: "summary_large_image",
+    images: "https://www.grassbattle.com/OGP.webp",
   },
 };
 
