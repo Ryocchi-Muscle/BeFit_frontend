@@ -59,7 +59,7 @@ export const nextAuthOptions: NextAuthOptions = {
   session: {
     strategy: "jwt",
     maxAge: 30 * 24 * 60 * 60, // 30 days
-    updateAge: 60 * 60, // 1 hours
+    updateAge: 24 * 60 * 60, // 1 day
   },
   callbacks: {
     async jwt({ token, account, user }) {
@@ -77,6 +77,7 @@ export const nextAuthOptions: NextAuthOptions = {
           accessToken: account.access_token,
           accessTokenExpires: Date.now() + (account.expires_at ?? 0) * 1000,
           refreshToken: account.refresh_token,
+          uid: user.id,
           user,
         };
       }
@@ -90,14 +91,18 @@ export const nextAuthOptions: NextAuthOptions = {
         return token;
       }
 
-      // アクセストークンが期限切れの場合、リフレッシュ
       console.log("Access token expired, refreshing...");
       return refreshAccessToken(token as MyToken);
     },
     async session({ session, token }: { session: MySession; token: MyToken }) {
       session.accessToken = token.accessToken;
       session.accessTokenExpires = token.accessTokenExpires;
-      session.user_id = token.id;
+      if (session.user) {
+        session.user = {
+          ...session.user,
+          uid: token.uid as string,
+        };
+      }
       return session;
     },
     async signIn({ user, account }) {
