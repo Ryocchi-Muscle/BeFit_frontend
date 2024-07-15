@@ -33,16 +33,26 @@ const Header: React.FC<HeaderProps> = ({ session }) => {
   }, [session]);
 
   const handleDeleteAccount = async () => {
-    const confirmed = confirm("本当に退会しますか？");
-    if (confirmed) {
-      try {
-        // 退会処理のロジックをここに追加する
-        // 例：await deleteAccount();
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+    const endpoint = `${apiUrl}/api/delete-account`;
+    try {
+      const response = await fetch(endpoint, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${session?.accessToken}`,
+        },
+      });
 
+      if (response.ok) {
+        alert("退会が完了しました。");
         signOut({ callbackUrl: "/" });
-      } catch (error) {
-        console.error("退会処理に失敗しました:", error);
+      } else {
+        alert("退会処理に失敗しました。");
       }
+    } catch (error) {
+      console.error("退会処理に失敗しました:", error);
+      alert("退会処理に失敗しました。");
     }
   };
 
