@@ -39,7 +39,7 @@ export default async function RootLayout({
     <html lang="ja">
       <body className={`${inter.className} pt-10`}>
         <NextAuthProvider>
-          <Header session={session} />
+          <Header />
           <main className="flex flex-col min-h-screen overflow-y-auto">
             {children}
             <GoogleAnalytics gaId={process.env.GA_ID ?? ""} />
