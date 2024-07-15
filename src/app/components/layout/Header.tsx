@@ -1,10 +1,9 @@
 "use client";
 
+import { useSession, signOut } from "next-auth/react";
 import Image from "next/image";
-import React, { useEffect, useState } from "react";
-import { type Session } from "next-auth";
+import React from "react";
 import Link from "next/link";
-import { signOut } from "next-auth/react";
 import { usePathname } from "next/navigation";
 import { IoPersonCircleSharp } from "react-icons/io5";
 import {
@@ -19,28 +18,29 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 
-interface HeaderProps {
-  session: Session | null;
-}
-
-const Header: React.FC<HeaderProps> = ({ session }) => {
+const Header: React.FC = () => {
   const pathname = usePathname();
   const isLoginPage = pathname === "/account/login";
-  const [clientSession, setClientSession] = useState<Session | null>(null);
-
-  useEffect(() => {
-    setClientSession(session);
-  }, [session]);
+  const { data: session } = useSession();
+  const userUid = session?.user?.uid;
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
   const handleDeleteAccount = async () => {
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL;
-    const endpoint = `${apiUrl}/api/delete-account`;
+    console.log("Session data:", session);
+    console.log("userUid:", userUid);
+    console.error("userUid", userUid);
+    if (!userUid) {
+      console.error("ユーザーUIDが見つかりません。");
+      return;
+    }
+
+    const endpoint = `${apiUrl}/api/v1/users/${userUid}`;
+
     try {
       const response = await fetch(endpoint, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${session?.accessToken}`,
         },
       });
 
@@ -57,9 +57,7 @@ const Header: React.FC<HeaderProps> = ({ session }) => {
   };
 
   return (
-    <header
-      className={`fixed top-0 left-0 right-0 flex items-center justify-between bg-blue-950 shadow-md p-2 lg:p-4 z-10`}
-    >
+    <header className="fixed top-0 left-0 right-0 flex items-center justify-between bg-blue-950 shadow-md p-2 lg:p-4 z-10">
       <div className="flex items-center">
         <Image
           src="/images/Pasted Graphic.png"
@@ -68,10 +66,10 @@ const Header: React.FC<HeaderProps> = ({ session }) => {
           height={40}
           className="mr-2"
         />
-        <p className="text-4xl  text-white font-bold">Be Fit</p>
+        <p className="text-4xl text-white font-bold">Be Fit</p>
       </div>
       <ul className="flex items-center space-x-2">
-        {clientSession ? (
+        {session ? (
           <>
             <li>
               <AlertDialog>
