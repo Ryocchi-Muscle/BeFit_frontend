@@ -80,7 +80,7 @@ const RecordPage: React.FC = () => {
     try {
       const apiUrl = process.env.NEXT_PUBLIC_API_URL;
       await axios.patch(
-        `${apiUrl}/api/v2/personalized_menus/${dailyProgramId}/update`,
+        `${apiUrl}/api/v2/personalized_menus/${dailyProgramId}`,
         { details: programDetails },
         {
           headers: {
