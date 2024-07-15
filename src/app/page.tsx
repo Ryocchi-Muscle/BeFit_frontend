@@ -1,6 +1,8 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { useToast } from "@/components/ui/use-toast";
 import { AuthProvider } from "./components/context/authContext";
 import Image from "next/image";
 import Link from "next/link";
@@ -14,6 +16,22 @@ interface FeatureCardProps {
 }
 
 export default function TopPage() {
+  const router = useRouter();
+  const { toast } = useToast();
+
+useEffect(() => {
+  const searchParams = new URLSearchParams(window.location.search);
+  const success = searchParams.get("success");
+  if (success === "accountDeleted") {
+    toast({
+      title: "退会が完了しました。",
+      duration: 3000,
+      style: { backgroundColor: "green", color: "white" },
+    });
+  }
+}, [toast]);
+
+
   return (
     <div className="flex flex-col min-h-screen overflow-x-hidden">
       <AuthProvider>

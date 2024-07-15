@@ -8,6 +8,7 @@ import Header from "./components/layout/Header";
 import { nextAuthOptions } from "./utils/next-auth-options";
 import { Toaster } from "@/components/ui/toaster";
 
+
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -41,6 +42,7 @@ export default async function RootLayout({
         <NextAuthProvider>
           <Header />
           <main className="flex flex-col min-h-screen overflow-y-auto">
+            <Toaster />
             {children}
             <GoogleAnalytics gaId={process.env.GA_ID ?? ""} />
           </main>
