@@ -50,7 +50,7 @@ export default function TrainigSet({
         placeholder="重量"
         onChange={handleWeightChange}
         pattern="[0-9]*"
-        inputMode="numeric"
+        inputMode="decimal"
       />
       <input
         className="border p-1 mr-2 w-16"
