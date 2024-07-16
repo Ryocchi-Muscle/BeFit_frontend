@@ -24,8 +24,8 @@ export default function TrainigSet({
 }: TrainigSetProps) {
   const handleWeightChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
-    if (/^\d*$/.test(value)) {
-      updateSet(setId, "weight", value === "" ? "" : parseInt(value, 10));
+    if (/^\d*\.?\d*$/.test(value)) {
+      updateSet(setId, "weight", value === "" ? "" : parseFloat(value));
     }
   };
   const handleRepsChange = (e: React.ChangeEvent<HTMLInputElement>) => {
