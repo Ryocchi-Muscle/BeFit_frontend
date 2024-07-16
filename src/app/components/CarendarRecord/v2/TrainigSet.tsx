@@ -49,7 +49,6 @@ export default function TrainigSet({
         value={weight}
         placeholder="重量"
         onChange={handleWeightChange}
-        pattern="[0-9]*"
         inputMode="decimal"
       />
       <input
@@ -61,18 +60,6 @@ export default function TrainigSet({
         pattern="[0-9]*"
         inputMode="numeric"
       />
-      {/* <input
-        type="checkbox"
-        checked={completed}
-        onChange={handleCompletedChange}
-      /> */}
-      {/* <button
-        className="ml-3 bg-red-500 hover:bg-red-600 text-white p-2 rounded"
-        onClick={removeSet}
-        type="button"
-      >
-        <FaTrashAlt />
-      </button> */}
     </div>
   );
 }
