@@ -18,7 +18,6 @@ export default function TrainigSet({
   setId,
   weight,
   reps,
-  completed,
   updateSet,
   removeSet,
 }: TrainigSetProps) {
@@ -34,9 +33,7 @@ export default function TrainigSet({
       updateSet(setId, "reps", value === "" ? "" : parseInt(value, 10));
     }
   };
-  const handleCompletedChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    updateSet(setId, "completed", e.target.checked);
-  };
+
   return (
     <div className="training-set bg-white shadow-sm rounded p-3 flex items-center justify-between mb-2">
       <span className="mr-3 text-lg font-bold font-custom tracking-wider text-shadow-default">
