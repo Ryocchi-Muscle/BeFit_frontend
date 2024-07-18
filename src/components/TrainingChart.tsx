@@ -69,7 +69,7 @@ const TrainingChart: React.FC = () => {
 
   if (isLoading)
     return (
-      <div className="flex flex-col items-center justify-center min-h h-screen">
+      <div className="flex flex-col items-center justify-center min-h-screen">
         <ClipLoader color="#4A90E2" size={150} />
         <p>Loading...</p>
       </div>
