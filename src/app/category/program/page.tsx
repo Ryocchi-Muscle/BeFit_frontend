@@ -1,7 +1,7 @@
 "use client";
 import Footer from "@/app/components/layout/Footer";
 import React, { useEffect, useState } from "react";
-import { useSession } from "next-auth/react";
+import { useSession, signOut } from "next-auth/react";
 import StepFourComponent from "@/app/components/Program/StepFourComponent";
 import NoProgramComponent from "@/app/components/Program/NoProgramComponent";
 import { FetchError } from "@/utils/errors";
@@ -174,7 +174,8 @@ const RecordPage: React.FC = () => {
         <div className="pt-8">エラーが発生しました: {error.info.message}</div>
       );
     }
-    return <div className="pt-8">エラーが発生しました</div>;
+    signOut(); // 自動的にユーザーをログアウト
+    // return <div className="pt-8">エラーが発生しました</div>;
   }
 
   return (
