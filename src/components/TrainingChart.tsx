@@ -52,6 +52,7 @@ const TrainingChart: React.FC = () => {
     }) ?? [];
 
   console.log("data", data);
+  console.log("filteredData", filteredData);
 
   const weeklyData: WeeklySummary[] = aggregateWeeklyData(filteredData);
 

@@ -12,14 +12,13 @@ export interface WeeklySummary {
   count: number;
 }
 
-export const aggregateWeeklyData = (
-  data: TrainingRecord[]
-): WeeklySummary[] => {
+const aggregateWeeklyData = (data: TrainingRecord[]): WeeklySummary[] => {
   const weeklyData: Record<string, WeeklySummary> = {};
   data.forEach((record) => {
     const date = parseISO(record.date);
     const weekStart = startOfWeek(date, { weekStartsOn: 0 });
     const formattedWeekStart = format(weekStart, "yyyy-MM-dd");
+
     if (!weeklyData[formattedWeekStart]) {
       weeklyData[formattedWeekStart] = {
         weekStart: formattedWeekStart,
