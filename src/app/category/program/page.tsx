@@ -174,8 +174,9 @@ const RecordPage: React.FC = () => {
         <div className="pt-8">エラーが発生しました: {error.info.message}</div>
       );
     }
-    signOut(); // 自動的にユーザーをログアウト
-    // return <div className="pt-8">エラーが発生しました</div>;
+    // サインアウトしてからルートページへ遷移
+    signOut({ callbackUrl: "/" });
+    return null; 
   }
 
   return (
