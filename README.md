@@ -49,7 +49,7 @@
     </td>
     <td>
       <img src="assets/menu_edit.gif" alt="メニュー編集">
-      記録を編集することも可能。
+      記録を編集することも可能です。
     </td>
   </tr>
   <tr>
