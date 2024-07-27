@@ -40,7 +40,7 @@ const RecordPage: React.FC = () => {
               Authorization: `Bearer ${token}`,
             },
           });
-          console.log("Fetch response:", response); // フェッチのレスポンスを出力
+          console.log("Fetch response:", response);
           if (!response.ok) {
             throw new Error(
               `Network response was not ok: ${response.statusText}`
@@ -51,7 +51,7 @@ const RecordPage: React.FC = () => {
       );
       return data;
     } catch (error) {
-      console.error("Fetcher error:", error); // フェッチエラーを出力
+      console.error("Fetcher error:", error); 
       throw error;
     }
   };
@@ -176,7 +176,7 @@ const RecordPage: React.FC = () => {
     }
     // サインアウトしてからルートページへ遷移
     signOut({ callbackUrl: "/" });
-    return null; 
+    return null;
   }
 
   return (
