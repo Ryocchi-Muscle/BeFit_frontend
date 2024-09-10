@@ -34,6 +34,7 @@ const PersonalizePage: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [program, setProgram] = useState<Program[]>([]);
   const [dailyProgramId, setDailyProgramId] = useState<number>(0);
+  const [errorMessage, setErrorMessage] = useState<string>(""); // add エラーメッセージ用の状態
   const router = useRouter();
 
   const handleSelect = (key: string, value: string | number) => {
@@ -47,6 +48,10 @@ const PersonalizePage: React.FC = () => {
 
   //APIを呼び出してプランを作成する
   const handlePlanCreation = async () => {
+    if (!formData.gender || !formData.frequency || !formData.duration) {
+      setErrorMessage("全ての項目を選択してください。"); // エラーメッセージを設定
+      return;
+    }
     if (hasProgram) {
       alert("既にプランが存在します。既存のプランを削除してください。");
       return;
