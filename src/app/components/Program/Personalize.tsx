@@ -182,6 +182,9 @@ const PersonalizePage: React.FC = () => {
                     </SelectContent>
                   </Select>
                 </div>
+                   {errorMessage && (
+                  <p className="text-red-500 text-sm mb-4">{errorMessage}</p>
+                )}
               </div>
               <div>
                 {!hasProgram && (
