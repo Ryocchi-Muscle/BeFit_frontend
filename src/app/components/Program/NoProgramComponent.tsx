@@ -1,5 +1,6 @@
 import React from "react";
 import { useRouter } from "next/navigation";
+import { Button } from "@/components/ui/button";
 
 const NoProgramComponent: React.FC = () => {
   const router = useRouter();
@@ -19,12 +20,12 @@ const NoProgramComponent: React.FC = () => {
         <h1 className="text-4xl font-bold text-white pb-14">
           自分だけのプログラムを作成しよう
         </h1>
-        <button
-          className="mt-8 px-6 py-3 bg-yellow-400 text-black text-lg font-bold rounded-full border-2 border-black shadow-lg hover:bg-yellow-500"
+        <Button
+          className="mt-8 px-6 py-3 bg-gradient-to-r from-yellow-400 to-orange-500 text-black text-lg font-bold rounded-full border-2 border-black shadow-2xl hover:shadow-none hover:bg-gradient-to-l hover:from-orange-500 hover:to-yellow-400 transition-all duration-300 ease-in-out transform hover:scale-105"
           onClick={handleCreateProgram}
         >
           作成する
-        </button>
+        </Button>
       </div>
     </div>
   );
