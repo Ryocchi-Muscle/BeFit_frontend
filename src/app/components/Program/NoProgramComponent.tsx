@@ -21,7 +21,7 @@ const NoProgramComponent: React.FC = () => {
           自分だけのプログラムを作成しよう
         </h1>
         <Button
-          className="mt-8 px-8 py-4 bg-gradient-to-r from-blue-500 to-blue-700 text-white text-lg font-bold rounded-lg border-2 border-blue-700 shadow-xl hover:shadow-none hover:bg-gradient-to-l hover:from-blue-700 hover:to-blue-500 transition-all duration-300 ease-in-out transform hover:scale-105"
+          className="mt-8 px-8 py-6 bg-gradient-to-r from-blue-500 to-blue-700 text-white text-lg font-bold rounded-lg border-2 border-blue-700 shadow-xl hover:shadow-none hover:bg-gradient-to-l hover:from-blue-700 hover:to-blue-500 transition-all duration-300 ease-in-out transform hover:scale-105"
           onClick={handleCreateProgram}
         >
           作成する
