@@ -344,7 +344,7 @@ export default function TrainingTutorialPage() {
         <div className="mb-10">
           <Button asChild>
             <Link
-              href="/basics"
+              href="/category/training/basic"
               className="text-white bg-blue-500 hover:bg-blue-700 p-3 rounded-lg block text-center"
             >
               筋トレする上で大切なこと
