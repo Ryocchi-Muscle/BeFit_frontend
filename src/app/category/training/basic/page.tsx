@@ -1,6 +1,9 @@
+"use client";
 import React from "react";
+import { useRouter } from "next/navigation";
 
 const ImportantPoints: React.FC = () => {
+  const router = useRouter();
   const points = [
     {
       title: "1. 正しいフォーム",
@@ -85,12 +88,24 @@ const ImportantPoints: React.FC = () => {
     },
   ];
 
+  const handleBackClick = () => {
+    router.push("/category/training");
+  };
+
   return (
     <div className="min-h-screen bg-gray-100 flex items-center justify-center overflow-y-auto">
       <div className="max-w-4xl w-full mx-auto p-6 pb-20">
         <h1 className="text-4xl font-bold text-center mb-8">
           筋トレのポイント
         </h1>
+        <div className="mt-8 mb-4">
+          <button
+            onClick={handleBackClick}
+            className="bg-blue-500 text-white px-6 py-3 rounded-lg shadow hover:bg-blue-600 transition-colors duration-300"
+          >
+            解説ページに戻る
+          </button>
+        </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
           {points.map((point, index) => (
             <div
